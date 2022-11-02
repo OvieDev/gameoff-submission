@@ -10,8 +10,6 @@ onready var sprite = $Sprite
 var hits = 0
 
 func _physics_process(delta):
-	print(JUMPING)
-	print(FUEL)
 	JUMPING = false
 	VELOCITY = Vector2(0, VELOCITY.y)
 	
