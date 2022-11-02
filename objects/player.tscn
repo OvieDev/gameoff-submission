@@ -41,6 +41,7 @@ color_ramp = SubResource( 4 )
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
 material = ExtResource( 3 )
+collision_layer = 2
 script = ExtResource( 2 )
 max_hitpoints = 100
 
@@ -61,11 +62,12 @@ smoothing_speed = 3.0
 wait_time = 0.1
 
 [node name="IframeTimer" type="Timer" parent="."]
-wait_time = 0.25
+wait_time = 0.1
 
 [node name="HitLine" type="RayCast2D" parent="."]
 enabled = true
 cast_to = Vector2( 75, 0 )
+collision_mask = 3
 
 [node name="Area2D" type="Area2D" parent="."]
 

@@ -3,7 +3,7 @@ class_name Player
 
 var VELOCITY = Vector2.ZERO
 var JUMPING = false
-var FUEL = 75
+var FUEL = 100
 var after_jump = 0
 onready var timer = $Timer
 onready var iframetimer = $IframeTimer
@@ -16,6 +16,7 @@ var hitline_to_mouse = Vector2.ZERO
 var cards = [true, true, true]
 
 func _physics_process(delta):
+	print(FUEL)
 	JUMPING = false
 	VELOCITY = Vector2(0, VELOCITY.y)
 	
@@ -33,7 +34,7 @@ func _physics_process(delta):
 		
 	if Input.is_action_just_pressed("card1"):
 		if cards[0] == true:
-			FUEL = 150
+			FUEL = 170
 			cards[0] = false
 	if Input.is_action_just_pressed("card2"):
 		if cards[1] == true:
@@ -77,7 +78,7 @@ func jump():
 		VELOCITY.y = lerp(VELOCITY.y, -300, 0.1)
 		FUEL-=1
 		if FUEL==0:
-			after_jump = 10
+			after_jump = 2
 	else:
 		JUMPING = false
 		
@@ -88,7 +89,7 @@ func _ready():
 	emit_signal("damage_received", 1, Vector2.ZERO)
 
 func add_fuel():
-	if !JUMPING and FUEL<75:
+	if !JUMPING and FUEL<100:
 		if after_jump<=1:
 			FUEL+=1
 			if FUEL>10:

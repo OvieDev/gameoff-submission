@@ -1,12 +1,42 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://objects/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://objects/base_enemy.tscn" type="PackedScene" id=2]
 
 [sub_resource type="Environment" id=1]
 background_mode = 4
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 67, 20.5 )
+
+[sub_resource type="Gradient" id=6]
+offsets = PoolRealArray( 0, 0.509677, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 0.752941, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 6 )
+
+[sub_resource type="Curve" id=7]
+bake_resolution = 135
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.533708, 1 ), -0.0245617, -0.0245617, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 7 )
+
+[sub_resource type="ParticlesMaterial" id=8]
+emission_shape = 2
+emission_box_extents = Vector3( 750, 750, 750 )
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+angular_velocity = -28.51
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 21.78
+scale = 30.7
+scale_random = 1.0
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
 
 [node name="Node2D" type="Node2D"]
 position = Vector2( -3, -1 )
@@ -55,15 +85,34 @@ polygon = PoolVector2Array( 14, 164, 149, 164, 149, 205, 14, 205 )
 color = Color( 0.0901961, 0.0901961, 0.0901961, 1 )
 polygon = PoolVector2Array( 19, 169, 144, 169, 144, 201, 19, 201 )
 
-[node name="KinematicBody2D" parent="StaticBody2D3" instance=ExtResource( 1 )]
-position = Vector2( -309, 205 )
-
 [node name="StaticBody2D4" type="StaticBody2D" parent="."]
 position = Vector2( -163, 39 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D4"]
-polygon = PoolVector2Array( -85, 10, 167, 349, 1188, 352, 1441, -40, 1426, 543, -76, 543 )
+polygon = PoolVector2Array( -244, 353.005, 167, 349, 218, 350, 384, 350, 419, 349.005, 709, 349.005, 704, 294.005, 835, 293, 835, 348, 1188, 349, 1179, -615, 1394, -631.995, 1426, 543, -422, 535.005, -435, -633.995, -267, -633.995 )
 
 [node name="Polygon2D" type="Polygon2D" parent="StaticBody2D4"]
-offset = Vector2( 0, -0.005 )
-polygon = PoolVector2Array( -85, 10, 167, 349, 1188, 349, 1441, -40, 1426, 543, -76, 543 )
+polygon = PoolVector2Array( -244, 353.005, 167, 349, 218, 350, 384, 350, 419, 349.005, 709, 349.005, 704, 294.005, 835, 293, 835, 348, 1188, 349, 1179, -615, 1394, -631.995, 1426, 543, -422, 535.005, -435, -633.995, -267, -633.995 )
+
+[node name="KinematicBody2D" parent="." instance=ExtResource( 1 )]
+position = Vector2( 311, 218 )
+
+[node name="Damagable" parent="." instance=ExtResource( 2 )]
+position = Vector2( 882, 123 )
+player_path = NodePath("../KinematicBody2D")
+
+[node name="Particles2D" type="Particles2D" parent="."]
+position = Vector2( 475, 275 )
+z_index = -1
+amount = 57
+lifetime = 3.0
+randomness = 0.39
+process_material = SubResource( 8 )
+
+[node name="Damagable2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 49, 124 )
+player_path = NodePath("../KinematicBody2D")
+
+[node name="Damagable3" parent="." instance=ExtResource( 2 )]
+position = Vector2( -336, 334 )
+player_path = NodePath("../KinematicBody2D")
