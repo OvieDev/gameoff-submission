@@ -23,14 +23,12 @@ material = ExtResource( 3 )
 texture = ExtResource( 2 )
 
 [node name="Right" type="RayCast2D" parent="."]
-position = Vector2( 50, 0 )
 enabled = true
-cast_to = Vector2( 0, -100 )
+cast_to = Vector2( 50, 0 )
 
 [node name="Left" type="RayCast2D" parent="."]
-position = Vector2( -50, 0 )
 enabled = true
-cast_to = Vector2( 0, -100 )
+cast_to = Vector2( -50, 0 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.25

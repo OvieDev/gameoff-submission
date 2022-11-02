@@ -31,6 +31,8 @@ func _physics_process(delta):
 			velocity.y = 0
 		else:
 			velocity.y = 300
+	if left_ray.get_collider() or right_ray.get_collider():
+		jump()
 	move_and_slide(velocity, Vector2.UP)
 
 func get_direction():

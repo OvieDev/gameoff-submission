@@ -9,8 +9,11 @@ onready var timer = $Timer
 onready var iframetimer = $IframeTimer
 onready var sprite = $Sprite
 onready var hitline = $HitLine
+onready var safezone = $Area2D
+onready var effect = $SafezoneEffect
 var hits = 0
 var hitline_to_mouse = Vector2.ZERO
+var cards = [true, true, true]
 
 func _physics_process(delta):
 	JUMPING = false
@@ -28,6 +31,22 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("attack") and is_on_floor():
 		attack()
 		
+	if Input.is_action_just_pressed("card1"):
+		if cards[0] == true:
+			FUEL = 150
+			cards[0] = false
+	if Input.is_action_just_pressed("card2"):
+		if cards[1] == true:
+			effect.emitting = true
+			for i in safezone.get_overlapping_bodies():
+				if i is Damagable and !i == self:
+					i.emit_signal("damage_received", 999, Vector2.ZERO)
+			cards[1] = false
+	if Input.is_action_just_pressed("card3"):
+		if cards[2] == true:
+			hits = -5
+		
+		
 	if !JUMPING:
 		if !is_on_floor():
 			VELOCITY.y = lerp(VELOCITY.y, 300, 0.2)
@@ -35,9 +54,9 @@ func _physics_process(delta):
 			VELOCITY.y = 0
 	
 	hitline_to_mouse = hitline.position.direction_to(get_local_mouse_position())
-	if hitline_to_mouse.x>0:
+	if Input.is_action_just_pressed("look_right") or hitline_to_mouse.x>0:
 		hitline.cast_to.x = 75
-	else:
+	elif Input.is_action_just_pressed("look_left") or hitline_to_mouse.x<0:
 		hitline.cast_to.x = -75
 	
 	move_and_slide(VELOCITY, Vector2.UP)
@@ -69,7 +88,7 @@ func _ready():
 	emit_signal("damage_received", 1, Vector2.ZERO)
 
 func add_fuel():
-	if !JUMPING and FUEL!=75:
+	if !JUMPING and FUEL<75:
 		if after_jump<=1:
 			FUEL+=1
 			if FUEL>10:
@@ -94,7 +113,10 @@ func _on_KinematicBody2D_damage_received(damage, vector):
 			
 func attack():
 	var target = hitline.get_collider()
-	if target is Damagable and hits==2:
+	if target is Damagable and (hits==2 or hits<0):
 		target.emit_signal("damage_received", 1, Vector2(hitline.cast_to.x*4, -300))
-		hits = 0
+		if (hits>=0):
+			hits = 0
+		else:
+			hits+=1
 		heal(2)
