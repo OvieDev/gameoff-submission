@@ -17,21 +17,8 @@ func _physics_process(delta):
 	ignore = false
 	if round(direction_to_player.y)<0:
 		if !left_ray.is_colliding() and !right_ray.is_colliding():
-			print("my god it should work")
 			get_direction()
 			jump()
-		
-		elif left_ray.is_colliding() and right_ray.is_colliding():
-			ignore = true
-			get_direction()
-			print(direction_to_player)
-		
-		#elif !left_ray.is_colliding():
-		#	direction_to_player.x = -75
-		#	ignore = true
-		#elif !right_ray.is_colliding():
-		#	direction_to_player.x = 75
-		#	ignore = true
 	if !ignore:
 		get_direction()
 	velocity = Vector2(direction_to_player.x, velocity.y)
@@ -57,9 +44,8 @@ func get_direction():
 		direction_to_player.x = 0
 
 func jump():
-	print("called")
 	var dist = position.distance_to(player.position)
-	if is_on_floor() and dist<200 and dist>100:
+	if is_on_floor() and dist<200 and dist>100 and !player.JUMPING:
 		left_ray.enabled = false 
 		right_ray.enabled = false
 		jumping = true

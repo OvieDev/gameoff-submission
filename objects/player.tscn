@@ -28,4 +28,7 @@ smoothing_speed = 3.0
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.1
 
+[node name="IframeTimer" type="Timer" parent="."]
+wait_time = 0.25
+
 [connection signal="damage_received" from="." to="." method="_on_KinematicBody2D_damage_received"]
