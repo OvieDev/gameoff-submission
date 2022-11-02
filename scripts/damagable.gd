@@ -4,7 +4,7 @@ class_name Damagable
 export var max_hitpoints := 10
 var current_hitpoints = max_hitpoints
 
-signal damage_received
+signal damage_received(damage)
 
 func die():
 	pass

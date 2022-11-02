@@ -6,6 +6,8 @@ var JUMPING = false
 var FUEL = 75
 var after_jump = 0
 onready var timer = $Timer
+onready var sprite = $Sprite
+var hits = 0
 
 func _physics_process(delta):
 	print(JUMPING)
@@ -28,6 +30,8 @@ func _physics_process(delta):
 		else:
 			VELOCITY.y = 0
 	move_and_slide(VELOCITY, Vector2.UP)
+
+
 
 
 func jump():
@@ -54,3 +58,11 @@ func add_fuel():
 			after_jump-=1
 	timer.start()
 
+
+func _on_KinematicBody2D_damage_received(damage):
+	current_hitpoints -= damage
+	hits+=1
+	if hits>3:
+		hits = 0
+	if current_hitpoints<0:
+		print("YOU LOSE!")
