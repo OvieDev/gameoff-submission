@@ -5,23 +5,27 @@ onready var player = get_node(player_path)
 onready var left_ray = $Left
 onready var right_ray = $Right
 onready var timer = $Timer
+onready var impacttimer = $ImpactTimer
 var direction_to_player = Vector2.ZERO
 var ignore = false
 var jumping = false
+var impact = false
 var velocity = Vector2(direction_to_player.x, 0)
 
 func _ready():
 	timer.connect("timeout", self, "end_jump")
+	impacttimer.connect("timeout", self, "end_jump")
 
 func _physics_process(delta):
 	ignore = false
-	if round(direction_to_player.y)<0:
-		if !left_ray.is_colliding() and !right_ray.is_colliding():
+	if !impact:
+		if round(direction_to_player.y)<0:
+			if !left_ray.is_colliding() and !right_ray.is_colliding():
+				get_direction()
+				jump()
+		if !ignore:
 			get_direction()
-			jump()
-	if !ignore:
-		get_direction()
-	velocity = Vector2(direction_to_player.x, velocity.y)
+		velocity = lerp(velocity, Vector2(direction_to_player.x, velocity.y), 0.075)
 	if !jumping:
 		if is_on_floor():
 			velocity.y = 0
@@ -54,5 +58,22 @@ func jump():
 		
 func end_jump():
 	jumping = false
+	impact = false
 	left_ray.enabled = true 
 	right_ray.enabled = true
+
+
+func _on_Enemy_damage_received(damage, vector):
+	current_hitpoints-=damage
+	if current_hitpoints<=0:
+		queue_free()
+	else:
+		jumping = false
+		impact = true
+		velocity = vector
+		impacttimer.start()
+
+
+func _on_Area2D_body_entered(body):
+	if body is Player:
+		body.emit_signal("damage_received", 1, Vector2.ZERO)

@@ -31,4 +31,8 @@ wait_time = 0.1
 [node name="IframeTimer" type="Timer" parent="."]
 wait_time = 0.25
 
+[node name="HitLine" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 75, 0 )
+
 [connection signal="damage_received" from="." to="." method="_on_KinematicBody2D_damage_received"]
