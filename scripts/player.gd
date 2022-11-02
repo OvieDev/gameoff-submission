@@ -14,6 +14,7 @@ onready var effect = $SafezoneEffect
 var hits = 0
 var hitline_to_mouse = Vector2.ZERO
 var cards = [true, true, true]
+var parry_direction = Vector2.ZERO
 
 func _physics_process(delta):
 	print(FUEL)
@@ -31,6 +32,11 @@ func _physics_process(delta):
 		
 	if Input.is_action_just_pressed("attack") and is_on_floor():
 		attack()
+		
+	if Input.is_action_pressed("parry") and is_on_floor():
+		parry_direction = hitline.cast_to
+	elif Input.is_action_just_released("parry"):
+		parry_direction = Vector2.ZERO
 		
 	if Input.is_action_just_pressed("card1"):
 		if cards[0] == true:
@@ -100,7 +106,7 @@ func add_fuel():
 
 
 func _on_KinematicBody2D_damage_received(damage, vector):
-	if iframe==0:
+	if iframe==0 and (vector==Vector2.ZERO or parry_direction.x!=vector.x*75):
 		current_hitpoints -= damage
 		hits+=1
 		print(hits)

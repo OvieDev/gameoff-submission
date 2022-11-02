@@ -62,7 +62,7 @@ smoothing_speed = 3.0
 wait_time = 0.1
 
 [node name="IframeTimer" type="Timer" parent="."]
-wait_time = 0.1
+wait_time = 0.2
 
 [node name="HitLine" type="RayCast2D" parent="."]
 enabled = true

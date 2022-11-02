@@ -78,4 +78,4 @@ func _on_Enemy_damage_received(damage, vector):
 
 func _on_Area2D_body_entered(body):
 	if body is Player:
-		body.emit_signal("damage_received", 1, Vector2.ZERO)
+		body.emit_signal("damage_received", 1, Vector2.LEFT)
