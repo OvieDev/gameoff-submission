@@ -81,4 +81,7 @@ one_shot = true
 explosiveness = 1.0
 process_material = SubResource( 7 )
 
+[node name="DashTimer" type="Timer" parent="."]
+wait_time = 0.5
+
 [connection signal="damage_received" from="." to="." method="_on_KinematicBody2D_damage_received"]
