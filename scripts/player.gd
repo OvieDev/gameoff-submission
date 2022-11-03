@@ -20,17 +20,25 @@ var roll_direction = Vector2.ZERO
 var hitline_to_mouse = Vector2.ZERO
 var cards = [true, true, true]
 var parry_direction = Vector2.ZERO
+var enabled_moves = [true, true, true, true]
+
+func _input(event):
+	if event is InputEventMouseMotion:
+		var mousepos = get_local_mouse_position()
+		if position.direction_to(mousepos).x>0:
+			Input.action_press("look_right")
+		else:
+			Input.action_press("look_left")
 
 func _physics_process(delta):
-	print(FUEL)
 	JUMPING = false
 	VELOCITY = Vector2(0, VELOCITY.y)
 	
 	if Input.is_action_pressed("ui_left"):
-		VELOCITY.x = -150
+		VELOCITY.x = -100
 		
 	if Input.is_action_pressed("ui_right"):
-		VELOCITY.x = 150
+		VELOCITY.x = 100
 		
 	if Input.is_action_pressed("ui_up") and after_jump == 0:
 		jump()
@@ -40,6 +48,7 @@ func _physics_process(delta):
 		
 	if Input.is_action_pressed("ui_down") and is_on_floor() and parry_direction==Vector2.ZERO:
 		duck = true
+		print("Duck")
 	else:
 		duck = false
 		
@@ -82,9 +91,9 @@ func _physics_process(delta):
 			VELOCITY.y = 0
 	
 	hitline_to_mouse = hitline.position.direction_to(get_local_mouse_position())
-	if Input.is_action_just_pressed("look_right") or hitline_to_mouse.x>0:
+	if Input.is_action_just_pressed("look_right") :#or hitline_to_mouse.x>0:
 		hitline.cast_to.x = 75
-	elif Input.is_action_just_pressed("look_left") or hitline_to_mouse.x<0:
+	elif Input.is_action_just_pressed("look_left") :#or hitline_to_mouse.x<0:
 		hitline.cast_to.x = -75
 	
 	if dash_direction!=Vector2.ZERO:
@@ -92,7 +101,7 @@ func _physics_process(delta):
 	elif roll_direction!=Vector2.ZERO:
 		roll_direction.y = VELOCITY.y
 		move_and_slide(roll_direction, Vector2.UP)
-	elif can_move:
+	elif can_move and !duck:
 		move_and_slide(VELOCITY, Vector2.UP)
 
 
@@ -134,26 +143,30 @@ func add_fuel():
 
 
 func _on_KinematicBody2D_damage_received(damage, vector):
-	if iframe==0 and (vector==Vector2.ZERO or parry_direction.x!=vector.x*75) or (vector==Vector2.DOWN and !duck) or (roll_direction!=Vector2.ZERO):
-		current_hitpoints -= damage
-		hits+=1
-		print(hits)
-		if hits>=3:
-			hits = 0
-		if current_hitpoints<0:
-			print("YOU LOSE!")
+	if iframe==0:
+		print(!(vector==Vector2.ZERO or parry_direction.x==vector.x*75))
+		print(!(vector==Vector2.DOWN and duck))
+		print(!(roll_direction==Vector2.ZERO))
+		if ((parry_direction.x*-1==vector.x*75) or (vector!=Vector2.DOWN and duck) or (roll_direction!=Vector2.ZERO)):
+			print("No damage?")
+			hits+=1
+			if parry_direction.x==vector.x*75:
+				enabled_moves[0] = false
+			elif duck:
+				enabled_moves[1] = false
 		else:
-			iframe = 8
-			handle_iframes()
-			
+			current_hitpoints -= damage
+			hits=0
+			if current_hitpoints<0:
+				print("YOU LOSE!")
+			else:
+				iframe = 8
+				handle_iframes()
 func attack():
 	var target = hitline.get_collider()
 	if target is Damagable and (hits==2 or hits<0):
 		target.emit_signal("damage_received", 1, Vector2(hitline.cast_to.x*4, -300))
-		if (hits>=0):
-			hits = 0
-		else:
-			hits+=1
+		hits = 0
 		heal(2)
 
 func dash():
