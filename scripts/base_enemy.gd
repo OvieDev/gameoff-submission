@@ -11,14 +11,19 @@ var ignore = false
 var jumping = false
 var impact = false
 var velocity = Vector2(direction_to_player.x, 0)
+var attack_tick = 0
+var cooldown_tick = 0
+var attack_dir = null # null is none, true is left, false is right
 
 func _ready():
 	timer.connect("timeout", self, "end_jump")
 	impacttimer.connect("timeout", self, "end_jump")
 
 func _physics_process(delta):
+	if attack_tick!=0:
+		velocity.x = 0
 	ignore = false
-	if !impact:
+	if !impact or attack_tick!=0:
 		if round(direction_to_player.y)<0:
 			if !left_ray.is_colliding() and !right_ray.is_colliding():
 				get_direction()
@@ -31,7 +36,7 @@ func _physics_process(delta):
 			velocity.y = 0
 		else:
 			velocity.y = 300
-	if left_ray.get_collider() or right_ray.get_collider():
+	if left_ray.get_collider() or right_ray.get_collider() and attack_tick==0:
 		jump()
 	move_and_slide(velocity, Vector2.UP)
 
@@ -51,7 +56,7 @@ func get_direction():
 
 func jump():
 	var dist = position.distance_to(player.position)
-	if is_on_floor() and dist<200 and dist>100 and !player.JUMPING:
+	if is_on_floor() and dist<300 and dist>150 and !player.JUMPING:
 		left_ray.enabled = false 
 		right_ray.enabled = false
 		jumping = true
@@ -75,7 +80,25 @@ func _on_Enemy_damage_received(damage, vector):
 		velocity = vector
 		impacttimer.start()
 
-
-func _on_Area2D_body_entered(body):
-	if body is Player:
-		body.emit_signal("damage_received", 1, Vector2.LEFT)
+func _process(delta):
+	if cooldown_tick==0:
+		if attack_tick==0:
+			if left_ray.get_collider() is Player and position.distance_to(player.position)<60:
+				attack_tick = 30
+				attack_dir = true
+			elif right_ray.get_collider() is Player and position.distance_to(player.position)<60:
+				attack_tick = 30
+				attack_dir = false
+		else:
+		
+			if attack_dir and attack_tick==1:
+				if left_ray.get_collider() is Player:
+					left_ray.get_collider().emit_signal("damage_received", 1, Vector2(-50, 0))
+					cooldown_tick = 60
+			elif !attack_dir and attack_tick==1:
+				if right_ray.get_collider() is Player:
+					right_ray.get_collider().emit_signal("damage_received", 1, Vector2(50, 0))
+					cooldown_tick = 60
+			attack_tick-=1
+	else:
+		cooldown_tick-=1

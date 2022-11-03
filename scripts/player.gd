@@ -54,8 +54,8 @@ func _physics_process(delta):
 		dash_direction = hitline.cast_to*5
 		dash()
 		FUEL-=10
-	if Input.is_action_just_pressed("roll") and can_move and roll_direction==Vector2.ZERO and dash_direction==Vector2.ZERO:
-		roll_direction.x = hitline.cast_to.x*3
+	if Input.is_action_just_pressed("roll") and can_move and roll_direction==Vector2.ZERO and dash_direction==Vector2.ZERO and is_on_floor():
+		roll_direction.x = hitline.cast_to.x*3.5
 		dash()
 		
 	if Input.is_action_just_pressed("card1"):
@@ -134,7 +134,7 @@ func add_fuel():
 
 
 func _on_KinematicBody2D_damage_received(damage, vector):
-	if iframe==0 and (vector==Vector2.ZERO or parry_direction.x!=vector.x*75) or (vector==Vector2.DOWN and !duck):
+	if iframe==0 and (vector==Vector2.ZERO or parry_direction.x!=vector.x*75) or (vector==Vector2.DOWN and !duck) or (roll_direction!=Vector2.ZERO):
 		current_hitpoints -= damage
 		hits+=1
 		print(hits)
