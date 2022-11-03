@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 31.5, 31.5 )
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="CircleShape2D" id=9]
 radius = 138.051
 
 [sub_resource type="Gradient" id=3]
@@ -72,7 +72,7 @@ collision_mask = 3
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 2 )
+shape = SubResource( 9 )
 
 [node name="SafezoneEffect" type="Particles2D" parent="."]
 emitting = false
@@ -83,5 +83,7 @@ process_material = SubResource( 7 )
 
 [node name="DashTimer" type="Timer" parent="."]
 wait_time = 0.5
+
+[node name="VelocityTween" type="Tween" parent="."]
 
 [connection signal="damage_received" from="." to="." method="_on_KinematicBody2D_damage_received"]
