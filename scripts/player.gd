@@ -93,9 +93,9 @@ func _physics_process(delta):
 			else:
 				VELOCITY.y = 0
 	
-		if Input.is_action_just_pressed("look_right") :
+		if VELOCITY.x>0:
 			hitline.cast_to.x = 75
-		elif Input.is_action_just_pressed("look_left") :
+		else:
 			hitline.cast_to.x = -75
 	if impact:
 		move_and_slide(VELOCITY, Vector2.UP)
