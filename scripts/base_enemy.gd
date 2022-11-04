@@ -23,6 +23,8 @@ func _ready():
 func _physics_process(delta):
 	dist = position.distance_to(player.position)
 	ignore = false
+	collision_layer = 12
+	collision_mask = 9
 	if !impact or attack_tick!=0:
 		if round(direction_to_player.y)<0:
 			if !left_ray.is_colliding() and !right_ray.is_colliding():
@@ -31,6 +33,9 @@ func _physics_process(delta):
 		if !ignore:
 			get_direction()
 		velocity = lerp(velocity, Vector2(direction_to_player.x, velocity.y), 0.075)
+	else:
+		collision_layer = 4
+		collision_mask = 1
 	if !jumping:
 		if is_on_floor():
 			velocity.y = 0

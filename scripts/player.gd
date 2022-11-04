@@ -28,7 +28,7 @@ var dashed = false
 signal roll_or_dash
 
 func _physics_process(delta):
-	print(VELOCITY)
+	print(hits)
 	JUMPING = false
 	if !impact:
 		VELOCITY = Vector2(0, VELOCITY.y)
@@ -90,7 +90,7 @@ func _physics_process(delta):
 	
 		if VELOCITY.x>0:
 			hitline.cast_to.x = 75
-		else:
+		elif VELOCITY.x<0:
 			hitline.cast_to.x = -75
 	if impact:
 		move_and_slide(VELOCITY, Vector2.UP)
@@ -169,7 +169,9 @@ func _on_KinematicBody2D_damage_received(damage, vector):
 				
 func attack():
 	var target = hitline.get_collider()
+	print(typeof(target))
 	if target is Damagable and (hits==2 or hits<0):
+		print("attacked?")
 		target.emit_signal("damage_received", 1, Vector2(hitline.cast_to.x*4, -300))
 		hits = 0
 		heal(2)
@@ -184,6 +186,12 @@ func dash():
 func dash_or_roll():
 	if dash_direction!=Vector2.ZERO:
 		dashed = true
+		hits+=1
+		if hits>=3:
+			hits=0
 	elif roll_direction!=Vector2.ZERO:
 		dashed = true
+		hits+=1
+		if hits>=3:
+			hits=0
 	
