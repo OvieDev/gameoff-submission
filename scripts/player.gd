@@ -13,6 +13,7 @@ onready var safezone = $Area2D
 onready var effect = $SafezoneEffect
 onready var dashtimer = $DashTimer
 onready var velocitytween = $VelocityTween
+onready var animation = $AnimationPlayer
 var hits = 0
 var impact = false
 var duck = false
@@ -28,7 +29,7 @@ var dashed = false
 signal roll_or_dash
 
 func _physics_process(delta):
-	print(hits)
+	print(is_on_floor())
 	JUMPING = false
 	if !impact:
 		VELOCITY = Vector2(0, VELOCITY.y)
@@ -84,7 +85,7 @@ func _physics_process(delta):
 		
 		if !JUMPING:
 			if !is_on_floor():
-				VELOCITY.y = lerp(VELOCITY.y, 300, 0.2)
+				VELOCITY.y = 280
 			else:
 				VELOCITY.y = 0
 	
@@ -194,4 +195,21 @@ func dash_or_roll():
 		hits+=1
 		if hits>=3:
 			hits=0
-	
+
+func _process(delta):
+	print(animation.current_animation)
+	var dir
+	if hitline.cast_to.x>0:
+		dir = "Right"
+	else:
+		dir = "Left"
+	if is_on_floor():
+		if VELOCITY==Vector2.ZERO:
+			animation.play("Idle"+dir)
+		elif VELOCITY!=Vector2.ZERO:
+			animation.play("Walk"+dir)
+	else:
+		if JUMPING:
+			animation.play("Jump"+dir)
+		else:
+			animation.play("Fall"+dir)
