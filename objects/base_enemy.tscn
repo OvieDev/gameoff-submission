@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/base_enemy.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -6,6 +6,9 @@
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 31.5, 31.5 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 29.5 )
 
 [node name="Damagable" type="KinematicBody2D"]
 collision_layer = 12
@@ -37,4 +40,30 @@ wait_time = 0.25
 [node name="ImpactTimer" type="Timer" parent="."]
 wait_time = 0.5
 
+[node name="DashRegion" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DashRegion"]
+position = Vector2( 0, 0.5 )
+shape = SubResource( 2 )
+
+[node name="DashRegion2" type="Area2D" parent="."]
+position = Vector2( -86, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DashRegion2"]
+position = Vector2( 0, 0.5 )
+shape = SubResource( 2 )
+
+[node name="DashRegion3" type="Area2D" parent="."]
+position = Vector2( 93, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DashRegion3"]
+position = Vector2( 0, 0.5 )
+shape = SubResource( 2 )
+
 [connection signal="damage_received" from="." to="." method="_on_Enemy_damage_received"]
+[connection signal="body_entered" from="DashRegion" to="." method="_on_DashRegion_body_entered"]
+[connection signal="body_exited" from="DashRegion" to="." method="_on_DashRegion_body_entered"]
+[connection signal="body_entered" from="DashRegion2" to="." method="_on_DashRegion_body_entered"]
+[connection signal="body_exited" from="DashRegion2" to="." method="_on_DashRegion_body_entered"]
+[connection signal="body_entered" from="DashRegion3" to="." method="_on_DashRegion_body_entered"]
+[connection signal="body_exited" from="DashRegion3" to="." method="_on_DashRegion_body_entered"]

@@ -23,14 +23,9 @@ var hitline_to_mouse = Vector2.ZERO
 var cards = [true, true, true]
 var parry_direction = Vector2.ZERO
 var enabled_moves = [true, true, true, true]
+var dashed = false
 
-func _input(event):
-	if event is InputEventMouseMotion:
-		var mousepos = get_local_mouse_position()
-		if position.direction_to(mousepos).x>0:
-			Input.action_press("look_right")
-		else:
-			Input.action_press("look_left")
+signal roll_or_dash
 
 func _physics_process(delta):
 	print(VELOCITY)
@@ -38,10 +33,10 @@ func _physics_process(delta):
 	if !impact:
 		VELOCITY = Vector2(0, VELOCITY.y)
 		if Input.is_action_pressed("ui_left"):
-			VELOCITY.x = -100
+			VELOCITY.x = -90
 			
 		if Input.is_action_pressed("ui_right"):
-			VELOCITY.x = 100
+			VELOCITY.x = 90
 			
 		if Input.is_action_pressed("ui_up") and after_jump == 0:
 			jump()
@@ -133,6 +128,7 @@ func _ready():
 	timer.start()
 	emit_signal("damage_received", 1, Vector2.ZERO)
 	emit_signal("damage_received", 1, Vector2.ZERO)
+	connect("roll_or_dash", self, "dash_or_roll")
 
 func add_fuel():
 	if !JUMPING and FUEL<100:
@@ -149,10 +145,11 @@ func _on_KinematicBody2D_damage_received(damage, vector):
 	if iframe==0:
 		if ((parry_direction.x*-1==vector.x*75) or (vector!=Vector2.DOWN and duck) or (roll_direction!=Vector2.ZERO)):
 			hits+=1
-			if parry_direction.x==vector.x*75:
+			if parry_direction.x*-1==vector.x*75:
 				enabled_moves[0] = false
 			elif duck:
 				enabled_moves[1] = false
+			
 		else:
 			current_hitpoints -= damage
 			hits=0
@@ -182,3 +179,11 @@ func dash():
 	yield(dashtimer, "timeout")
 	dash_direction = Vector2.ZERO
 	roll_direction = Vector2.ZERO
+	dashed = false
+	
+func dash_or_roll():
+	if dash_direction!=Vector2.ZERO:
+		dashed = true
+	elif roll_direction!=Vector2.ZERO:
+		dashed = true
+	
