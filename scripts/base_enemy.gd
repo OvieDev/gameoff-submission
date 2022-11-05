@@ -6,6 +6,7 @@ onready var left_ray = $Left
 onready var right_ray = $Right
 onready var timer = $Timer
 onready var impacttimer = $ImpactTimer
+onready var animation = $AnimationPlayer
 var direction_to_player = Vector2.ZERO
 var ignore = false
 var jumping = false
@@ -14,6 +15,7 @@ var velocity = Vector2(direction_to_player.x, 0)
 var attack_tick = 0
 var cooldown_tick = 0
 var dist
+var last_dir
 var attack_dir = null # null is none, true is left, false is right
 
 func _ready():
@@ -46,6 +48,10 @@ func _physics_process(delta):
 		velocity.x = 0
 	if left_ray.get_collider() or right_ray.get_collider() and attack_tick==0:
 		jump()
+	if velocity.x>0:
+		last_dir = true
+	elif velocity.x<0:
+		last_dir = false
 	move_and_slide(velocity, Vector2.UP)
 
 func get_direction():
@@ -57,8 +63,10 @@ func get_direction():
 	direction_to_player = position.direction_to(player.position)
 	if direction_to_player.x<-0.1:
 		direction_to_player.x = -100*mul
+		last_dir = false
 	elif direction_to_player.x>0.1:
 		direction_to_player.x = 100*mul
+		last_dir = true
 	else:
 		direction_to_player.x = 0
 
@@ -89,6 +97,23 @@ func _on_Enemy_damage_received(damage, vector):
 		impacttimer.start()
 
 func _process(delta):
+	var dir
+	if attack_tick==0:
+		if last_dir==false:
+			dir = "Left"
+		else:
+			dir = "Right"
+		if velocity==Vector2.ZERO or is_on_wall():
+			animation.play("Idle"+dir)
+		else:
+			animation.play("Walk"+dir)
+	else:
+		if attack_dir==true:
+			dir = "Left"
+		else:
+			dir = "Right"
+		animation.play("Punch"+dir)
+	
 	if cooldown_tick==0:
 		if attack_tick==0:
 			if left_ray.get_collider() is Player and position.distance_to(player.position)<60:
