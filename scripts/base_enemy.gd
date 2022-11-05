@@ -21,6 +21,7 @@ func _ready():
 	impacttimer.connect("timeout", self, "end_jump")
 
 func _physics_process(delta):
+	
 	dist = position.distance_to(player.position)
 	ignore = false
 	collision_layer = 12
@@ -113,5 +114,5 @@ func _process(delta):
 
 func _on_DashRegion_body_entered(body):
 	if body is Player:
-		if body.dash_direction!=Vector2.ZERO or body.roll_direction!=Vector2.ZERO and attack_tick!=0 and !body.dashed: # Replace with function body.
+		if (body.dash_direction!=Vector2.ZERO or body.roll_direction!=Vector2.ZERO) and attack_tick!=0 and !body.dashed: # Replace with function body.
 			body.emit_signal("roll_or_dash")

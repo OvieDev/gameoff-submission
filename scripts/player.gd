@@ -29,7 +29,7 @@ var dashed = false
 signal roll_or_dash
 
 func _physics_process(delta):
-	print(is_on_floor())
+	print(hits)
 	JUMPING = false
 	if !impact:
 		VELOCITY = Vector2(0, VELOCITY.y)
@@ -85,7 +85,7 @@ func _physics_process(delta):
 		
 		if !JUMPING:
 			if !is_on_floor():
-				VELOCITY.y = 280
+				VELOCITY.y = lerp(VELOCITY.y, 300, 0.1)
 			else:
 				VELOCITY.y = 0
 	
@@ -178,6 +178,7 @@ func attack():
 		heal(2)
 
 func dash():
+	print("Dashed!")
 	dashtimer.start()
 	yield(dashtimer, "timeout")
 	dash_direction = Vector2.ZERO
@@ -197,7 +198,6 @@ func dash_or_roll():
 			hits=0
 
 func _process(delta):
-	print(animation.current_animation)
 	var dir
 	if hitline.cast_to.x>0:
 		dir = "Right"
