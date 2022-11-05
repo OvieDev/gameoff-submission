@@ -25,6 +25,7 @@ var cards = [true, true, true]
 var parry_direction = Vector2.ZERO
 var enabled_moves = [true, true, true, true]
 var dashed = false
+var type = ""
 
 signal roll_or_dash
 
@@ -58,7 +59,6 @@ func _input(event):
 				hits = -5
 
 func _physics_process(delta):
-	print(enabled_moves)
 	JUMPING = false
 	if !impact:
 		VELOCITY = Vector2(0, VELOCITY.y)
@@ -148,10 +148,12 @@ func _on_KinematicBody2D_damage_received(damage, vector):
 				enabled_moves[0] = false
 				parry_direction = Vector2.ZERO
 				can_move = true
+				after_attack("parry")
 			elif duck:
 				enabled_moves[1] = false
 				duck = false
 				can_move = true
+				after_attack("roll")
 			
 		else:
 			current_hitpoints -= damage
@@ -175,8 +177,10 @@ func _on_KinematicBody2D_damage_received(damage, vector):
 func attack():
 	var target = hitline.get_collider()
 	if target is Damagable and (hits==2 or hits<0):
-		print("attacked?")
-		target.emit_signal("damage_received", 1, Vector2(hitline.cast_to.x*4, -300))
+		var dmg = 1
+		if type == "parry":
+			dmg+=2
+		target.emit_signal("damage_received", dmg, Vector2(hitline.cast_to.x*4, -300))
 		hits = 0
 		heal(2)
 		for i in range(0, enabled_moves.size()):
@@ -195,12 +199,14 @@ func dash_or_roll():
 		dashed = true
 		hits+=1
 		enabled_moves[2] = false
+		after_attack("dash")
 		if hits>=3:
 			hits=0
 	elif roll_direction!=Vector2.ZERO:
 		dashed = true
 		hits+=1
 		enabled_moves[3] = false
+		after_attack("roll")
 		if hits>=3:
 			hits=0
 
@@ -210,20 +216,29 @@ func _process(delta):
 		dir = "Right"
 	else:
 		dir = "Left"
-	if is_on_floor():
-		if duck:
-			animation.play("Duck"+dir)
-		elif parry_direction!=Vector2.ZERO:
-			animation.play("Parry"+dir)
-		elif roll_direction!=Vector2.ZERO:
-			animation.play("Roll")
-		elif VELOCITY==Vector2.ZERO:
-			animation.play("Idle"+dir)
-		elif VELOCITY!=Vector2.ZERO:
-			animation.play("Walk"+dir)
-		
+	if JUMPING or dash_direction!=Vector2.ZERO:
+		animation.play("Jump"+dir)
 	else:
-		if JUMPING:
-			animation.play("Jump"+dir)
+		if is_on_floor():
+			if duck:
+				animation.play("Duck"+dir)
+			elif parry_direction!=Vector2.ZERO:
+				animation.play("Parry"+dir)
+			elif roll_direction!=Vector2.ZERO:
+				animation.play("Roll")
+			elif VELOCITY==Vector2.ZERO:
+				animation.play("Idle"+dir)
+			elif VELOCITY!=Vector2.ZERO:
+				animation.play("Walk"+dir)
+		
 		else:
 			animation.play("Fall"+dir)
+			
+func after_attack(atk):
+	var num = 0
+	for i in enabled_moves:
+		if i:
+			num+=1
+	if num==2:
+		type = atk
+		

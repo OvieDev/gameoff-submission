@@ -23,7 +23,6 @@ func _ready():
 	impacttimer.connect("timeout", self, "end_jump")
 
 func _physics_process(delta):
-	
 	dist = position.distance_to(player.position)
 	ignore = false
 	collision_layer = 12
@@ -35,7 +34,7 @@ func _physics_process(delta):
 				jump()
 		if !ignore:
 			get_direction()
-		velocity = lerp(velocity, Vector2(direction_to_player.x, velocity.y), 0.075)
+			velocity = lerp(velocity, Vector2(direction_to_player.x, velocity.y), 0.075)
 	else:
 		collision_layer = 4
 		collision_mask = 1
@@ -44,7 +43,7 @@ func _physics_process(delta):
 			velocity.y = 0
 		else:
 			velocity.y = 300
-	if attack_tick!=0 or dist<=40:
+	if dist<=40:
 		velocity.x = 0
 	if left_ray.get_collider() or right_ray.get_collider() and attack_tick==0:
 		jump()
@@ -87,6 +86,7 @@ func end_jump():
 
 
 func _on_Enemy_damage_received(damage, vector):
+	print("damaged")
 	current_hitpoints-=damage
 	if current_hitpoints<=0:
 		queue_free()
