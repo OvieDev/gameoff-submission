@@ -1,11 +1,11 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://graphics/images/Roby-SpriteSheet.png" type="Texture" id=1]
 [ext_resource path="res://scripts/player.gd" type="Script" id=2]
 [ext_resource path="res://graphics/shaders/invert_color.tres" type="Material" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 31.5, 31.5 )
+extents = Vector2( 31.5, 30.5 )
 
 [sub_resource type="CircleShape2D" id=9]
 radius = 138.051
@@ -38,6 +38,36 @@ damping = 100.0
 scale_random = 1.0
 scale_curve = SubResource( 6 )
 color_ramp = SubResource( 4 )
+
+[sub_resource type="Animation" id=19]
+resource_name = "DuckLeft"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 27 ]
+}
+
+[sub_resource type="Animation" id=20]
+resource_name = "DuckRight"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 26 ]
+}
 
 [sub_resource type="Animation" id=10]
 resource_name = "FallLeft"
@@ -133,6 +163,40 @@ tracks/0/keys = {
 "values": [ 14 ]
 }
 
+[sub_resource type="Animation" id=21]
+resource_name = "ParryLeft"
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 23, 24, 25, 24 ]
+}
+
+[sub_resource type="Animation" id=22]
+resource_name = "ParryRight"
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 20, 21, 22, 21 ]
+}
+
 [sub_resource type="Animation" id=16]
 resource_name = "Roll"
 length = 0.4
@@ -221,11 +285,11 @@ position = Vector2( 0.5, 0 )
 scale = Vector2( 1.96875, 2.09375 )
 texture = ExtResource( 1 )
 hframes = 5
-vframes = 4
-frame = 19
+vframes = 6
+frame = 26
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.5, -0.5 )
+position = Vector2( 0.5, -1.5 )
 shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -262,12 +326,16 @@ wait_time = 0.5
 [node name="VelocityTween" type="Tween" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/DuckLeft = SubResource( 19 )
+anims/DuckRight = SubResource( 20 )
 anims/FallLeft = SubResource( 10 )
 anims/FallRight = SubResource( 11 )
 anims/IdleLeft = SubResource( 12 )
 anims/IdleRight = SubResource( 13 )
 anims/JumpLeft = SubResource( 14 )
 anims/JumpRight = SubResource( 15 )
+anims/ParryLeft = SubResource( 21 )
+anims/ParryRight = SubResource( 22 )
 anims/Roll = SubResource( 16 )
 anims/WalkLeft = SubResource( 17 )
 anims/WalkRight = SubResource( 18 )

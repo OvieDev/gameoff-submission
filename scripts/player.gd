@@ -28,6 +28,40 @@ var dashed = false
 
 signal roll_or_dash
 
+func _input(event):
+	if event.is_action_pressed("attack") and is_on_floor():
+			attack()
+	if event.is_action_pressed("parry") and is_on_floor() and !duck:
+		parry_direction = hitline.cast_to
+		can_move = false
+	elif event.is_action_released("parry"):
+		parry_direction = Vector2.ZERO
+		can_move = true
+	if event.is_action_pressed("dash") and can_move and dash_direction==Vector2.ZERO and FUEL>=10 and roll_direction==Vector2.ZERO:
+			dash_direction = hitline.cast_to*5
+			dash()
+			FUEL-=10
+	if event.is_action_pressed("roll") and can_move and roll_direction==Vector2.ZERO and dash_direction==Vector2.ZERO and is_on_floor():
+			roll_direction.x = hitline.cast_to.x*3.5
+			dash()
+		
+	if Input.is_action_pressed("card1"):
+			if cards[0] == true:
+				FUEL = 170
+				cards[0] = false
+			
+	if Input.is_action_pressed("card2"):
+			if cards[1] == true:
+				effect.emitting = true
+				for i in safezone.get_overlapping_bodies():
+					if i is Damagable and !i == self:
+						i.emit_signal("damage_received", 999, Vector2.ZERO)
+				cards[1] = false
+			
+	if Input.is_action_pressed("card3"):
+			if cards[2] == true:
+				hits = -5
+
 func _physics_process(delta):
 	print(hits)
 	JUMPING = false
@@ -42,21 +76,12 @@ func _physics_process(delta):
 		if Input.is_action_pressed("ui_up") and after_jump == 0:
 			jump()
 		
-		if Input.is_action_just_pressed("attack") and is_on_floor():
-			attack()
 		
 		if Input.is_action_pressed("ui_down") and is_on_floor() and parry_direction==Vector2.ZERO:
 			duck = true
-			print("Duck")
 		else:
 			duck = false
 		
-		if Input.is_action_pressed("parry") and is_on_floor() and !duck:
-			parry_direction = hitline.cast_to
-			can_move = false
-		elif Input.is_action_just_released("parry"):
-			parry_direction = Vector2.ZERO
-			can_move = true
 	
 		if Input.is_action_just_pressed("dash") and can_move and dash_direction==Vector2.ZERO and FUEL>=10 and roll_direction==Vector2.ZERO:
 			dash_direction = hitline.cast_to*5
@@ -204,10 +229,15 @@ func _process(delta):
 	else:
 		dir = "Left"
 	if is_on_floor():
-		if VELOCITY==Vector2.ZERO:
+		if duck:
+			animation.play("Duck"+dir)
+		elif parry_direction!=Vector2.ZERO:
+			animation.play("Parry"+dir)
+		elif VELOCITY==Vector2.ZERO:
 			animation.play("Idle"+dir)
 		elif VELOCITY!=Vector2.ZERO:
 			animation.play("Walk"+dir)
+		
 	else:
 		if JUMPING:
 			animation.play("Jump"+dir)
