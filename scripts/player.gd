@@ -31,17 +31,12 @@ signal roll_or_dash
 func _input(event):
 	if event.is_action_pressed("attack") and is_on_floor():
 			attack()
-	if event.is_action_pressed("parry") and is_on_floor() and !duck:
-		parry_direction = hitline.cast_to
-		can_move = false
-	elif event.is_action_released("parry"):
-		parry_direction = Vector2.ZERO
-		can_move = true
-	if event.is_action_pressed("dash") and can_move and dash_direction==Vector2.ZERO and FUEL>=10 and roll_direction==Vector2.ZERO:
+	
+	if event.is_action_pressed("dash") and can_move and dash_direction==Vector2.ZERO and FUEL>=10 and roll_direction==Vector2.ZERO and enabled_moves[2]:
 			dash_direction = hitline.cast_to*5
 			dash()
 			FUEL-=10
-	if event.is_action_pressed("roll") and can_move and roll_direction==Vector2.ZERO and dash_direction==Vector2.ZERO and is_on_floor():
+	if event.is_action_pressed("roll") and can_move and roll_direction==Vector2.ZERO and dash_direction==Vector2.ZERO and is_on_floor() and enabled_moves[3]:
 			roll_direction.x = hitline.cast_to.x*3.5
 			dash()
 		
@@ -63,7 +58,7 @@ func _input(event):
 				hits = -5
 
 func _physics_process(delta):
-	print(hits)
+	print(enabled_moves)
 	JUMPING = false
 	if !impact:
 		VELOCITY = Vector2(0, VELOCITY.y)
@@ -75,9 +70,15 @@ func _physics_process(delta):
 			
 		if Input.is_action_pressed("ui_up") and after_jump == 0:
 			jump()
+			
+		if Input.is_action_pressed("parry") and is_on_floor() and !duck and enabled_moves[0]:
+			parry_direction = hitline.cast_to
+			can_move = false
+		elif Input.is_action_just_released("parry"):
+			parry_direction = Vector2.ZERO
+			can_move = true
 		
-		
-		if Input.is_action_pressed("ui_down") and is_on_floor() and parry_direction==Vector2.ZERO:
+		if Input.is_action_pressed("ui_down") and is_on_floor() and parry_direction==Vector2.ZERO and enabled_moves[1]:
 			duck = true
 		else:
 			duck = false
@@ -126,8 +127,6 @@ func jump():
 func _ready():
 	timer.connect("timeout", self, "add_fuel")
 	timer.start()
-	emit_signal("damage_received", 1, Vector2.ZERO)
-	emit_signal("damage_received", 1, Vector2.ZERO)
 	connect("roll_or_dash", self, "dash_or_roll")
 
 func add_fuel():
@@ -147,12 +146,18 @@ func _on_KinematicBody2D_damage_received(damage, vector):
 			hits+=1
 			if parry_direction.x*-1==vector.x*75:
 				enabled_moves[0] = false
+				parry_direction = Vector2.ZERO
+				can_move = true
 			elif duck:
 				enabled_moves[1] = false
+				duck = false
+				can_move = true
 			
 		else:
 			current_hitpoints -= damage
 			hits=0
+			for i in range(0, enabled_moves.size()):
+				enabled_moves[i] = true
 			if current_hitpoints<0:
 				print("YOU LOSE!")
 			else:
@@ -169,12 +174,13 @@ func _on_KinematicBody2D_damage_received(damage, vector):
 				
 func attack():
 	var target = hitline.get_collider()
-	print(typeof(target))
 	if target is Damagable and (hits==2 or hits<0):
 		print("attacked?")
 		target.emit_signal("damage_received", 1, Vector2(hitline.cast_to.x*4, -300))
 		hits = 0
 		heal(2)
+		for i in range(0, enabled_moves.size()):
+			enabled_moves[i] = true
 
 func dash():
 	print("Dashed!")
@@ -188,11 +194,13 @@ func dash_or_roll():
 	if dash_direction!=Vector2.ZERO:
 		dashed = true
 		hits+=1
+		enabled_moves[2] = false
 		if hits>=3:
 			hits=0
 	elif roll_direction!=Vector2.ZERO:
 		dashed = true
 		hits+=1
+		enabled_moves[3] = false
 		if hits>=3:
 			hits=0
 
