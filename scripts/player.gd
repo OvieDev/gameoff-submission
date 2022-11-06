@@ -14,6 +14,7 @@ onready var effect = $SafezoneEffect
 onready var dashtimer = $DashTimer
 onready var velocitytween = $VelocityTween
 onready var animation = $AnimationPlayer
+onready var kick_area = $KickArea
 var hits = 0
 var impact = false
 var duck = false
@@ -59,7 +60,6 @@ func _input(event):
 				hits = -5
 
 func _physics_process(delta):
-	print(enabled_moves)
 	JUMPING = false
 	if !impact:
 		VELOCITY = Vector2(0, VELOCITY.y)
@@ -101,8 +101,10 @@ func _physics_process(delta):
 	elif roll_direction!=Vector2.ZERO:
 		roll_direction.y = VELOCITY.y
 		move_and_slide(roll_direction, Vector2.UP)
-	elif can_move and !duck:
+	elif !duck:
 		move_and_slide(VELOCITY, Vector2.UP)
+	elif can_move:
+		move_and_slide(Vector2(VELOCITY.x/4, VELOCITY.y), Vector2.UP)
 
 
 
@@ -158,7 +160,7 @@ func _on_KinematicBody2D_damage_received(damage, vector):
 					enabled_moves = [true, true, true, true]
 				duck = false
 				can_move = true
-				after_attack("roll")
+				after_attack("duck")
 			
 		else:
 			current_hitpoints -= damage
@@ -185,6 +187,10 @@ func attack():
 		var dmg = 1
 		if type == "parry":
 			dmg+=2
+		elif type == "duck":
+			for i in kick_area.get_overlapping_bodies():
+				if i is Damagable and not i==self:
+					i.emit_signal("damage_received", dmg, Vector2.ZERO) 
 		target.emit_signal("damage_received", dmg, Vector2(hitline.cast_to.x*4, -300))
 		heal(2)
 		for i in range(0, enabled_moves.size()):
