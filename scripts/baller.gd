@@ -7,7 +7,12 @@ var has_ball = true
 func get_direction():
 	.get_direction()
 	if !has_ball and attack_tick==0:
+		collision_layer = 4
+		collision_mask = 1
 		direction_to_player.x = -direction_to_player.x
+	else:
+		collision_layer = 12
+		collision_mask = 9
 
 func _on_Damagable_damage_received(damage, vector):
 	print("damaged")
@@ -34,7 +39,7 @@ func anim_and_attack():
 		if impact:
 			animation.play("Attacked"+dir)
 		else:
-			if velocity==Vector2.ZERO and is_on_wall():
+			if is_on_wall():
 				animation.play("Idle"+dir)
 			else:
 				animation.play("Walk"+dir)
@@ -70,3 +75,8 @@ func spawn_projectile():
 	bullet.global_position = global_position
 	bullet.velocity = Vector2(direction_to_player.x/10, 0)
 	get_tree().get_root().get_node("Node2D").add_child(bullet)
+	
+func _on_DashRegion_body_entered(body):
+		if body is Player:
+			if (body.dash_direction!=Vector2.ZERO or body.roll_direction!=Vector2.ZERO) and !body.dashed: # Replace with function body.
+				body.emit_signal("roll_or_dash")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://graphics/images/Baller-SpriteSheet.png" type="Texture" id=1]
 [ext_resource path="res://scripts/baller.gd" type="Script" id=2]
@@ -41,6 +41,40 @@ tracks/0/keys = {
 "values": [ 14, 15, 16, 17, 18, 19, 20, 21, 14 ]
 }
 
+[sub_resource type="Animation" id=11]
+resource_name = "IdleLeft"
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 1, 0 ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "IdleRight"
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 3, 4, 5, 4, 3 ]
+}
+
 [sub_resource type="Animation" id=5]
 resource_name = "ThrowLeft"
 loop = true
@@ -76,10 +110,10 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ true, false ]
+"values": [ false ]
 }
 tracks/3/type = "method"
 tracks/3/path = NodePath(".")
@@ -131,10 +165,10 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ true, false ]
+"values": [ false ]
 }
 tracks/3/type = "method"
 tracks/3/path = NodePath(".")
@@ -205,6 +239,8 @@ shader = SubResource( 9 )
 shader_param/white = 0.0
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
+collision_layer = 12
+collision_mask = 9
 script = ExtResource( 2 )
 speed = 50
 
@@ -215,6 +251,8 @@ shape = SubResource( 1 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/AttackedLeft = SubResource( 3 )
 anims/AttackedRight = SubResource( 4 )
+anims/IdleLeft = SubResource( 11 )
+anims/IdleRight = SubResource( 12 )
 anims/ThrowLeft = SubResource( 5 )
 anims/ThrowRight = SubResource( 6 )
 anims/WalkLeft = SubResource( 7 )
@@ -245,7 +283,7 @@ cast_to = Vector2( -100, 0 )
 collision_mask = 3
 
 [node name="DashRegion" type="Area2D" parent="."]
-position = Vector2( 0, -17 )
+position = Vector2( -1, 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DashRegion"]
 position = Vector2( 0, 0.5 )
@@ -266,6 +304,7 @@ position = Vector2( 0, 0.5 )
 shape = SubResource( 2 )
 
 [node name="Projectile" type="Sprite" parent="."]
+visible = false
 material = SubResource( 10 )
 position = Vector2( -1, -23 )
 scale = Vector2( 1.5, 1.5 )
@@ -274,3 +313,5 @@ texture = ExtResource( 3 )
 [node name="Tween" type="Tween" parent="."]
 
 [connection signal="damage_received" from="." to="." method="_on_Enemy_damage_received"]
+[connection signal="body_entered" from="DashRegion" to="." method="_on_DashRegion_body_entered"]
+[connection signal="body_exited" from="DashRegion" to="." method="_on_DashRegion_body_entered"]

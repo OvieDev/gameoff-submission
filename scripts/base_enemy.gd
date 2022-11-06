@@ -92,6 +92,8 @@ func end_jump():
 func _on_Enemy_damage_received(damage, vector):
 	print("damaged")
 	current_hitpoints-=damage
+	attack_tick = 0
+	cooldown_tick = 60
 	if current_hitpoints<=0:
 		queue_free()
 	else:
@@ -105,7 +107,7 @@ func _process(delta):
 
 
 func _on_DashRegion_body_entered(body):
-	print("Dashed through")
+
 	if body is Player:
 		if (body.dash_direction!=Vector2.ZERO or body.roll_direction!=Vector2.ZERO) and attack_tick!=0 and !body.dashed: # Replace with function body.
 			body.emit_signal("roll_or_dash")

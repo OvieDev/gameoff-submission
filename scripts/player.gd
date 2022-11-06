@@ -59,6 +59,7 @@ func _input(event):
 				hits = -5
 
 func _physics_process(delta):
+	print(enabled_moves)
 	JUMPING = false
 	if !impact:
 		VELOCITY = Vector2(0, VELOCITY.y)
@@ -107,11 +108,11 @@ func _physics_process(delta):
 
 func handle_iframes():
 	for i in range(8):
-		print("iframed")
 		sprite.visible = !sprite.visible
 		iframetimer.start()
 		yield(iframetimer, "timeout")
 		iframe-=1
+	can_move = true
 
 
 func jump():
@@ -143,15 +144,18 @@ func add_fuel():
 func _on_KinematicBody2D_damage_received(damage, vector):
 	if iframe==0:
 		if ((parry_direction.x*-1==vector.x*75) or (vector!=Vector2.DOWN and duck) or (roll_direction!=Vector2.ZERO)):
-			hits+=1
 			if parry_direction.x*-1==vector.x*75:
 				enabled_moves[0] = false
+				if enabled_moves.count(false)>=3:
+					enabled_moves = [true, true, true, true]
 				parry_direction = Vector2.ZERO
 				can_move = true
 				after_attack("parry")
 				VELOCITY.x = vector.x*400
 			elif duck:
 				enabled_moves[1] = false
+				if enabled_moves.count(false)>=3:
+					enabled_moves = [true, true, true, true]
 				duck = false
 				can_move = true
 				after_attack("roll")
@@ -166,7 +170,6 @@ func _on_KinematicBody2D_damage_received(damage, vector):
 			else:
 				iframe = 8
 				handle_iframes()
-				print("completed iframes")
 				velocitytween.interpolate_property(self, "VELOCITY", Vector2.ZERO,
 				vector*150+Vector2(0, -5), 0.25, Tween.TRANS_CIRC,Tween.EASE_OUT)
 				velocitytween.interpolate_property(self, "after_jump", 0, 0, 1)
@@ -177,12 +180,12 @@ func _on_KinematicBody2D_damage_received(damage, vector):
 				
 func attack():
 	var target = hitline.get_collider()
-	if target is Damagable and (hits==2 or hits<0):
+	var attacks = enabled_moves.count(false)
+	if target is Damagable and attacks==2:
 		var dmg = 1
 		if type == "parry":
 			dmg+=2
 		target.emit_signal("damage_received", dmg, Vector2(hitline.cast_to.x*4, -300))
-		hits = 0
 		heal(2)
 		for i in range(0, enabled_moves.size()):
 			enabled_moves[i] = true
@@ -198,18 +201,16 @@ func dash():
 func dash_or_roll():
 	if dash_direction!=Vector2.ZERO:
 		dashed = true
-		hits+=1
 		enabled_moves[2] = false
+		if enabled_moves.count(false)>=3:
+			enabled_moves = [true, true, true, true]
 		after_attack("dash")
-		if hits>=3:
-			hits=0
 	elif roll_direction!=Vector2.ZERO:
 		dashed = true
-		hits+=1
 		enabled_moves[3] = false
+		if enabled_moves.count(false)>=3:
+			enabled_moves = [true, true, true, true]
 		after_attack("roll")
-		if hits>=3:
-			hits=0
 
 func _process(delta):
 	var dir
