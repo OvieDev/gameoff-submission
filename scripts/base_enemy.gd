@@ -1,6 +1,7 @@
 extends Damagable
 class_name Enemy
 export var player_path : NodePath
+export var speed := 95
 onready var player = get_node(player_path)
 onready var left_ray = $Left
 onready var right_ray = $Right
@@ -23,6 +24,9 @@ func _ready():
 	impacttimer.connect("timeout", self, "end_jump")
 
 func _physics_process(delta):
+	ai()
+
+func ai():
 	dist = position.distance_to(player.position)
 	ignore = false
 	collision_layer = 12
@@ -61,10 +65,10 @@ func get_direction():
 		mul = 1
 	direction_to_player = position.direction_to(player.position)
 	if direction_to_player.x<-0.1:
-		direction_to_player.x = -100*mul
+		direction_to_player.x = -speed*mul
 		last_dir = false
 	elif direction_to_player.x>0.1:
-		direction_to_player.x = 100*mul
+		direction_to_player.x = speed*mul
 		last_dir = true
 	else:
 		direction_to_player.x = 0
@@ -97,6 +101,16 @@ func _on_Enemy_damage_received(damage, vector):
 		impacttimer.start()
 
 func _process(delta):
+	anim_and_attack()
+
+
+func _on_DashRegion_body_entered(body):
+	print("Dashed through")
+	if body is Player:
+		if (body.dash_direction!=Vector2.ZERO or body.roll_direction!=Vector2.ZERO) and attack_tick!=0 and !body.dashed: # Replace with function body.
+			body.emit_signal("roll_or_dash")
+
+func anim_and_attack():
 	var dir
 	if attack_tick==0:
 		if last_dir==false:
@@ -135,9 +149,3 @@ func _process(delta):
 			attack_tick-=1
 	else:
 		cooldown_tick-=1
-
-
-func _on_DashRegion_body_entered(body):
-	if body is Player:
-		if (body.dash_direction!=Vector2.ZERO or body.roll_direction!=Vector2.ZERO) and attack_tick!=0 and !body.dashed: # Replace with function body.
-			body.emit_signal("roll_or_dash")

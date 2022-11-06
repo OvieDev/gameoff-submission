@@ -1,0 +1,276 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://graphics/images/Baller-SpriteSheet.png" type="Texture" id=1]
+[ext_resource path="res://scripts/baller.gd" type="Script" id=2]
+[ext_resource path="res://graphics/images/ball.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 18.5, 25.5 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "AttackedLeft"
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 6, 7, 8, 9, 10, 11, 12, 13, 6 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "AttackedRight"
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 14, 15, 16, 17, 18, 19, 20, 21, 14 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "ThrowLeft"
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.5, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 22, 23, 24, 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.5, 0.7, 0.75 ),
+"transitions": PoolRealArray( 1.03526, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -14 ), Vector2( 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Projectile:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "spawn_projectile"
+} ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "ThrowRight"
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.5, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 3, 25, 26, 27, 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 0.65, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, -14 ), Vector2( 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Projectile:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "spawn_projectile"
+} ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "WalkLeft"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 28, 0, 29 ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "WalkRight"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 3, 30, 3, 31 ]
+}
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 29.5 )
+
+[sub_resource type="Shader" id=9]
+code = "shader_type canvas_item;
+uniform float white : hint_range(0.0, 1.0, 0.1);
+
+void fragment() {
+	vec4 tex = texture(TEXTURE, UV);
+	tex.rgb = mix(tex.rgb, vec3(1,1,1), white);
+	COLOR = tex;
+	
+}
+"
+
+[sub_resource type="ShaderMaterial" id=10]
+shader = SubResource( 9 )
+shader_param/white = 0.0
+
+[node name="KinematicBody2D" type="KinematicBody2D"]
+script = ExtResource( 2 )
+speed = 50
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 14 )
+shape = SubResource( 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/AttackedLeft = SubResource( 3 )
+anims/AttackedRight = SubResource( 4 )
+anims/ThrowLeft = SubResource( 5 )
+anims/ThrowRight = SubResource( 6 )
+anims/WalkLeft = SubResource( 7 )
+anims/WalkRight = SubResource( 8 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 2.625, 2.60938 )
+texture = ExtResource( 1 )
+hframes = 8
+vframes = 4
+frame = 3
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.25
+
+[node name="ImpactTimer" type="Timer" parent="."]
+
+[node name="Right" type="RayCast2D" parent="."]
+position = Vector2( 1, 15 )
+enabled = true
+cast_to = Vector2( 100, 0 )
+collision_mask = 3
+
+[node name="Left" type="RayCast2D" parent="."]
+position = Vector2( 1, 15 )
+enabled = true
+cast_to = Vector2( -100, 0 )
+collision_mask = 3
+
+[node name="DashRegion" type="Area2D" parent="."]
+position = Vector2( 0, -17 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DashRegion"]
+position = Vector2( 0, 0.5 )
+shape = SubResource( 2 )
+
+[node name="DashRegion2" type="Area2D" parent="."]
+position = Vector2( -86, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DashRegion2"]
+position = Vector2( 0, 0.5 )
+shape = SubResource( 2 )
+
+[node name="DashRegion3" type="Area2D" parent="."]
+position = Vector2( 93, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DashRegion3"]
+position = Vector2( 0, 0.5 )
+shape = SubResource( 2 )
+
+[node name="Projectile" type="Sprite" parent="."]
+material = SubResource( 10 )
+position = Vector2( -1, -23 )
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="damage_received" from="." to="." method="_on_Enemy_damage_received"]

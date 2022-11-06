@@ -149,6 +149,7 @@ func _on_KinematicBody2D_damage_received(damage, vector):
 				parry_direction = Vector2.ZERO
 				can_move = true
 				after_attack("parry")
+				VELOCITY.x = vector.x*400
 			elif duck:
 				enabled_moves[1] = false
 				duck = false
