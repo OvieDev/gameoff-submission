@@ -1,7 +1,7 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=21 format=2]
 
-[ext_resource path="res://scripts/base_enemy.gd" type="Script" id=1]
-[ext_resource path="res://graphics/images/Basic-SpriteSheet.png" type="Texture" id=2]
+[ext_resource path="res://graphics/images/PowerPunchGuy-SpriteSheet.png" type="Texture" id=1]
+[ext_resource path="res://scripts/power_punch_guy.gd" type="Script" id=2]
 [ext_resource path="res://graphics/shaders/invert_color.tres" type="Material" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -119,10 +119,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 0, 6, 7, 6, 0, 8 ]
+"values": [ 0 ]
 }
 
 [sub_resource type="Animation" id=10]
@@ -142,10 +142,45 @@ tracks/0/keys = {
 "values": [ 3, 9, 10, 9, 3, 11 ]
 }
 
+[sub_resource type="Curve" id=11]
+min_value = -360.0
+max_value = 360.0
+_data = [ Vector2( 0, -360 ), 0.0, 0.0, 0, 0, Vector2( 1, 360 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=12]
+curve = SubResource( 11 )
+
+[sub_resource type="Gradient" id=13]
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=14]
+gradient = SubResource( 13 )
+
+[sub_resource type="Curve" id=15]
+_data = [ Vector2( 0, 0.373864 ), 0.0, 0.0, 0, 0, Vector2( 0.331658, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=16]
+curve = SubResource( 15 )
+
+[sub_resource type="ParticlesMaterial" id=17]
+flag_disable_z = true
+direction = Vector3( 0, 10, 0 )
+spread = 28.78
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 63.06
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 5.41
+angle_curve = SubResource( 12 )
+scale = 5.0
+scale_curve = SubResource( 16 )
+color_ramp = SubResource( 14 )
+
 [node name="Damagable" type="KinematicBody2D"]
+position = Vector2( 420, 247 )
 collision_layer = 12
 collision_mask = 9
-script = ExtResource( 1 )
+script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -1.5, 0.5 )
@@ -155,10 +190,9 @@ shape = SubResource( 1 )
 material = ExtResource( 3 )
 position = Vector2( -0.499999, 1 )
 scale = Vector2( 1.96875, 2 )
-texture = ExtResource( 2 )
-hframes = 5
-vframes = 5
-frame = 22
+texture = ExtResource( 1 )
+hframes = 8
+vframes = 4
 
 [node name="Right" type="RayCast2D" parent="."]
 enabled = true
@@ -205,6 +239,15 @@ anims/PunchLeft = SubResource( 7 )
 anims/PunchRight = SubResource( 8 )
 anims/WalkLeft = SubResource( 9 )
 anims/WalkRight = SubResource( 10 )
+
+[node name="JetPackEffect" type="Particles2D" parent="."]
+position = Vector2( 13, 11 )
+amount = 25
+process_material = SubResource( 17 )
+
+[node name="ToFloor" type="RayCast2D" parent="."]
+position = Vector2( 0, 30 )
+enabled = true
 
 [connection signal="damage_received" from="." to="." method="_on_Enemy_damage_received"]
 [connection signal="body_entered" from="DashRegion" to="." method="_on_DashRegion_body_entered"]

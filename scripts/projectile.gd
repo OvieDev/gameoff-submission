@@ -12,6 +12,7 @@ onready var particle = $Particles2D
 onready var sprite_node = $Sprite
 onready var tween = $Tween
 var destroying = false
+var hits = []
 
 func _ready():
 	print(get_parent())
@@ -38,8 +39,9 @@ func _physics_process(delta):
 			else:
 				collision_mask = 1
 				collision.collider.emit_signal("roll_or_dash")
-		elif collision.collider is Enemy and !harmful_to_player:
+		elif collision.collider is Enemy and !harmful_to_player and !hits.has(collision.collider):
 			collision.collider.emit_signal("damage_received", damage, impact)
+			hits.append(collision.collider)
 		else:
 			end_of_life()
 
