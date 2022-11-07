@@ -1,9 +1,4 @@
-[gd_scene load_steps=10 format=2]
-
-[ext_resource path="res://scripts/projectile.gd" type="Script" id=1]
-[ext_resource path="res://graphics/images/shockwave.png" type="Texture" id=3]
-
-[sub_resource type="RectangleShape2D" id=1]
+[gd_resource type="ShaderMaterial" load_steps=6 format=2]
 
 [sub_resource type="Shader" id=6]
 code = "// NOTE: Shader automatically converted from Godot Engine 3.5.1.stable's ParticlesMaterial.
@@ -205,13 +200,13 @@ _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.476136 ), 0.0, 0.0, 0, 
 [sub_resource type="CurveTexture" id=5]
 curve = SubResource( 4 )
 
-[sub_resource type="ShaderMaterial" id=7]
+[resource]
 shader = SubResource( 6 )
 shader_param/direction = Vector3( 1, 0, 0 )
 shader_param/spread = 45.0
 shader_param/flatness = 0.0
 shader_param/initial_linear_velocity = 0.0
-shader_param/initial_angle = 0.0
+shader_param/initial_angle = 1
 shader_param/angular_velocity = 0.0
 shader_param/orbit_velocity = 0.0
 shader_param/linear_accel = 0.0
@@ -241,27 +236,3 @@ shader_param/gravity = Vector3( 0, -1e-06, 0 )
 shader_param/transform = 1
 shader_param/color_ramp = SubResource( 3 )
 shader_param/scale_texture = SubResource( 5 )
-
-[node name="Projectile" type="KinematicBody2D"]
-collision_layer = 0
-collision_mask = 3
-script = ExtResource( 1 )
-sprite = ExtResource( 3 )
-velocity = Vector2( 5, 0 )
-should_emit = true
-invert_image = true
-particle_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
-
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 3 )
-
-[node name="Particles2D" type="Particles2D" parent="."]
-amount = 20
-local_coords = false
-process_material = SubResource( 7 )
-texture = ExtResource( 3 )
-
-[node name="Tween" type="Tween" parent="."]

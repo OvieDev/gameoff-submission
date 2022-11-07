@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://graphics/shaders/ghost_particle.tres" type="Material" id=1]
+[ext_resource path="res://scripts/parryable_projectile.gd" type="Script" id=2]
+[ext_resource path="res://graphics/images/shockwave.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+[node name="Projectile" type="KinematicBody2D"]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+
+[node name="Particles2D" type="Particles2D" parent="."]
+amount = 20
+local_coords = false
+process_material = ExtResource( 1 )
+texture = ExtResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]

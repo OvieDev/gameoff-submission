@@ -198,8 +198,8 @@ func attack():
 			proj.global_position = global_position-Vector2(0, 10)
 			proj.sprite = load("res://graphics/images/shockwave.png")
 			proj.should_emit = true
-			if hitline.cast_to.x<0:
-				proj.invert_image = true
+			proj.particle_transform = Transform2D(Vector2(2, 0), Vector2(0, 5), Vector2(0,0))
+			proj.invert_image = hitline.cast_to.x<0
 			get_tree().get_root().get_node("Node2D").add_child(proj)
 		target.emit_signal("damage_received", dmg, Vector2(hitline.cast_to.x*4, -300))
 		heal(2)

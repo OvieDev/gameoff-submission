@@ -189,7 +189,7 @@ scale = Vector2( 1.96875, 2 )
 texture = ExtResource( 1 )
 hframes = 8
 vframes = 4
-frame = 9
+frame = 7
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.25
