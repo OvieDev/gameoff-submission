@@ -74,6 +74,7 @@ func spawn_projectile():
 	var bullet = proj.instance()
 	bullet.global_position = global_position
 	bullet.velocity = Vector2(direction_to_player.x/10, 0)
+	bullet.rotate = 2.5
 	get_tree().get_root().get_node("Node2D").add_child(bullet)
 	
 func _on_DashRegion_body_entered(body):
