@@ -249,7 +249,6 @@ script = ExtResource( 1 )
 sprite = ExtResource( 3 )
 velocity = Vector2( 5, 0 )
 should_emit = true
-invert_image = true
 particle_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

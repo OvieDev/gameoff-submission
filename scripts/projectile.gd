@@ -45,16 +45,16 @@ func physics():
 		elif collision.collider is Enemy and !harmful_to_player and !hits.has(collision.collider):
 			collision.collider.emit_signal("damage_received", damage, impact)
 			hits.append(collision.collider)
-		else:
-			pass
-			
+		elif !collision.collider is Damagable:
+			end_of_life()
 	
 func set_shader_params():
-	particle.process_material.set_shader_param("transform", particle_transform)
 	sprite_node.transform = particle_transform
+	print(invert_image)
 	if invert_image:
-		sprite_node.scale.x = -1
 		particle.process_material.set_shader_param("initial_angle", 180)
+		sprite_node.scale.x = -1
+	particle.process_material.set_shader_param("transform", particle_transform)
 		
 func end_of_life():
 	collision_mask = 1

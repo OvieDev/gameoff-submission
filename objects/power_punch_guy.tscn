@@ -19,7 +19,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 12 ]
+"values": [ 14 ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -34,7 +34,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 13 ]
+"values": [ 15 ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -189,7 +189,7 @@ scale = Vector2( 1.96875, 2 )
 texture = ExtResource( 1 )
 hframes = 8
 vframes = 4
-frame = 7
+frame = 15
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.25

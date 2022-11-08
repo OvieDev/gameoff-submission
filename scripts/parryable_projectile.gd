@@ -1,5 +1,7 @@
 extends Projectile
 var caster
+export var lifetime := 120
+onready var area = $Area2D
 
 func physics():
 	sprite_node.rotate(deg2rad(rotate))
@@ -19,4 +21,10 @@ func physics():
 			hits.append(collision.collider)
 		else:
 			end_of_life()
+	lifetime-=1
+	if lifetime==0:
+		for i in area.get_overlapping_bodies():
+			if i is Player:
+				i.emit_signal("damage_received", damage, velocity/5)
+		queue_free()
 

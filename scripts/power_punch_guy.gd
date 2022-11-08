@@ -15,41 +15,41 @@ func _process(delta):
 	particles.emitting = boosting
 
 func ai():
-	print(able_to_boost_again)
 	dist = position.distance_to(player.position)
 	direction_to_player = position.direction_to(player.position)
 	
 	target_raycast.cast_to = position.direction_to(player.position)*200
-	
-	if to_floor.is_colliding() or (is_on_wall() and direction_to_player.y<0):
-		boosting = true
-		
-	if is_on_ceiling():
-		boosting = false
-	
-	must_boost = position.y>player.position.y
-		
-	if boosting:
-		velocity+=Vector2(0, -10)
-	else:
-		velocity+=Vector2(0, 10)
-		if velocity.y>100:
-			velocity = Vector2(0, 100)
-	if velocity.y<-200 and !must_boost:
-		able_to_boost_again = 120
-		boosting = false
-	elif velocity.y<-150 and must_boost:
-		velocity.y = -150
-	
-	velocity.x = direction_to_player.x*75
-	move_and_slide(velocity, Vector2.UP)
-	
-	last_dir = velocity.x<0
-	
-	if !boosting and able_to_boost_again>0:
-		able_to_boost_again-=1
-		if able_to_boost_again==0:
+	if !impact:
+		rotation = lerp(rotation, 0, 0.1)
+		if to_floor.is_colliding() or (is_on_wall() and direction_to_player.y<0):
 			boosting = true
+		
+		if is_on_ceiling():
+			boosting = false
+	
+		must_boost = position.y>player.position.y
+		
+		if boosting:
+			velocity+=Vector2(0, -10)
+		else:
+			velocity+=Vector2(0, 10)
+			if velocity.y>100:
+				velocity = Vector2(0, 100)
+		if velocity.y<-200 and !must_boost:
+			able_to_boost_again = 120
+			boosting = false
+		elif velocity.y<-150 and must_boost:
+			velocity.y = -150
+	
+		velocity.x = direction_to_player.x*50
+		move_and_slide(velocity, Vector2.UP)
+	
+		last_dir = velocity.x<0
+	
+		if !boosting and able_to_boost_again>0:
+			able_to_boost_again-=1
+			if able_to_boost_again==0:
+				boosting = true
 	
 func anim_and_attack():
 	var dir = ""
@@ -57,11 +57,14 @@ func anim_and_attack():
 		dir = "Left"
 	else:
 		dir = "Right"
-	
-	if attack_tick==0:
-		animation.play("Walk"+dir)
+	if !impact:
+		if attack_tick==0:
+			animation.play("Walk"+dir)
+		else:
+			animation.play("Punch"+dir)
 	else:
-		animation.play("Punch"+dir)
+		animation.play("Fall"+dir)
+		rotate(deg2rad(5))
 		
 	if target_raycast.get_collider() is Player and dist<150 and attack_tick==0 and cooldown_tick==0:
 		attack_tick = 120
@@ -73,3 +76,6 @@ func anim_and_attack():
 	
 	if cooldown_tick>0:
 		cooldown_tick-=1
+		
+func end_jump():
+	impact = false
