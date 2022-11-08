@@ -14,7 +14,7 @@ func get_direction():
 		collision_layer = 12
 		collision_mask = 9
 
-func _on_Damagable_damage_received(damage, vector):
+func _on_Damagable_damage_received(damage, vector, unparryable):
 	print("damaged")
 	current_hitpoints-=damage
 	if current_hitpoints<=0:

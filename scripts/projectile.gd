@@ -9,11 +9,13 @@ export var rotate := 0.0
 export var should_emit := false
 export var invert_image := false
 export var particle_transform = Transform2D(Vector2(5, 0), Vector2(0, 5), Vector2(0,0))
+export var parryable := false
 onready var particle = $Particles2D
 onready var sprite_node = $Sprite
 onready var tween = $Tween
 var destroying = false
 var hits = []
+var id
 
 func _ready():
 	sprite_node.texture = sprite
@@ -31,26 +33,27 @@ func _physics_process(delta):
 func physics():
 	sprite_node.rotate(deg2rad(rotate))
 	var collision = move_and_collide(velocity)
+	if impact == Vector2.ZERO:
+		impact = Vector2(1 if velocity.x>0 else -1, 0)
 	if collision and !destroying:
 		if collision.collider is Player and harmful_to_player:
 			if collision.collider.roll_direction==Vector2.ZERO and !collision.collider.duck:
-				queue_free()
-				collision.collider.emit_signal("damage_received", damage, velocity/5)
+				end_of_life()
+				collision.collider.emit_signal("damage_received", damage, impact, parryable, id)
 			elif collision.collider.duck:
 				collision_mask = 1
-				collision.collider.emit_signal("damage_received", damage, velocity/5)
+				collision.collider.emit_signal("damage_received", damage, impact, parryable, id)
 			else:
 				collision_mask = 1
 				collision.collider.emit_signal("roll_or_dash")
 		elif collision.collider is Enemy and !harmful_to_player and !hits.has(collision.collider):
-			collision.collider.emit_signal("damage_received", damage, impact)
+			collision.collider.emit_signal("damage_received", damage, impact, null)
 			hits.append(collision.collider)
 		elif !collision.collider is Damagable:
 			end_of_life()
 	
 func set_shader_params():
 	sprite_node.transform = particle_transform
-	print(invert_image)
 	if invert_image:
 		particle.process_material.set_shader_param("initial_angle", 180)
 		sprite_node.scale.x = -1
@@ -62,5 +65,4 @@ func end_of_life():
 	tween.interpolate_property(self, "modulate", Color(1,1,1,1), Color(1,1,1,0), 0.2)
 	tween.start()
 	yield(tween, "tween_completed")
-	print("completed")
 	queue_free()

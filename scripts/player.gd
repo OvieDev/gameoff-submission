@@ -29,6 +29,7 @@ var dashed = false
 var type = ""
 
 signal roll_or_dash
+signal parried(bulletid)
 
 func _input(event):
 	if event.is_action_pressed("attack") and is_on_floor():
@@ -52,7 +53,7 @@ func _input(event):
 				effect.emitting = true
 				for i in safezone.get_overlapping_bodies():
 					if i is Damagable and !i == self:
-						i.emit_signal("damage_received", 999, Vector2.ZERO)
+						i.emit_signal("damage_received", 999, Vector2.ZERO, false)
 				cards[1] = false
 			
 	if Input.is_action_pressed("card3"):
@@ -143,13 +144,16 @@ func add_fuel():
 	timer.start()
 
 
-func _on_KinematicBody2D_damage_received(damage, vector):
+func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 	if iframe==0:
-		if ((parry_direction.x*-1==vector.x*75) or (vector!=Vector2.DOWN and duck) or (roll_direction!=Vector2.ZERO)):
-			if parry_direction.x*-1==vector.x*75:
+		if ((parry_direction.x*-1==vector.x*75 and unparryable) or (vector!=Vector2.DOWN and duck) or (roll_direction!=Vector2.ZERO)):
+			print(parry_direction.x*-1==vector.x*75)
+			if parry_direction.x*-1==vector.x*75 and unparryable:
 				enabled_moves[0] = false
 				if enabled_moves.count(false)>=3:
 					enabled_moves = [true, true, true, true]
+				if bulletid!=null and damage==3:
+					emit_signal("parried", bulletid)
 				parry_direction = Vector2.ZERO
 				can_move = true
 				after_attack("parry")
@@ -190,7 +194,7 @@ func attack():
 		elif type == "duck":
 			for i in kick_area.get_overlapping_bodies():
 				if i is Damagable and not i==self:
-					i.emit_signal("damage_received", dmg, Vector2.ZERO) 
+					i.emit_signal("damage_received", dmg, Vector2.ZERO, false) 
 		elif type == "dash":
 			var proj = load("res://objects/Projectile.tscn").instance()
 			proj.harmful_to_player = false
@@ -203,7 +207,7 @@ func attack():
 			if hitline.cast_to.x==-75:
 				proj.invert_image = true
 			get_tree().get_root().get_node("Node2D").add_child(proj)
-		target.emit_signal("damage_received", dmg, Vector2(hitline.cast_to.x*4, -300))
+		target.emit_signal("damage_received", dmg, Vector2(hitline.cast_to.x*4, -300), false)
 		heal(2)
 		for i in range(0, enabled_moves.size()):
 			enabled_moves[i] = true

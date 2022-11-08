@@ -89,7 +89,7 @@ func end_jump():
 	right_ray.enabled = true
 
 
-func _on_Enemy_damage_received(damage, vector):
+func _on_Enemy_damage_received(damage, vector, unparryable):
 	print("damaged")
 	current_hitpoints-=damage
 	attack_tick = 0
@@ -142,11 +142,11 @@ func anim_and_attack():
 		
 			if attack_dir and attack_tick==1:
 				if left_ray.get_collider() is Player:
-					left_ray.get_collider().emit_signal("damage_received", 1, Vector2(-1, 0))
+					left_ray.get_collider().emit_signal("damage_received", 1, Vector2(-1, 0), false)
 					cooldown_tick = 60
 			elif !attack_dir and attack_tick==1:
 				if right_ray.get_collider() is Player:
-					right_ray.get_collider().emit_signal("damage_received", 1, Vector2(1, 0))
+					right_ray.get_collider().emit_signal("damage_received", 1, Vector2(1, 0), false)
 					cooldown_tick = 60
 			attack_tick-=1
 	else:

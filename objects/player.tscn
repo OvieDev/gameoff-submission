@@ -5,7 +5,7 @@
 [ext_resource path="res://graphics/shaders/invert_color.tres" type="Material" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 31.5, 30.5 )
+extents = Vector2( 23, 30.5 )
 
 [sub_resource type="CircleShape2D" id=9]
 radius = 138.051
@@ -292,11 +292,15 @@ vframes = 6
 frame = 26
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.5, -1.5 )
+position = Vector2( -2, -1.5 )
 shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
+limit_left = -1000000
+limit_top = -1000000
+limit_right = 1000000
+limit_bottom = 1000000
 smoothing_enabled = true
 smoothing_speed = 3.0
 

@@ -189,13 +189,12 @@ scale = Vector2( 1.96875, 2 )
 texture = ExtResource( 1 )
 hframes = 8
 vframes = 4
-frame = 15
+frame = 14
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.25
 
 [node name="ImpactTimer" type="Timer" parent="."]
-wait_time = 0.5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/FallLeft = SubResource( 3 )
@@ -219,6 +218,18 @@ enabled = true
 [node name="Target" type="RayCast2D" parent="."]
 enabled = true
 cast_to = Vector2( 200, 0 )
+collision_mask = 3
+
+[node name="Right" type="RayCast2D" parent="."]
+position = Vector2( 1, 15 )
+enabled = true
+cast_to = Vector2( 200, 0 )
+collision_mask = 3
+
+[node name="Left" type="RayCast2D" parent="."]
+position = Vector2( 1, 15 )
+enabled = true
+cast_to = Vector2( -200, 0 )
 collision_mask = 3
 
 [connection signal="damage_received" from="." to="." method="_on_Enemy_damage_received"]
