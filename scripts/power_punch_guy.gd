@@ -11,7 +11,6 @@ var bulletid = 0
 
 func _ready():
 	player.connect("parried", self, "parry_response")
-	print(player.is_connected("parried", self, "parry_response"))
 
 func _process(delta):
 	._process(delta)
@@ -125,6 +124,5 @@ func jump():
 	timer.start()
 	
 func parry_response(id):
-	print(id==bulletid)
 	impact = true
-	emit_signal("damage_received", 3, Vector2.ZERO, false)
+	emit_signal("damage_received", 3, Vector2.ZERO, false, null)

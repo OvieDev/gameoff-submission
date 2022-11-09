@@ -17,7 +17,8 @@ var attack_tick = 0
 var cooldown_tick = 0
 var dist
 var last_dir
-var attack_dir = null # null is none, true is left, false is right
+var attack_dir = null 
+var shield = false# null is none, true is left, false is right
 
 func _ready():
 	timer.connect("timeout", self, "end_jump")
@@ -33,7 +34,7 @@ func ai():
 	collision_mask = 9
 	if !impact or attack_tick!=0:
 		if round(direction_to_player.y)<0:
-			if !left_ray.is_colliding() and !right_ray.is_colliding():
+			if is_on_wall():
 				get_direction()
 				jump()
 		if !ignore:
@@ -89,18 +90,21 @@ func end_jump():
 	right_ray.enabled = true
 
 
-func _on_Enemy_damage_received(damage, vector, unparryable):
-	print("damaged")
-	current_hitpoints-=damage
-	attack_tick = 0
-	cooldown_tick = 60
-	if current_hitpoints<=0:
-		queue_free()
+func _on_Enemy_damage_received(damage, vector, unparryable, id):
+	if shield:
+		print("damaged")
+		current_hitpoints-=damage
+		attack_tick = 0
+		cooldown_tick = 60
+		if current_hitpoints<=0:
+			queue_free()
+		else:
+			jumping = false
+			impact = true
+			velocity = vector
+			impacttimer.start()
 	else:
-		jumping = false
-		impact = true
-		velocity = vector
-		impacttimer.start()
+		shield = false
 
 func _process(delta):
 	anim_and_attack()
@@ -151,3 +155,5 @@ func anim_and_attack():
 			attack_tick-=1
 	else:
 		cooldown_tick-=1
+		
+

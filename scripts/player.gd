@@ -207,7 +207,7 @@ func attack():
 			if hitline.cast_to.x==-75:
 				proj.invert_image = true
 			get_tree().get_root().get_node("Node2D").add_child(proj)
-		target.emit_signal("damage_received", dmg, Vector2(hitline.cast_to.x*4, -300), false)
+		target.emit_signal("damage_received", dmg, Vector2(hitline.cast_to.x*4, -300), false, null)
 		heal(2)
 		for i in range(0, enabled_moves.size()):
 			enabled_moves[i] = true

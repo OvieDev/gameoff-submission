@@ -245,7 +245,6 @@ shader_param/scale_texture = SubResource( 5 )
 
 [node name="Projectile" type="KinematicBody2D"]
 collision_layer = 0
-collision_mask = 3
 script = ExtResource( 1 )
 sprite = ExtResource( 2 )
 velocity = Vector2( 5, 0 )
@@ -264,3 +263,12 @@ process_material = SubResource( 7 )
 texture = ExtResource( 2 )
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_Target_body_entered"]

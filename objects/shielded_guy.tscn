@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scripts/shielded_guy.gd" type="Script" id=1]
 [ext_resource path="res://graphics/images/ShieldedGuy-SpriteSheet.png" type="Texture" id=2]
@@ -144,6 +144,9 @@ tracks/0/keys = {
 "values": [ 4 ]
 }
 
+[sub_resource type="CircleShape2D" id=12]
+radius = 125.256
+
 [node name="Damagable" type="KinematicBody2D"]
 collision_layer = 12
 collision_mask = 9
@@ -175,7 +178,7 @@ cast_to = Vector2( -100, 0 )
 collision_mask = 3
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.25
+wait_time = 0.5
 
 [node name="ImpactTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -211,6 +214,11 @@ anims/PunchRight = SubResource( 8 )
 anims/WalkLeft = SubResource( 9 )
 anims/WalkRight = SubResource( 10 )
 
+[node name="HealArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HealArea"]
+shape = SubResource( 12 )
+
 [connection signal="damage_received" from="." to="." method="_on_Enemy_damage_received"]
 [connection signal="body_entered" from="DashRegion" to="." method="_on_DashRegion_body_entered"]
 [connection signal="body_exited" from="DashRegion" to="." method="_on_DashRegion_body_entered"]
@@ -218,3 +226,5 @@ anims/WalkRight = SubResource( 10 )
 [connection signal="body_exited" from="DashRegion2" to="." method="_on_DashRegion_body_entered"]
 [connection signal="body_entered" from="DashRegion3" to="." method="_on_DashRegion_body_entered"]
 [connection signal="body_exited" from="DashRegion3" to="." method="_on_DashRegion_body_entered"]
+[connection signal="body_entered" from="HealArea" to="." method="_on_HealArea_body_entered"]
+[connection signal="body_exited" from="HealArea" to="." method="_on_HealArea_body_exited"]
