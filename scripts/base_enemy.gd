@@ -142,11 +142,11 @@ func anim_and_attack():
 		
 			if attack_dir and attack_tick==1:
 				if left_ray.get_collider() is Player:
-					left_ray.get_collider().emit_signal("damage_received", 1, Vector2(-1, 0), false)
+					left_ray.get_collider().emit_signal("damage_received", 1, Vector2(-1, 0), true, null)
 					cooldown_tick = 60
 			elif !attack_dir and attack_tick==1:
 				if right_ray.get_collider() is Player:
-					right_ray.get_collider().emit_signal("damage_received", 1, Vector2(1, 0), false)
+					right_ray.get_collider().emit_signal("damage_received", 1, Vector2(1, 0), true, null)
 					cooldown_tick = 60
 			attack_tick-=1
 	else:
