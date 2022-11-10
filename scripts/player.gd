@@ -53,7 +53,7 @@ func _input(event):
 				effect.emitting = true
 				for i in safezone.get_overlapping_bodies():
 					if i is Damagable and !i == self:
-						i.emit_signal("damage_received", 999, Vector2.ZERO, false)
+						i.emit_signal("damage_received", 999, Vector2.ZERO, false, null)
 				cards[1] = false
 			
 	if Input.is_action_pressed("card3"):
@@ -194,7 +194,7 @@ func attack():
 		elif type == "duck":
 			for i in kick_area.get_overlapping_bodies():
 				if i is Damagable and not i==self:
-					i.emit_signal("damage_received", dmg, Vector2.ZERO, false) 
+					i.emit_signal("damage_received", dmg, Vector2.ZERO, false, null) 
 		elif type == "dash":
 			var proj = load("res://objects/Projectile.tscn").instance()
 			proj.harmful_to_player = false

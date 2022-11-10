@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=11]
+code = "shader_type canvas_item;
+
+void fragment() {
+	COLOR.rgb = vec3(step(distance(UV, vec2(0.5)), 0.5));
+	if (COLOR.rgb==vec3(0,0,0)) {
+		COLOR.a = 0.0;
+	}
+	else {
+		COLOR.rgb = vec3(smoothstep(distance(UV, vec2(0.5)), 0.7, 0.5));
+		COLOR.a = smoothstep(distance(UV, vec2(0.5)), 0, 0.25);
+		COLOR.rgb = mix(COLOR.rgb, vec3(235, 186, 52), 0.005);
+	}
+}"
+
+[resource]
+shader = SubResource( 11 )

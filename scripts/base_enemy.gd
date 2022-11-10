@@ -91,7 +91,7 @@ func end_jump():
 
 
 func _on_Enemy_damage_received(damage, vector, unparryable, id):
-	if shield:
+	if !shield:
 		print("damaged")
 		current_hitpoints-=damage
 		attack_tick = 0
