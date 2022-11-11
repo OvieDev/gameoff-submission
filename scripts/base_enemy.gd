@@ -1,7 +1,6 @@
 extends Damagable
 class_name Enemy
 export var player_path : NodePath
-export var speed := 95
 onready var player = get_node(player_path)
 onready var left_ray = $Left
 onready var right_ray = $Right

@@ -2,6 +2,7 @@ extends KinematicBody2D
 class_name Damagable
 
 export var max_hitpoints := 10
+export var speed := 75
 var current_hitpoints = max_hitpoints
 var iframe = 0
 

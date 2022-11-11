@@ -27,6 +27,7 @@ var parry_direction = Vector2.ZERO
 var enabled_moves = [true, true, true, true]
 var dashed = false
 var type = ""
+var current_speed = speed
 
 signal roll_or_dash
 signal parried(bulletid)
@@ -61,14 +62,15 @@ func _input(event):
 				hits = -5
 
 func _physics_process(delta):
+	current_speed = lerp(current_speed, speed, 0.01)
 	JUMPING = false
 	if !impact:
 		VELOCITY = Vector2(0, VELOCITY.y)
 		if Input.is_action_pressed("ui_left"):
-			VELOCITY.x = -90
+			VELOCITY.x = -current_speed
 			
 		if Input.is_action_pressed("ui_right"):
-			VELOCITY.x = 90
+			VELOCITY.x = current_speed
 			
 		if Input.is_action_pressed("ui_up") and after_jump == 0:
 			jump()
@@ -145,6 +147,7 @@ func add_fuel():
 
 
 func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
+	print("damage")
 	if iframe==0:
 		if ((parry_direction.x*-1==vector.x*75 and unparryable) or (vector!=Vector2.DOWN and duck) or (roll_direction!=Vector2.ZERO)):
 			print(parry_direction.x*-1==vector.x*75)
@@ -207,6 +210,8 @@ func attack():
 			if hitline.cast_to.x==-75:
 				proj.invert_image = true
 			get_tree().get_root().get_node("Node2D").add_child(proj)
+		elif type == "roll":
+			current_speed = 100
 		target.emit_signal("damage_received", dmg, Vector2(hitline.cast_to.x*4, -300), false, null)
 		heal(2)
 		for i in range(0, enabled_moves.size()):
