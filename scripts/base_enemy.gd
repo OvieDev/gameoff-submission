@@ -27,6 +27,7 @@ func _physics_process(delta):
 	ai()
 
 func ai():
+	print(velocity)
 	dist = position.distance_to(player.position)
 	ignore = false
 	collision_layer = 12
@@ -47,7 +48,7 @@ func ai():
 			velocity.y = 0
 		else:
 			velocity.y = 300
-	if dist<=40:
+	if dist<=40 and !impact:
 		velocity.x = 0
 	if left_ray.get_collider() or right_ray.get_collider() and attack_tick==0:
 		jump()
@@ -96,7 +97,7 @@ func _on_Enemy_damage_received(damage, vector, unparryable, id):
 		attack_tick = 0
 		cooldown_tick = 60
 		if current_hitpoints<=0:
-			queue_free()
+			die()
 		else:
 			jumping = false
 			impact = true

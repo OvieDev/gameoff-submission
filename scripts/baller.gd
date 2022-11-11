@@ -18,7 +18,7 @@ func _on_Damagable_damage_received(damage, vector, unparryable, id):
 	print("damaged")
 	current_hitpoints-=damage
 	if current_hitpoints<=0:
-		queue_free()
+		die()
 	else:
 		jumping = false
 		impact = true

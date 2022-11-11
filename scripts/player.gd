@@ -62,6 +62,7 @@ func _input(event):
 				hits = -5
 
 func _physics_process(delta):
+	print(current_speed)
 	current_speed = lerp(current_speed, speed, 0.01)
 	JUMPING = false
 	if !impact:
@@ -188,6 +189,7 @@ func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 				impact = false
 				
 func attack():
+	print("DAMAGED!!!!")
 	var target = hitline.get_collider()
 	var attacks = enabled_moves.count(false)
 	if target is Damagable and attacks==2:
@@ -210,8 +212,6 @@ func attack():
 			if hitline.cast_to.x==-75:
 				proj.invert_image = true
 			get_tree().get_root().get_node("Node2D").add_child(proj)
-		elif type == "roll":
-			current_speed = 100
 		target.emit_signal("damage_received", dmg, Vector2(hitline.cast_to.x*4, -300), false, null)
 		heal(2)
 		for i in range(0, enabled_moves.size()):
