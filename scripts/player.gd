@@ -5,6 +5,7 @@ var VELOCITY = Vector2.ZERO
 var JUMPING = false
 var FUEL = 100
 var after_jump = 0
+onready var gui = $"/root/Gui/Control"
 onready var timer = $Timer
 onready var iframetimer = $IframeTimer
 onready var sprite = $Sprite
@@ -48,6 +49,8 @@ func _input(event):
 			if cards[0] == true:
 				FUEL = 170
 				cards[0] = false
+				gui.emit_signal("used_ability", 4)
+				gui.emit_signal("toggle_supercharge")
 			
 	if Input.is_action_pressed("card2"):
 			if cards[1] == true:
@@ -55,11 +58,14 @@ func _input(event):
 				for i in safezone.get_overlapping_bodies():
 					if i is Damagable and !i == self:
 						i.emit_signal("damage_received", 999, Vector2.ZERO, false, null)
+				gui.emit_signal("used_ability", 5)
 				cards[1] = false
 			
 	if Input.is_action_pressed("card3"):
 			if cards[2] == true:
 				hits = -5
+				gui.emit_signal("used_ability", 6)
+				cards[2] = false
 
 func _physics_process(delta):
 	print(current_speed)
@@ -128,6 +134,8 @@ func jump():
 		FUEL-=1
 		if FUEL==0:
 			after_jump = 2
+		if FUEL==101:
+			gui.emit_signal("toggle_supercharge")
 	else:
 		JUMPING = false
 		
@@ -156,18 +164,22 @@ func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 				enabled_moves[0] = false
 				if enabled_moves.count(false)>=3:
 					enabled_moves = [true, true, true, true]
+					gui.emit_signal("refill")
 				if bulletid!=null and damage==3:
 					emit_signal("parried", bulletid)
 				parry_direction = Vector2.ZERO
 				can_move = true
+				gui.emit_signal("used_ability", 0)
 				after_attack("parry")
 				VELOCITY.x = vector.x*400
 			elif duck:
 				enabled_moves[1] = false
 				if enabled_moves.count(false)>=3:
+					gui.emit_signal("refill")
 					enabled_moves = [true, true, true, true]
 				duck = false
 				can_move = true
+				gui.emit_signal("used_ability", 1)
 				after_attack("duck")
 			
 		else:
@@ -175,6 +187,7 @@ func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 			hits=0
 			for i in range(0, enabled_moves.size()):
 				enabled_moves[i] = true
+			gui.emit_signal("refill")
 			if current_hitpoints<0:
 				print("YOU LOSE!")
 			else:
@@ -189,7 +202,6 @@ func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 				impact = false
 				
 func attack():
-	print("DAMAGED!!!!")
 	var target = hitline.get_collider()
 	var attacks = enabled_moves.count(false)
 	if target is Damagable and attacks==2:
@@ -216,6 +228,7 @@ func attack():
 		heal(2)
 		for i in range(0, enabled_moves.size()):
 			enabled_moves[i] = true
+		gui.emit_signal("refill")
 
 func dash():
 	print("Dashed!")
@@ -229,17 +242,22 @@ func dash_or_roll():
 	if dash_direction!=Vector2.ZERO:
 		dashed = true
 		enabled_moves[2] = false
+		gui.emit_signal("used_ability", 2)
 		if enabled_moves.count(false)>=3:
 			enabled_moves = [true, true, true, true]
+			gui.emit_signal("refill")
 		after_attack("dash")
 	elif roll_direction!=Vector2.ZERO:
 		dashed = true
 		enabled_moves[3] = false
+		gui.emit_signal("used_ability", 3)
 		if enabled_moves.count(false)>=3:
 			enabled_moves = [true, true, true, true]
+			gui.emit_signal("refill")
 		after_attack("roll")
 
 func _process(delta):
+	gui.progress.value = FUEL
 	var dir
 	if hitline.cast_to.x>0:
 		dir = "Right"

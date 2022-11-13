@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/toggleable_texture.gd" type="Script" id=1]
+[ext_resource path="res://graphics/images/action_dash.png" type="Texture" id=2]
+
+[node name="TextureRect" type="TextureRect"]
+margin_right = 160.0
+margin_bottom = 160.0
+rect_scale = Vector2( 2, 2 )
+expand = true
+script = ExtResource( 1 )
+texture_displayed = ExtResource( 2 )
