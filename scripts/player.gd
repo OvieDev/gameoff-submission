@@ -68,7 +68,6 @@ func _input(event):
 				cards[2] = false
 
 func _physics_process(delta):
-	print(current_speed)
 	current_speed = lerp(current_speed, speed, 0.01)
 	JUMPING = false
 	if !impact:
@@ -225,7 +224,6 @@ func attack():
 				proj.invert_image = true
 			get_tree().get_root().get_node("Node2D").add_child(proj)
 		target.emit_signal("damage_received", dmg, Vector2(hitline.cast_to.x*4, -300), false, null)
-		heal(2)
 		for i in range(0, enabled_moves.size()):
 			enabled_moves[i] = true
 		gui.emit_signal("refill")
@@ -258,6 +256,7 @@ func dash_or_roll():
 
 func _process(delta):
 	gui.progress.value = FUEL
+	gui.health.value = current_hitpoints
 	var dir
 	if hitline.cast_to.x>0:
 		dir = "Right"

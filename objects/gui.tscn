@@ -1,7 +1,7 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://graphics/images/full_health_bar.png" type="Texture" id=1]
-[ext_resource path="res://graphics/images/empty_health_bar.png" type="Texture" id=2]
+[ext_resource path="res://graphics/images/full_fuel_bar.png" type="Texture" id=1]
+[ext_resource path="res://graphics/images/empty_fuel_bar.png" type="Texture" id=2]
 [ext_resource path="res://scripts/gui.gd" type="Script" id=3]
 [ext_resource path="res://objects/toggleable_texture.tscn" type="PackedScene" id=4]
 [ext_resource path="res://graphics/images/action_roll.png" type="Texture" id=5]
@@ -11,6 +11,8 @@
 [ext_resource path="res://graphics/images/action_shield.png" type="Texture" id=9]
 [ext_resource path="res://graphics/images/action_supercharge.png" type="Texture" id=10]
 [ext_resource path="res://graphics/images/action_bonus_attack.png" type="Texture" id=11]
+[ext_resource path="res://graphics/images/health_bar_full.png" type="Texture" id=12]
+[ext_resource path="res://graphics/images/health_bar_empty.png" type="Texture" id=13]
 
 [node name="Control" type="CanvasLayer"]
 
@@ -19,11 +21,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 3 )
 
-[node name="TextureProgress" type="TextureProgress" parent="Control"]
+[node name="Fuel" type="TextureProgress" parent="Control"]
 margin_right = 40.0
 margin_bottom = 40.0
 rect_scale = Vector2( 3.20686, 1.36901 )
-step = 0.5
 texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 1 )
 nine_patch_stretch = true
@@ -108,3 +109,15 @@ margin_bottom = 0.0
 rect_scale = Vector2( 1, 1 )
 texture = ExtResource( 11 )
 texture_displayed = ExtResource( 11 )
+
+[node name="Health" type="TextureProgress" parent="Control"]
+margin_left = 4.0
+margin_top = 59.0
+margin_right = 44.0
+margin_bottom = 99.0
+rect_scale = Vector2( 4.39173, 1.08901 )
+max_value = 10.0
+value = 3.0
+texture_under = ExtResource( 13 )
+texture_progress = ExtResource( 12 )
+nine_patch_stretch = true

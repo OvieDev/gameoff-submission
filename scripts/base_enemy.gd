@@ -27,7 +27,6 @@ func _physics_process(delta):
 	ai()
 
 func ai():
-	print(velocity)
 	dist = position.distance_to(player.position)
 	ignore = false
 	collision_layer = 12

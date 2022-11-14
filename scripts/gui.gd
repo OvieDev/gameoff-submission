@@ -1,6 +1,7 @@
 extends Control
 
-onready var progress = $TextureProgress
+onready var progress = $Fuel
+onready var health = $Health
 var charge = preload("res://graphics/images/supercharged_health_bar.tres")
 onready var abilities = [$Parry, $Duck, $Dash, $Roll, $Supercharge, $Shield, $BonusAttack]
 signal toggle_supercharge

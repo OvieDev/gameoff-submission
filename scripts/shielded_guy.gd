@@ -13,7 +13,6 @@ func _process(delta):
 		sprite.rotation = lerp(sprite.rotation, deg2rad(20), 0.1)
 	elif last_dir==false:
 		sprite.rotation = lerp(sprite.rotation, deg2rad(-20), 0.1)
-	print(tick)
 	if tick==0:
 		heal_or_protect(0, Vector2.ZERO, false, null)
 		tick = 200

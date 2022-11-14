@@ -17,5 +17,7 @@ func die():
 
 func heal(amount):
 	current_hitpoints+=amount
+	print(current_hitpoints)
+	print(max_hitpoints)
 	if current_hitpoints>max_hitpoints:
 		current_hitpoints = max_hitpoints
