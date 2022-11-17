@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://objects/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/level.gd" type="Script" id=2]
+[ext_resource path="res://graphics/tileset.tres" type="TileSet" id=3]
+[ext_resource path="res://objects/shielded_guy.tscn" type="PackedScene" id=4]
+[ext_resource path="res://objects/baller.tscn" type="PackedScene" id=5]
+[ext_resource path="res://objects/base_enemy.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scripts/notifier.gd" type="Script" id=7]
+[ext_resource path="res://scripts/tutorial_doors.gd" type="Script" id=8]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 10, 71.5 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 71.5 )
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 2 )
+level_name = "The Factory"
+
+[node name="TileMap" type="TileMap" parent="."]
+scale = Vector2( 3, 3 )
+tile_set = ExtResource( 3 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( -458752, 17, 0, -458751, 17, 0, -458750, 17, 0, -458749, 17, 0, -458748, 17, 0, -458747, 17, 0, -458746, 17, 0, -458745, 17, 0, -458744, 17, 0, -458743, 17, 0, -458742, 17, 0, -458741, 17, 0, -327681, 13, 0, -393216, 28, 0, -393210, 35, 0, -393208, 34, 0, -393204, 15, 0, -262145, 13, 0, -327673, 33, 0, -327668, 15, 0, -196609, 13, 0, -262132, 20, 0, -262131, 17, 0, -262130, 17, 0, -262129, 17, 0, -262128, 17, 0, -262127, 17, 0, -262126, 17, 0, -262125, 17, 0, -262124, 17, 0, -262123, 17, 0, -262122, 17, 0, -262121, 17, 0, -262120, 17, 0, -262119, 17, 0, -262118, 17, 0, -262117, 17, 0, -262116, 17, 0, -131073, 13, 0, -196600, 3, 0, -196599, 2, 0, -196598, 4, 0, -196596, 21, 0, -196592, 5, 0, -196588, 5, 0, -196584, 5, 0, -196580, 5, 0, -65537, 13, 0, -131072, 22, 0, -131071, 31, 0, -131065, 3, 0, -131064, 2, 0, -131063, 2, 0, -131062, 2, 0, -131061, 4, 0, -131060, 21, 0, -131056, 5, 0, -131052, 5, 0, -131048, 5, 0, -131044, 5, 0, -1, 13, 0, -65535, 32, 0, -65534, 9, 0, -65530, 3, 0, -65529, 2, 0, -65528, 2, 0, -65527, 2, 0, -65526, 2, 0, -65525, 2, 0, -65524, 21, 0, -65520, 5, 0, -65519, 9, 0, -65516, 5, 0, -65512, 5, 0, -65508, 5, 0, 0, 11, 0, 1, 11, 0, 2, 11, 0, 3, 11, 0, 4, 11, 0, 5, 11, 0, 6, 11, 0, 7, 11, 0, 8, 11, 0, 9, 11, 0, 10, 11, 0, 11, 11, 0, 12, 11, 0, 13, 11, 0, 14, 11, 0, 15, 11, 0, 16, 11, 0, 17, 11, 0, 18, 11, 0, 19, 11, 0, 20, 11, 0, 21, 11, 0, 22, 11, 0, 23, 11, 0, 24, 11, 0, 25, 11, 0, 26, 11, 0, 27, 11, 0, 28, 11, 0 )
+
+[node name="KinematicBody2D" parent="." instance=ExtResource( 1 )]
+position = Vector2( 203, -42 )
+
+[node name="KinematicBody2D2" parent="." groups=["notify1"] instance=ExtResource( 5 )]
+position = Vector2( 884, -39 )
+ai = false
+player_path = NodePath("../KinematicBody2D")
+
+[node name="Damagable" parent="." groups=["notify1"] instance=ExtResource( 4 )]
+position = Vector2( 1020, -8 )
+ai = false
+player_path = NodePath("../KinematicBody2D")
+
+[node name="Damagable2" parent="." groups=["notify1"] instance=ExtResource( 6 )]
+position = Vector2( 1090, -32 )
+ai = false
+player_path = NodePath("../KinematicBody2D")
+
+[node name="Notifier" type="Area2D" parent="."]
+position = Vector2( 602, -71 )
+script = ExtResource( 7 )
+group = "notify1"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Notifier"]
+position = Vector2( 0, -1.5 )
+shape = SubResource( 1 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2( 1375, -143 )
+script = ExtResource( 8 )
+times_to_destroy = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 0, 71.5 )
+shape = SubResource( 2 )
+
+[node name="Polygon2D" type="Polygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( -10, 0, 10, 0, 10, 143, -10, 143 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="StaticBody2D"]
+color = Color( 0.133333, 0.133333, 0.133333, 1 )
+polygon = PoolVector2Array( -8, 2, 8, 2, 8, 141, -8, 141 )
+
+[node name="Tween" type="Tween" parent="StaticBody2D"]
+
+[connection signal="killed" from="KinematicBody2D2" to="StaticBody2D" method="_on_Damagable_killed"]
+[connection signal="killed" from="Damagable" to="StaticBody2D" method="_on_Damagable_killed"]
+[connection signal="killed" from="Damagable2" to="StaticBody2D" method="_on_Damagable_killed"]
