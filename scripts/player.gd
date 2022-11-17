@@ -30,6 +30,8 @@ var dashed = false
 var type = ""
 var current_speed = speed
 
+export var ignore_twist := false
+
 signal roll_or_dash
 signal parried(bulletid)
 
@@ -94,10 +96,11 @@ func _physics_process(delta):
 			duck = false
 			
 		if !JUMPING:
-			if !is_on_floor():
+			if is_on_floor():
+				VELOCITY.y = 0
 				VELOCITY.y = lerp(VELOCITY.y, 300, 0.1)
 			else:
-				VELOCITY.y = 0
+				VELOCITY.y = lerp(VELOCITY.y, 300, 0.1)
 	
 		if VELOCITY.x>0:
 			hitline.cast_to.x = 75
@@ -203,7 +206,7 @@ func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 func attack():
 	var target = hitline.get_collider()
 	var attacks = enabled_moves.count(false)
-	if target is Damagable and attacks==2:
+	if target is Damagable and (attacks==2 or ignore_twist):
 		var dmg = 1
 		if type == "parry":
 			dmg+=2
@@ -272,12 +275,12 @@ func _process(delta):
 				animation.play("Parry"+dir)
 			elif roll_direction!=Vector2.ZERO:
 				animation.play("Roll")
-			elif VELOCITY==Vector2.ZERO:
+			elif VELOCITY.x==0:
 				animation.play("Idle"+dir)
-			elif VELOCITY!=Vector2.ZERO:
+			elif VELOCITY.x!=0:
 				animation.play("Walk"+dir)
 		
-		else:
+		elif !is_on_floor() or (is_on_wall() and VELOCITY!=Vector2.ZERO):
 			animation.play("Fall"+dir)
 			
 func after_attack(atk):
@@ -288,3 +291,10 @@ func after_attack(atk):
 	if num==2:
 		type = atk
 		
+func twist():
+	if !ignore_twist:
+		return
+	ignore_twist = false
+	emit_signal("damage_received", 1, Vector2.RIGHT, false, null)
+	max_hitpoints = 10
+	current_hitpoints = 10

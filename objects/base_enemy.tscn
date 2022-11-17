@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scripts/base_enemy.gd" type="Script" id=1]
 [ext_resource path="res://graphics/images/Basic-SpriteSheet.png" type="Texture" id=2]
@@ -142,24 +142,6 @@ tracks/0/keys = {
 "values": [ 3, 9, 10, 9, 3, 11 ]
 }
 
-[sub_resource type="Shader" id=11]
-code = "shader_type canvas_item;
-
-void fragment() {
-	COLOR.rgb = vec3(step(distance(UV, vec2(0.5)), 0.5));
-	if (COLOR.rgb==vec3(0,0,0)) {
-		COLOR.a = 0.0;
-	}
-	else {
-		COLOR.rgb = vec3(smoothstep(distance(UV, vec2(0.5)), 0.7, 0.5));
-		COLOR.a = smoothstep(distance(UV, vec2(0.5)), 0, 0.25);
-		COLOR.rgb = mix(COLOR.rgb, vec3(235, 186, 52), 0.005);
-	}
-}"
-
-[sub_resource type="ShaderMaterial" id=12]
-shader = SubResource( 11 )
-
 [node name="Damagable" type="KinematicBody2D"]
 collision_layer = 12
 collision_mask = 9
@@ -223,13 +205,6 @@ anims/PunchLeft = SubResource( 7 )
 anims/PunchRight = SubResource( 8 )
 anims/WalkLeft = SubResource( 9 )
 anims/WalkRight = SubResource( 10 )
-
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource( 12 )
-margin_left = -40.0
-margin_top = -37.0
-margin_bottom = 3.0
-rect_scale = Vector2( 1.91819, 1.92754 )
 
 [connection signal="damage_received" from="." to="." method="_on_Enemy_damage_received"]
 [connection signal="body_entered" from="DashRegion" to="." method="_on_DashRegion_body_entered"]

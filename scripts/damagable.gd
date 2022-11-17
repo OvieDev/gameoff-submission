@@ -3,11 +3,15 @@ class_name Damagable
 
 export var max_hitpoints := 10
 export var speed := 75
-var current_hitpoints = max_hitpoints
+export var ai := true
+var current_hitpoints
 var iframe = 0
 var explosion = preload("res://objects/death_explosion.tscn")
 
 signal damage_received(damage, vector, unparryable, frombullet)
+
+func _ready():
+	current_hitpoints = max_hitpoints
 
 func die():
 	var inst = explosion.instance()
@@ -16,6 +20,7 @@ func die():
 	queue_free()
 
 func heal(amount):
+	print(self)
 	current_hitpoints+=amount
 	print(current_hitpoints)
 	print(max_hitpoints)

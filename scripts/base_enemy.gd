@@ -19,12 +19,15 @@ var last_dir
 var attack_dir = null 
 var shield = false# null is none, true is left, false is right
 
+signal killed
+
 func _ready():
 	timer.connect("timeout", self, "end_jump")
 	impacttimer.connect("timeout", self, "end_jump")
 
 func _physics_process(delta):
-	ai()
+	if ai:
+		ai()
 
 func ai():
 	dist = position.distance_to(player.position)
@@ -97,6 +100,7 @@ func _on_Enemy_damage_received(damage, vector, unparryable, id):
 		cooldown_tick = 60
 		if current_hitpoints<=0:
 			die()
+			emit_signal("killed")
 		else:
 			jumping = false
 			impact = true
@@ -106,7 +110,8 @@ func _on_Enemy_damage_received(damage, vector, unparryable, id):
 		shield = false
 
 func _process(delta):
-	anim_and_attack()
+	if ai:
+		anim_and_attack()
 
 
 func _on_DashRegion_body_entered(body):
