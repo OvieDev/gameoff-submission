@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/tutorial_doors.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 71.5 )
+
+[node name="StaticBody2D" type="StaticBody2D"]
+position = Vector2( 1375, -143 )
+script = ExtResource( 1 )
+times_to_destroy = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 71.5 )
+shape = SubResource( 2 )
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+polygon = PoolVector2Array( -10, 0, 10, 0, 10, 143, -10, 143 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="."]
+color = Color( 0.133333, 0.133333, 0.133333, 1 )
+polygon = PoolVector2Array( -8, 2, 8, 2, 8, 141, -8, 141 )
+
+[node name="Tween" type="Tween" parent="."]

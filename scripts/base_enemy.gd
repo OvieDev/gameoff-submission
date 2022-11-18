@@ -48,6 +48,7 @@ func ai():
 	if !jumping:
 		if is_on_floor():
 			velocity.y = 0
+			velocity.y = 300
 		else:
 			velocity.y = 300
 	if dist<=40 and !impact:

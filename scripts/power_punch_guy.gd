@@ -2,14 +2,15 @@ extends Enemy
 onready var particles = $JetPackEffect
 onready var to_floor = $ToFloor
 onready var target_raycast = $Target
+var unique_id
 var boosting = true
 var able_to_boost_again = 0
 var must_boost = false
 var dashing = false
 var dash_cooldown = 200
-var bulletid = 0
 
 func _ready():
+	unique_id = get_instance_id()
 	player.connect("parried", self, "parry_response")
 
 func _process(delta):
@@ -98,8 +99,7 @@ func anim_and_attack():
 		if attack_tick==1:
 			randomize()
 			var bullet = load("res://objects/Projectile.tscn").instance()
-			bullet.id = rand_range(100, 100000)
-			bulletid = bullet.id
+			bullet.id = get_instance_id()
 			bullet.parryable = true
 			bullet.velocity = target_raycast.cast_to/50
 			bullet.global_position = global_position
@@ -124,5 +124,6 @@ func jump():
 	timer.start()
 	
 func parry_response(id):
-	impact = true
-	emit_signal("damage_received", 3, Vector2.ZERO, false, null)
+	if id==get_instance_id():
+		impact = true
+		emit_signal("damage_received", 3, Vector2.ZERO, false, null)

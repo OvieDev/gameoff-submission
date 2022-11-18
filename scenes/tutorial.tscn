@@ -24,7 +24,7 @@ interpolation_mode = 2
 offsets = PoolRealArray( 0.157609, 1 )
 colors = PoolColorArray( 0.132813, 0.111023, 0.126344, 0.984314, 0.800781, 0.800781, 0.800781, 0.435294 )
 
-[sub_resource type="GradientTexture" id=20]
+[sub_resource type="GradientTexture" id=59]
 gradient = SubResource( 19 )
 
 [sub_resource type="Environment" id=21]
@@ -53,9 +53,9 @@ glow_blend_mode = 0
 adjustment_enabled = true
 adjustment_brightness = 1.07
 adjustment_contrast = 1.28
-adjustment_color_correction = SubResource( 20 )
+adjustment_color_correction = SubResource( 59 )
 
-[sub_resource type="Shader" id=22]
+[sub_resource type="Shader" id=60]
 code = "shader_type canvas_item;
 
 uniform float vignette_intensity = 0.4;
@@ -79,7 +79,7 @@ void fragment(){
 }"
 
 [sub_resource type="ShaderMaterial" id=23]
-shader = SubResource( 22 )
+shader = SubResource( 60 )
 shader_param/vignette_intensity = 0.6
 shader_param/vignette_opacity = 0.905
 shader_param/vignette_rgb = Color( 0, 0, 0, 1 )
@@ -266,7 +266,7 @@ you can kill him by parrying
 them. Use RMB to parry!"
 
 [node name="Player" parent="." groups=["player"] instance=ExtResource( 2 )]
-position = Vector2( 3926, -1016 )
+position = Vector2( 279, -61 )
 collision/safe_margin = 1.25
 max_hitpoints = 1000
 ignore_twist = true
@@ -623,7 +623,7 @@ player_path = NodePath("../Player")
 position = Vector2( 283, -621 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 44 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Particles2D" type="Particles2D" parent="."]

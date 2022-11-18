@@ -50,6 +50,7 @@ func _input(event):
 	if Input.is_action_pressed("card1"):
 			if cards[0] == true:
 				FUEL = 170
+				after_jump = 0
 				cards[0] = false
 				gui.emit_signal("used_ability", 4)
 				gui.emit_signal("toggle_supercharge")
@@ -70,6 +71,8 @@ func _input(event):
 				cards[2] = false
 
 func _physics_process(delta):
+	if FUEL==101:
+			gui.emit_signal("toggle_supercharge")
 	current_speed = lerp(current_speed, speed, 0.01)
 	JUMPING = false
 	if !impact:
@@ -136,8 +139,6 @@ func jump():
 		FUEL-=1
 		if FUEL==0:
 			after_jump = 2
-		if FUEL==101:
-			gui.emit_signal("toggle_supercharge")
 	else:
 		JUMPING = false
 		
@@ -147,6 +148,7 @@ func _ready():
 	connect("roll_or_dash", self, "dash_or_roll")
 
 func add_fuel():
+	
 	if !JUMPING and FUEL<100:
 		if after_jump<=1:
 			FUEL+=1
