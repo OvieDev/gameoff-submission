@@ -367,4 +367,7 @@ shape = SubResource( 23 )
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource( 24 )
 
+[node name="ComboTimer" type="Timer" parent="."]
+wait_time = 5.0
+
 [connection signal="damage_received" from="." to="." method="_on_KinematicBody2D_damage_received"]

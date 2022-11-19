@@ -8,6 +8,7 @@ var after_jump = 0
 onready var gui = $"/root/Gui/Control"
 onready var timer = $Timer
 onready var iframetimer = $IframeTimer
+onready var combotimer = $ComboTimer
 onready var sprite = $Sprite
 onready var hitline = $HitLine
 onready var safezone = $Area2D
@@ -146,6 +147,7 @@ func _ready():
 	timer.connect("timeout", self, "add_fuel")
 	timer.start()
 	connect("roll_or_dash", self, "dash_or_roll")
+	combo_counting()
 
 func add_fuel():
 	
@@ -209,6 +211,9 @@ func attack():
 	var target = hitline.get_collider()
 	var attacks = enabled_moves.count(false)
 	if target is Damagable and (attacks==2 or ignore_twist):
+		GameManager.combo+=1
+		gui.emit_signal("combo_changed", GameManager.combo)
+		combotimer.start()
 		var dmg = 1
 		if type == "parry":
 			dmg+=2
@@ -300,3 +305,11 @@ func twist():
 	emit_signal("damage_received", 1, Vector2.RIGHT, false, null)
 	max_hitpoints = 10
 	current_hitpoints = 10
+	
+func combo_counting():
+	combotimer.start()
+	yield(combotimer, "timeout")
+	if GameManager.combo>0:
+		GameManager.combo-=1
+		gui.emit_signal("combo_changed", GameManager.combo)
+	combo_counting()

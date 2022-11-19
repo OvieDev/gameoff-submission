@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://graphics/images/full_fuel_bar.png" type="Texture" id=1]
 [ext_resource path="res://graphics/images/empty_fuel_bar.png" type="Texture" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://graphics/images/action_bonus_attack.png" type="Texture" id=11]
 [ext_resource path="res://graphics/images/health_bar_full.png" type="Texture" id=12]
 [ext_resource path="res://graphics/images/health_bar_empty.png" type="Texture" id=13]
+[ext_resource path="res://graphics/ui/theme.tres" type="Theme" id=14]
 
 [node name="Control" type="CanvasLayer"]
 layer = 2
@@ -122,3 +123,16 @@ value = 3.0
 texture_under = ExtResource( 13 )
 texture_progress = ExtResource( 12 )
 nine_patch_stretch = true
+
+[node name="Combo" type="Label" parent="Control"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -166.0
+margin_top = 1.0
+margin_right = -1.0
+margin_bottom = 46.0
+rect_pivot_offset = Vector2( 165, 0 )
+theme = ExtResource( 14 )
+text = "Combo: x0"
+
+[node name="Tween" type="Tween" parent="Control/Combo"]
