@@ -26,11 +26,11 @@ func anim_and_attack():
 		else:
 			animation.play("Walk"+dir)
 	
-	if cooldown_tick==0 and ai:
-		if attack_tick==0:
+	if cooldown_tick==0:
+		if attack_tick==0 and ai:
 			if target.is_colliding():
 				attack_tick = 60
-		else:
+		elif attack_tick!=0:
 			
 			if attack_tick==1 and !sniping:
 				sniping = true

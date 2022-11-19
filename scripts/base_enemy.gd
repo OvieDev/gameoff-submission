@@ -17,7 +17,8 @@ var cooldown_tick = 0
 var dist
 var last_dir
 var attack_dir = null 
-var shield = false# null is none, true is left, false is right
+var shield = false
+var alive = true
 
 signal killed
 
