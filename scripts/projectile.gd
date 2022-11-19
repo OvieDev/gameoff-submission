@@ -29,7 +29,6 @@ func _ready():
 	set_shader_params()
 
 func _physics_process(delta):
-	print(collision_mask)
 	physics()
 			
 func physics():
@@ -40,7 +39,6 @@ func physics():
 		impact = Vector2(1 if velocity.x>0 else -1, 0)
 	
 	if collision and !destroying:
-		print(collision.collider)
 		end_of_life()
 	
 func set_shader_params():
@@ -50,7 +48,6 @@ func set_shader_params():
 	particle.process_material.set_shader_param("transform", particle_transform)
 		
 func end_of_life():
-	print("destroy")
 	destroying = true
 	tween.interpolate_property(self, "modulate", Color(1,1,1,1), Color(1,1,1,0), 0.2)
 	tween.start()

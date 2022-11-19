@@ -48,9 +48,9 @@ func ai():
 	if !jumping:
 		if is_on_floor():
 			velocity.y = 0
-			velocity.y = 300
+			velocity.y = lerp(velocity.y, 300, 0.1)
 		else:
-			velocity.y = 300
+			velocity.y = lerp(velocity.y, 300, 0.1)
 	if dist<=40 and !impact:
 		velocity.x = 0
 	if left_ray.get_collider() or right_ray.get_collider() and attack_tick==0:

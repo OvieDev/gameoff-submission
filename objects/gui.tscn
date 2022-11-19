@@ -127,12 +127,13 @@ nine_patch_stretch = true
 [node name="Combo" type="Label" parent="Control"]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -166.0
+margin_left = -191.0
 margin_top = 1.0
 margin_right = -1.0
 margin_bottom = 46.0
 rect_pivot_offset = Vector2( 165, 0 )
 theme = ExtResource( 14 )
 text = "Combo: x0"
+align = 1
 
 [node name="Tween" type="Tween" parent="Control/Combo"]

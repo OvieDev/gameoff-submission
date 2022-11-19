@@ -7,8 +7,11 @@ onready var tween = $Tween
 var sniping = false
 
 func _process(delta):
-	if attack_tick>30 or attack_tick==0:
-		aimer.look_at(player.position)
+	if get_node(player_path):
+		if attack_tick>30 or attack_tick==0:
+			aimer.look_at(player.position)
+	else:
+		aimer.rotate(0)
 	
 
 func anim_and_attack():
@@ -23,7 +26,7 @@ func anim_and_attack():
 		else:
 			animation.play("Walk"+dir)
 	
-	if cooldown_tick==0:
+	if cooldown_tick==0 and ai:
 		if attack_tick==0:
 			if target.is_colliding():
 				attack_tick = 60

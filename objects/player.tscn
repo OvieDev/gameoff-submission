@@ -316,13 +316,11 @@ wait_time = 0.1
 wait_time = 0.2
 
 [node name="HitLine" type="RayCast2D" parent="."]
-visible = false
 enabled = true
 cast_to = Vector2( 75, 0 )
 collision_mask = 5
 
 [node name="Area2D" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 9 )

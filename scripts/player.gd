@@ -72,6 +72,7 @@ func _input(event):
 				cards[2] = false
 
 func _physics_process(delta):
+	print(str(parry_direction)+" "+str(hitline.cast_to))
 	if FUEL==101:
 			gui.emit_signal("toggle_supercharge")
 	current_speed = lerp(current_speed, speed, 0.01)
@@ -79,10 +80,10 @@ func _physics_process(delta):
 	if !impact:
 		VELOCITY = Vector2(0, VELOCITY.y)
 		if Input.is_action_pressed("ui_left"):
-			VELOCITY.x = -current_speed
+			VELOCITY.x = -current_speed-GameManager.combo
 			
 		if Input.is_action_pressed("ui_right"):
-			VELOCITY.x = current_speed
+			VELOCITY.x = current_speed+GameManager.combo
 			
 		if Input.is_action_pressed("ui_up") and after_jump == 0:
 			jump()
@@ -153,7 +154,12 @@ func add_fuel():
 	
 	if !JUMPING and FUEL<100:
 		if after_jump<=1:
-			FUEL+=1
+			if FUEL<25:
+				FUEL+=5
+			elif FUEL<50:
+				FUEL+=2
+			else:
+				FUEL+=1
 			if FUEL>10:
 				after_jump = 0	
 		else:
@@ -162,10 +168,10 @@ func add_fuel():
 
 
 func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
-	print("damage")
 	if iframe==0:
+		print(parry_direction.x*-1==vector.x*75 and unparryable)
+		print(vector!=Vector2.DOWN and duck)
 		if ((parry_direction.x*-1==vector.x*75 and unparryable) or (vector!=Vector2.DOWN and duck) or (roll_direction!=Vector2.ZERO)):
-			print(parry_direction.x*-1==vector.x*75)
 			if parry_direction.x*-1==vector.x*75 and unparryable:
 				enabled_moves[0] = false
 				if enabled_moves.count(false)>=3:
@@ -173,6 +179,7 @@ func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 					gui.emit_signal("refill")
 				if bulletid!=null and damage==3:
 					emit_signal("parried", bulletid)
+					add_combo(1)
 				parry_direction = Vector2.ZERO
 				can_move = true
 				gui.emit_signal("used_ability", 0)
@@ -189,8 +196,10 @@ func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 				after_attack("duck")
 			
 		else:
+			add_combo(-3)
 			current_hitpoints -= damage
 			hits=0
+			parry_direction = Vector2.ZERO
 			for i in range(0, enabled_moves.size()):
 				enabled_moves[i] = true
 			gui.emit_signal("refill")
@@ -211,15 +220,16 @@ func attack():
 	var target = hitline.get_collider()
 	var attacks = enabled_moves.count(false)
 	if target is Damagable and (attacks==2 or ignore_twist):
-		GameManager.combo+=1
-		gui.emit_signal("combo_changed", GameManager.combo)
-		combotimer.start()
+		add_combo(1)
 		var dmg = 1
+		dmg += round(GameManager.combo/5)
 		if type == "parry":
 			dmg+=2
+			add_combo(2)
 		elif type == "duck":
 			for i in kick_area.get_overlapping_bodies():
 				if i is Damagable and not i==self:
+					add_combo(1)
 					i.emit_signal("damage_received", dmg, Vector2.ZERO, false, null) 
 		elif type == "dash":
 			var proj = load("res://objects/Projectile.tscn").instance()
@@ -313,3 +323,10 @@ func combo_counting():
 		GameManager.combo-=1
 		gui.emit_signal("combo_changed", GameManager.combo)
 	combo_counting()
+
+func add_combo(val):
+	GameManager.combo+=val
+	if GameManager.combo<0:
+		GameManager.combo = 0
+	gui.emit_signal("combo_changed", GameManager.combo)
+	combotimer.start()
