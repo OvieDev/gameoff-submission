@@ -42,11 +42,12 @@ func physics():
 		end_of_life()
 	
 func set_shader_params():
+	sprite_node.transform = particle_transform
 	if invert_image:
 		particle.process_material.set_shader_param("initial_angle", 180)
 		sprite_node.scale.x = -1
 	particle.process_material.set_shader_param("transform", particle_transform)
-		
+	
 func end_of_life():
 	destroying = true
 	tween.interpolate_property(self, "modulate", Color(1,1,1,1), Color(1,1,1,0), 0.2)

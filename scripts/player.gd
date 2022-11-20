@@ -36,6 +36,10 @@ export var ignore_twist := false
 signal roll_or_dash
 signal parried(bulletid)
 
+func deal_damage(value):
+	if iframe==0:
+		.deal_damage(value)
+
 func _input(event):
 	if event.is_action_pressed("attack") and is_on_floor():
 			attack()
@@ -72,7 +76,6 @@ func _input(event):
 				cards[2] = false
 
 func _physics_process(delta):
-	print(str(parry_direction)+" "+str(hitline.cast_to))
 	if FUEL==101:
 			gui.emit_signal("toggle_supercharge")
 	current_speed = lerp(current_speed, speed, 0.01)

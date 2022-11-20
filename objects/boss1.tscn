@@ -1,0 +1,129 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://graphics/images/boss1.png" type="Texture" id=1]
+[ext_resource path="res://scripts/boss1.gd" type="Script" id=2]
+[ext_resource path="res://scripts/damagable.gd" type="Script" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Laugh"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1, 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:laughing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1.9 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:ai")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 1.9 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("AnimationPlayer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ true ],
+"method": "stop"
+} ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "choose_attack"
+} ]
+}
+tracks/5/type = "method"
+tracks/5/path = NodePath(".")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "start_spawner"
+} ]
+}
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.17316, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.480519, 0.0272727 ), 0.0, 0.0, 0, 0, Vector2( 0.74026, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[node name="Boss" type="KinematicBody2D"]
+script = ExtResource( 2 )
+ai = true
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, 363 )
+scale = Vector2( 23, 23 )
+texture = ExtResource( 1 )
+hframes = 7
+
+[node name="Position2D" type="Position2D" parent="Sprite"]
+position = Vector2( 0.173913, 8.3913 )
+
+[node name="EnterTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Laugh = SubResource( 1 )
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 2.5
+
+[node name="BombTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="SpawnerTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="Destroyer" type="KinematicBody2D" parent="."]
+script = ExtResource( 3 )
+max_hitpoints = 15
+
+[node name="Sprite" type="Sprite" parent="Destroyer"]
+
+[node name="Line2D" type="Line2D" parent="Destroyer"]
+width_curve = SubResource( 2 )
+default_color = Color( 1, 1, 1, 1 )

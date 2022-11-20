@@ -19,6 +19,7 @@ var last_dir
 var attack_dir = null 
 var shield = false
 var alive = true
+var count = 0
 
 signal killed
 
@@ -29,6 +30,10 @@ func _ready():
 func _physics_process(delta):
 	if ai:
 		ai()
+
+func die():
+	emit_signal("killed")
+	.die()
 
 func ai():
 	dist = position.distance_to(player.position)
@@ -102,7 +107,6 @@ func _on_Enemy_damage_received(damage, vector, unparryable, id):
 		cooldown_tick = 60
 		if current_hitpoints<=0:
 			die()
-			emit_signal("killed")
 		else:
 			jumping = false
 			impact = true
