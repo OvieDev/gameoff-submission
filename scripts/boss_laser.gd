@@ -28,3 +28,7 @@ func _process(delta):
 		for i in get_overlapping_bodies():
 			if i is Player:
 				i.deal_damage(99)
+
+
+func _on_Boss_death():
+	queue_free()

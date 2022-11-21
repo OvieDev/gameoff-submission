@@ -1,7 +1,71 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://graphics/images/boss1.png" type="Texture" id=1]
 [ext_resource path="res://scripts/boss1.gd" type="Script" id=2]
+[ext_resource path="res://graphics/images/light_ball.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 493.75, 9 )
+
+[sub_resource type="Curve" id=3]
+max_value = 2.0
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.512563, 1.10455 ), -8.3132, -8.3132, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+emission_shape = 1
+emission_sphere_radius = 27.52
+flag_disable_z = true
+gravity = Vector3( 0, 98, 0 )
+orbit_velocity = 1.0
+orbit_velocity_random = 0.0
+scale_random = 0.38
+scale_curve = SubResource( 4 )
+
+[sub_resource type="Animation" id=6]
+resource_name = "Death"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 5, 6 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 0.5, 2 ),
+"transitions": PoolRealArray( 1, 2.37842, 5.46416, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -363 ), Vector2( 0, -323 ), Vector2( 0, -363 ), Vector2( 0, 363 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
 
 [sub_resource type="Animation" id=1]
 resource_name = "Laugh"
@@ -95,11 +159,39 @@ position = Vector2( 0, 363 )
 scale = Vector2( 23, 23 )
 texture = ExtResource( 1 )
 hframes = 7
+frame = 5
+
+[node name="Laser" type="Area2D" parent="Sprite"]
+position = Vector2( -0.26087, -9.13043 )
+scale = Vector2( 0.0434783, 0.0434783 )
+
+[node name="ColorRect" type="ColorRect" parent="Sprite/Laser"]
+margin_left = 6.0
+margin_top = -12.0
+margin_right = 46.0
+margin_bottom = 28.0
+rect_scale = Vector2( 24.72, 0.68 )
+color = Color( 1, 1, 1, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/Laser"]
+position = Vector2( 500.25, 1 )
+shape = SubResource( 2 )
+
+[node name="Particles2D" type="Particles2D" parent="Sprite"]
+position = Vector2( 0, -9.17391 )
+scale = Vector2( 0.0434783, 0.0434783 )
+emitting = false
+amount = 21
+lifetime = 2.0
+one_shot = true
+process_material = SubResource( 5 )
+texture = ExtResource( 3 )
 
 [node name="EnterTimer" type="Timer" parent="."]
 wait_time = 0.5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Death = SubResource( 6 )
 anims/Laugh = SubResource( 1 )
 
 [node name="AttackTimer" type="Timer" parent="."]
@@ -110,3 +202,5 @@ wait_time = 0.5
 
 [node name="SpawnerTimer" type="Timer" parent="."]
 wait_time = 5.0
+
+[node name="Tween" type="Tween" parent="."]

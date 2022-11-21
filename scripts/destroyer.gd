@@ -2,6 +2,7 @@ extends Damagable
 
 export(PoolVector2Array) var positions
 var current
+onready var animation = $AnimationPlayer
 
 signal destroy
 
@@ -9,6 +10,8 @@ func _process(delta):
 	global_position = lerp(global_position, current, 0.1)
 	if iframe>0:
 		iframe-=1
+	animation.play("Rotate")
+	
 
 func _on_self_dmg_received(damage, vector, unparryable, frombullet):
 	if iframe==0:

@@ -6,7 +6,7 @@ var rot = 5
 
 func _process(delta):
 	rotate(deg2rad(rot))
-	velocity = lerp(velocity, Vector2(0, 70), 0.005)
+	velocity = lerp(velocity, Vector2(0, 60), 0.005)
 	var collision = move_and_collide(velocity)
 	if collision:
 		die()

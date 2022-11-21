@@ -190,12 +190,12 @@ func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 				VELOCITY.x = vector.x*400
 			elif duck:
 				enabled_moves[1] = false
+				gui.emit_signal("used_ability", 1)
 				if enabled_moves.count(false)>=3:
 					gui.emit_signal("refill")
 					enabled_moves = [true, true, true, true]
 				duck = false
 				can_move = true
-				gui.emit_signal("used_ability", 1)
 				after_attack("duck")
 			
 		else:
