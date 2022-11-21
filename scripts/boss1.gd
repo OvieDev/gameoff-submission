@@ -9,21 +9,21 @@ onready var attack_timer = $AttackTimer
 onready var bomb_timer = $BombTimer
 onready var spawner_timer = $SpawnerTimer
 onready var animation = $AnimationPlayer
-onready var destroyer = $Destroyer
-onready var point = sprite.get_node("Position2D")
-onready var line = destroyer.get_node("Line2D")
 export var laughing = false
 export var ai := false
 export var projectile_spawner_position := Vector2.ZERO
 export(Array, NodePath) var laser_paths
 export(PoolVector2Array) var spawner_positions
 export(PoolVector2Array) var destroyer_positions
+export(NodePath) var destroyer_path
+onready var destroyer = get_node(destroyer_path)
 var last_attack = 0
 var to_superpower = 6
 var projectile = preload("res://objects/Projectile.tscn")
 var bomb = preload("res://objects/bomb.tscn")
 var base_enemy = preload("res://objects/base_enemy.tscn")
 var pool = 0
+var dead = false
 
 func enter_arena():
 	for i in range(5):
@@ -56,16 +56,16 @@ func choose_attack():
 	randomize()
 	attack_timer.start()
 	yield(attack_timer, "timeout")
-	var attack = randi() % 3 + 1
+	var attack = randi() % 6 + 1
 	while attack==last_attack:
-		attack = randi() % 3 + 1
+		attack = randi() % 6 + 1
 	
 	match attack:
-		1:
+		1,2,6:
 			spawn_projectile()
-		2:
-			laser_spawn()
 		3:
+			laser_spawn()
+		4,5:
 			bomb_spawn()
 		_:
 			pass
@@ -98,7 +98,6 @@ func bomb_spawn():
 		yield(bomb_timer, "timeout")
 
 func _process(delta):
-	line.points = [destroyer.position, point.position]
 	print(pool)
 	if laughing and !ai:
 		animation.play("Laugh")
@@ -109,3 +108,7 @@ func decrease():
 	pool-=1
 	if pool<0:
 		pool = 0
+
+
+func _on_Destroyer_destroy():
+	dead = true

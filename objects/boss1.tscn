@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://graphics/images/boss1.png" type="Texture" id=1]
 [ext_resource path="res://scripts/boss1.gd" type="Script" id=2]
-[ext_resource path="res://scripts/damagable.gd" type="Script" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Laugh"
@@ -87,9 +86,6 @@ tracks/5/keys = {
 } ]
 }
 
-[sub_resource type="Curve" id=2]
-_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.17316, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.480519, 0.0272727 ), 0.0, 0.0, 0, 0, Vector2( 0.74026, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
-
 [node name="Boss" type="KinematicBody2D"]
 script = ExtResource( 2 )
 ai = true
@@ -99,9 +95,6 @@ position = Vector2( 0, 363 )
 scale = Vector2( 23, 23 )
 texture = ExtResource( 1 )
 hframes = 7
-
-[node name="Position2D" type="Position2D" parent="Sprite"]
-position = Vector2( 0.173913, 8.3913 )
 
 [node name="EnterTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -117,13 +110,3 @@ wait_time = 0.5
 
 [node name="SpawnerTimer" type="Timer" parent="."]
 wait_time = 5.0
-
-[node name="Destroyer" type="KinematicBody2D" parent="."]
-script = ExtResource( 3 )
-max_hitpoints = 15
-
-[node name="Sprite" type="Sprite" parent="Destroyer"]
-
-[node name="Line2D" type="Line2D" parent="Destroyer"]
-width_curve = SubResource( 2 )
-default_color = Color( 1, 1, 1, 1 )

@@ -5,9 +5,8 @@ export var max_hitpoints := 10
 export var speed := 75
 export var ai := true
 var current_hitpoints
-var iframe = 0
 var explosion = preload("res://objects/death_explosion.tscn")
-
+var iframe = 0
 signal damage_received(damage, vector, unparryable, frombullet)
 
 func _ready():
