@@ -39,9 +39,6 @@ func enter_arena():
 		yield(enter_timer, "timeout")
 	laughing = true
 
-func _ready():
-	enter_arena()
-
 func start_spawner():
 	randomize()
 	

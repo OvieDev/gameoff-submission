@@ -29,6 +29,7 @@ func _process(delta):
 	particles.emitting = boosting or dashing
 
 func ai():
+	print(impacttimer.is_stopped())
 	dist = position.distance_to(player.position)
 	direction_to_player = position.direction_to(player.position)
 	
@@ -113,11 +114,11 @@ func anim_and_attack():
 		cooldown_tick-=1
 		
 func end_jump():
+	print("Ended!")
 	impact = false
 	if dashing and dist<400 or is_on_wall():
 		dashing = false
-	else:
-		timer.start()
+		timer.stop()
 
 func jump():
 	dashing = true

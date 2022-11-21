@@ -172,8 +172,6 @@ func add_fuel():
 
 func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 	if iframe==0:
-		print(parry_direction.x*-1==vector.x*75 and unparryable)
-		print(vector!=Vector2.DOWN and duck)
 		if ((parry_direction.x*-1==vector.x*75 and unparryable) or (vector!=Vector2.DOWN and duck) or (roll_direction!=Vector2.ZERO)):
 			if parry_direction.x*-1==vector.x*75 and unparryable:
 				enabled_moves[0] = false
@@ -242,7 +240,6 @@ func attack():
 			proj.sprite = load("res://graphics/images/shockwave.png")
 			proj.should_emit = true
 			proj.particle_transform = Transform2D(Vector2(2, 0), Vector2(0, 5), Vector2(0,0))
-			print(hitline.cast_to.x==-75)
 			if hitline.cast_to.x==-75:
 				proj.invert_image = true
 			get_tree().get_root().get_node("Node2D").add_child(proj)
@@ -252,7 +249,6 @@ func attack():
 		gui.emit_signal("refill")
 
 func dash():
-	print("Dashed!")
 	dashtimer.start()
 	yield(dashtimer, "timeout")
 	dash_direction = Vector2.ZERO

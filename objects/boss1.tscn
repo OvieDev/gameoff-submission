@@ -159,7 +159,6 @@ position = Vector2( 0, 363 )
 scale = Vector2( 23, 23 )
 texture = ExtResource( 1 )
 hframes = 7
-frame = 5
 
 [node name="Laser" type="Area2D" parent="Sprite"]
 position = Vector2( -0.26087, -9.13043 )

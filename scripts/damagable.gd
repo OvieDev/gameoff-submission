@@ -19,10 +19,7 @@ func die():
 	queue_free()
 
 func heal(amount):
-	print(self)
 	current_hitpoints+=amount
-	print(current_hitpoints)
-	print(max_hitpoints)
 	if current_hitpoints>max_hitpoints:
 		current_hitpoints = max_hitpoints
 		

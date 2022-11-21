@@ -101,7 +101,6 @@ func end_jump():
 
 func _on_Enemy_damage_received(damage, vector, unparryable, id):
 	if !shield:
-		print("damaged")
 		current_hitpoints-=damage
 		attack_tick = 0
 		cooldown_tick = 60
@@ -114,6 +113,7 @@ func _on_Enemy_damage_received(damage, vector, unparryable, id):
 			impacttimer.start()
 	else:
 		shield = false
+		impacttimer.start()
 
 func _process(delta):
 	if ai:
