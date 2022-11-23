@@ -1,0 +1,262 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://graphics/images/ufo.png" type="Texture" id=1]
+[ext_resource path="res://scripts/boss2.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 153.5, 27.5 )
+
+[sub_resource type="Animation" id=12]
+resource_name = "BashEnter"
+length = 0.3
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Ufo:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 3.13834 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -500 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.3 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "anim_finished" ],
+"method": "emit_signal"
+} ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "EnterArena"
+length = 2.01
+loop = true
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Ufo:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 0.8, 2.01 ),
+"transitions": PoolRealArray( 2.92817, 4.43828, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 900 ), Vector2( 1, -150 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Ufo:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.8, 1, 1.5, 2.01 ),
+"transitions": PoolRealArray( 1, 4, 1.86607, 1 ),
+"update": 0,
+"values": [ 0.0, -25.0, 25.0, 0.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:ai")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1.99 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("AnimationPlayer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"values": [  ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 2.01 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "stop_enter"
+} ]
+}
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 49.5, 317.5 )
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+uniform bool visible;
+uniform bool phase;
+uniform float width : hint_range(0.5, 10.0, 0.1);
+uniform float alpha : hint_range(0.0, 1.0, 0.1);
+
+void fragment() {
+	if (visible) {
+		if (phase)
+		{
+			COLOR = vec4(1, 0, 0 , 0.2)
+		}
+		else {
+			COLOR.rgb = vec3(distance(vec2(UV.x, UV.y), vec2(0.5, UV.y))/width);
+			COLOR.rgb = mix(COLOR.rgb, (COLOR.rgb-vec3(1))*vec3(-1), 1);
+			if (lessThan(COLOR.rgb, vec3(0.4))==bvec3(true)) {
+				COLOR.a = 0.0;
+			}
+		}
+	} else {
+		COLOR.a = 0.0;
+	}
+	COLOR.a = clamp(COLOR.a-alpha, 0, 1);
+}"
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 1 )
+shader_param/visible = false
+shader_param/phase = false
+shader_param/width = 10.0
+shader_param/alpha = 0.0
+
+[sub_resource type="Curve" id=7]
+max_value = 10.0
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.592965, 10 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=8]
+curve = SubResource( 7 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+emission_shape = 2
+emission_box_extents = Vector3( 90, 1, 1 )
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 27.03
+angular_velocity = 77.84
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 100.0
+scale_curve = SubResource( 8 )
+
+[sub_resource type="CircleShape2D" id=9]
+radius = 159.524
+
+[sub_resource type="Shader" id=10]
+code = "shader_type canvas_item;
+uniform float circ_radius : hint_range(0.0, 10.0, 0.01);
+uniform vec4 color : hint_color;
+uniform float opacity : hint_range(0.0, 1.0, 0.1);
+
+float circle(vec2 position, float radius, float feather)
+{
+	return smoothstep(radius, radius + feather, length(position - vec2(0.5)));
+}
+
+void fragment() {
+	COLOR.rgb = vec3( circle(UV, circ_radius, 0.) );
+	if (COLOR.rgb == vec3(1,1,1)) {
+		COLOR.a = 0.0;
+	}
+	else {
+		COLOR.rgb = vec3(1,1,1);
+		COLOR.rgb = mix(COLOR.rgb, color.rgb, 0.1);
+		COLOR.a = opacity;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=11]
+shader = SubResource( 10 )
+shader_param/circ_radius = 0.48
+shader_param/color = Color( 1, 1, 1, 1 )
+shader_param/opacity = 0.0
+
+[node name="KinematicBody2D" type="KinematicBody2D"]
+script = ExtResource( 2 )
+ai = true
+
+[node name="Ufo" type="Sprite" parent="."]
+scale = Vector2( 10, 10 )
+z_index = 1
+texture = ExtResource( 1 )
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 2.5, -6.5 )
+shape = SubResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/BashEnter = SubResource( 12 )
+anims/EnterArena = SubResource( 2 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="LaserTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Laser" type="Area2D" parent="."]
+position = Vector2( 0, 86 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Laser"]
+position = Vector2( -1.5, 307.5 )
+shape = SubResource( 4 )
+
+[node name="ColorRect" type="ColorRect" parent="Laser"]
+material = SubResource( 5 )
+margin_left = -57.0
+margin_top = -9.0
+margin_right = 56.0
+margin_bottom = 631.0
+
+[node name="Particles2D" type="Particles2D" parent="Laser"]
+position = Vector2( -1, 604 )
+emitting = false
+amount = 20
+speed_scale = 2.0
+local_coords = false
+process_material = SubResource( 6 )
+
+[node name="DeathRay" type="Area2D" parent="."]
+z_index = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathRay"]
+shape = SubResource( 9 )
+
+[node name="ColorRect" type="ColorRect" parent="DeathRay"]
+material = SubResource( 11 )
+margin_left = -168.0
+margin_top = -171.0
+margin_right = -128.0
+margin_bottom = -131.0
+rect_scale = Vector2( 8.39188, 8.57087 )
+
+[node name="DeathRayTween" type="Tween" parent="."]
+
+[node name="DeathRayTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true

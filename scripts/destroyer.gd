@@ -7,12 +7,13 @@ onready var animation = $AnimationPlayer
 signal destroy
 
 func _process(delta):
+	processing()
+	
+func processing():
 	global_position = lerp(global_position, current, 0.1)
 	if iframe>0:
 		iframe-=1
 	animation.play("Rotate")
-	
-
 func _on_self_dmg_received(damage, vector, unparryable, frombullet):
 	if iframe==0:
 		randomize()

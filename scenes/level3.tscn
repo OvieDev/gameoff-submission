@@ -481,6 +481,8 @@ times_to_destroy = 1
 position = Vector2( 9229, -1413 )
 rotation = 0.000755906
 scale = Vector2( 1.72, 1.88006 )
+collision_layer = 0
+collision_mask = 0
 times_to_destroy = 1
 
 [node name="StaticBody2D4" parent="." instance=ExtResource( 8 )]

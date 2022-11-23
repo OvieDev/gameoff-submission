@@ -623,6 +623,7 @@ player_path = NodePath("../Player")
 position = Vector2( 283, -621 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 44 )
+frame = 1
 playing = true
 
 [node name="Particles2D" type="Particles2D" parent="."]
