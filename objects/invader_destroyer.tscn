@@ -23,35 +23,30 @@ tracks/0/keys = {
 "values": [ Vector2( 0, -1000 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, -1000 ) ]
 }
 tracks/1/type = "method"
-tracks/1/path = NodePath("AnimationPlayer")
+tracks/1/path = NodePath("Timer")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 1 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [ true ],
-"method": "stop"
-} ]
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"values": [  ]
 }
-tracks/2/type = "method"
-tracks/2/path = NodePath("Timer")
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0.9 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [ -1 ],
-"method": "start"
-} ]
+"times": PoolRealArray( 0, 0.6, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -1000 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
 }
-tracks/3/type = "value"
-tracks/3/path = NodePath(".:dropping")
+tracks/3/type = "method"
+tracks/3/path = NodePath("AnimationPlayer")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -59,20 +54,22 @@ tracks/3/enabled = true
 tracks/3/keys = {
 "times": PoolRealArray( 0.9 ),
 "transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
+"values": [ {
+"args": [ true ],
+"method": "stop"
+} ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Sprite:position")
+tracks/4/path = NodePath(".:up")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.6, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, -1000 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+"times": PoolRealArray( 0.9 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -97,9 +94,12 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
-"values": [  ]
+"times": PoolRealArray( 0.9 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ true ],
+"method": "stop"
+} ]
 }
 tracks/2/type = "method"
 tracks/2/path = NodePath("Timer")
@@ -161,7 +161,7 @@ collision_layer = 4
 collision_mask = 0
 script = ExtResource( 3 )
 positions = PoolVector2Array( 100, 100, 500, 500 )
-dropping = true
+up = false
 
 [node name="Sprite" type="Sprite" parent="."]
 rotation = 0.174533
@@ -173,6 +173,7 @@ position = Vector2( 0, 7 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+method_call_mode = 1
 anims/Drop = SubResource( 3 )
 anims/Pickup = SubResource( 4 )
 anims/Rotate = SubResource( 2 )
@@ -184,6 +185,6 @@ texture = ExtResource( 2 )
 hframes = 2
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 7.0
 
 [connection signal="damage_received" from="." to="." method="_on_self_dmg_received"]

@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://graphics/ui/theme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/enter_scene.gd" type="Script" id=2]
+[ext_resource path="res://sound/sfx/entry.wav" type="AudioStream" id=3]
+[ext_resource path="res://sound/sfx/transition.wav" type="AudioStream" id=4]
+
+[sub_resource type="Environment" id=1]
+background_mode = 4
+background_canvas_max_layer = 1
+glow_enabled = true
+glow_levels/3 = false
+glow_levels/4 = true
+glow_levels/5 = false
+glow_intensity = 1.77
+glow_strength = 1.47
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0588235, 0.0588235, 0.0588235, 1 )
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -88.0
+margin_top = -44.0
+margin_right = 92.0
+margin_bottom = 1.0
+theme = ExtResource( 1 )
+text = "by OvieDev"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+pitch_scale = 1.37
+
+[node name="TransitionPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )

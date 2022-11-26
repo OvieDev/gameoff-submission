@@ -9,10 +9,25 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Area2D",
+"class": "AreaButton",
+"language": "GDScript",
+"path": "res://scripts/button.gd"
+}, {
 "base": "Enemy",
 "class": "Baller",
 "language": "GDScript",
 "path": "res://scripts/baller.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "BossFactoryRobot",
+"language": "GDScript",
+"path": "res://scripts/boss1.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "BossUfo",
+"language": "GDScript",
+"path": "res://scripts/boss2.gd"
 }, {
 "base": "HBoxContainer",
 "class": "ContributorClass",
@@ -43,6 +58,11 @@ _global_script_classes=[ {
 "class": "InvitationItem",
 "language": "GDScript",
 "path": "res://addons/github-integration/scripts/InvitationItem.gd"
+}, {
+"base": "Node2D",
+"class": "Level",
+"language": "GDScript",
+"path": "res://scripts/level.gd"
 }, {
 "base": "Area2D",
 "class": "Notifier",
@@ -78,27 +98,38 @@ _global_script_classes=[ {
 "class": "ToggleableTexture",
 "language": "GDScript",
 "path": "res://scripts/toggleable_texture.gd"
+}, {
+"base": "Control",
+"class": "UIFreeScene",
+"language": "GDScript",
+"path": "res://scripts/ui_free_scene.gd"
 } ]
 _global_script_class_icons={
+"AreaButton": "",
 "Baller": "",
+"BossFactoryRobot": "",
+"BossUfo": "",
 "ContributorClass": "",
 "Damagable": "",
 "Enemy": "",
 "GistItem": "",
 "HealthPack": "",
 "InvitationItem": "",
+"Level": "",
 "Notifier": "",
 "Player": "",
 "Projectile": "",
 "RepositoryItem": "",
 "ShieldedGuy": "",
 "Sniper": "",
-"ToggleableTexture": ""
+"ToggleableTexture": "",
+"UIFreeScene": ""
 }
 
 [application]
 
 config/name="Game Off Submission"
+run/main_scene="res://scenes/enter_scene.tscn"
 boot_splash/show_image=false
 config/icon="res://icon.png"
 
@@ -110,6 +141,7 @@ UserData="*res://addons/github-integration/scripts/user_data.gd"
 RestHandler="*res://addons/github-integration/scenes/RestHandler.tscn"
 Gui="*res://objects/gui.tscn"
 PauseMenu="*res://objects/pause_menu.tscn"
+GameManager="*res://scripts/game_manager.gd"
 
 [editor]
 

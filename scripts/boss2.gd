@@ -16,9 +16,11 @@ onready var death_circ = $DeathRay
 onready var death_rect = $DeathRay/ColorRect
 onready var death_ray_timer_real = $DeathRayTimer
 onready var initial_y = global_position.y
+onready var spawner_timer = $SpawnerTimer
 export var ai := false
 export var bash_start := Vector2(0,0)
 export var bash_end := Vector2(0,0)
+export var spawner_position := Vector2(0,0)
 
 var last_attack = 0
 var collision
@@ -28,19 +30,28 @@ var move_ray = true
 var to_bash = 4
 var bashing = false
 var last_position = Vector2.ZERO
+var enemy = preload("res://objects/base_enemy.tscn")
+var pool = []
+var death = false
 
 signal bash_ended
 signal after_bash
 signal anim_finished
 
 func _process(delta):
+	if death:
+		Engine.time_scale = lerp(Engine.time_scale, 1, 0.005)
+		return
 	if !ai:
 		return
 	if bashing:
 		sprite.rotation_degrees = lerp(sprite.rotation_degrees, -22.5, 0.1)
 		collision = move_and_collide(Vector2.LEFT*10)
 		if collision:
-			if collision.collider is Player:
+			if collision.collider is Damagable and !collision.collider is Player:
+
+				collision.collider.emit_signal("damage_received", 8, Vector2.LEFT, false, null)
+			elif collision.collider is Player:
 				collision_layer = 0
 				collision_mask = 0
 				collision.collider.emit_signal("damage_received", 8, Vector2.LEFT, false, null)
@@ -67,6 +78,21 @@ func _ready():
 	connect("anim_finished", self, "AnimationPlayer_animation_finished")
 	enter_arena()
 	choose_attack()
+	activate_spawner()
+	
+func activate_spawner():
+	spawner_timer.start()
+	yield(spawner_timer, "timeout")
+	if pool.size()<4:
+		var inst = enemy.instance()
+		inst.max_hitpoints = 12
+		inst.global_position = spawner_position
+		inst.player_path = player_path
+		pool.append(inst)
+		inst.connect("killed", self, "_remove_enemy", [inst])
+		get_tree().get_root().get_node("Node2D").add_child(inst)
+	activate_spawner()
+
 func enter_arena():
 	animation.play("EnterArena")
 	
@@ -95,9 +121,10 @@ func choose_attack():
 	choose_attack() 
 
 func spawn_bombs():
-	for i in range(5):
+	for i in range(3):
 		var inst = bomb.instance()
-		inst.global_position = global_position + Vector2(-300+(i*100), 200)
+		inst.modulate = Color(1,1,1,0)
+		inst.global_position = global_position + Vector2(-100+(i*100), 200)
 		get_tree().get_root().get_node("Node2D").add_child(inst)
 		tween.interpolate_property(inst, "modulate", Color(1,1,1,0), Color(1,1,1,1), 0.25)
 	tween.start()
@@ -136,7 +163,7 @@ func spawn_death_ray():
 	yield(death_ray_timer,"tween_all_completed")
 	for i in death_circ.get_overlapping_bodies():
 		if i is Player:
-			i.deal_damage(999)
+			i.deal_damage(6)
 	death_ray_timer_real.start()
 	yield(death_ray_timer_real, "timeout")
 	death_rect.get_material().set_shader_param("opacity", 0.3)
@@ -164,3 +191,16 @@ func AnimationPlayer_animation_finished():
 	animation.stop()
 	sprite.position = Vector2.ZERO
 	global_position = bash_start
+
+
+func _on_Destroyer_destroy():
+	ai = false
+	var expl = load("res://objects/death_explosion.tscn").instance()
+	expl.global_position = sprite.global_position
+	expl.scale = Vector2(25, 25)
+	Engine.time_scale = 0.2
+	get_tree().get_root().get_node("Node2D").add_child(expl) # Replace with function body.
+	animation.play("Death")
+	death = true
+func _remove_enemy(which):
+	pool.erase(which)

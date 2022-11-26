@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://graphics/images/ufo.png" type="Texture" id=1]
 [ext_resource path="res://scripts/boss2.gd" type="Script" id=2]
@@ -35,6 +35,48 @@ tracks/1/keys = {
 "args": [ "anim_finished" ],
 "method": "emit_signal"
 } ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "Death"
+loop = true
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Ufo:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 1 ),
+"transitions": PoolRealArray( 1, 4.28709, 0.277392, 1.62451 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -100 ), Vector2( 0, -100 ), Vector2( 0, 1000 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Ufo:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 2, 1, 1 ),
+"update": 0,
+"values": [ 0.0, -25.0, 25.0, 25.0 ]
 }
 
 [sub_resource type="Animation" id=2]
@@ -162,7 +204,7 @@ linear_accel = 100.0
 scale_curve = SubResource( 8 )
 
 [sub_resource type="CircleShape2D" id=9]
-radius = 159.524
+radius = 135.093
 
 [sub_resource type="Shader" id=10]
 code = "shader_type canvas_item;
@@ -191,13 +233,15 @@ void fragment() {
 shader = SubResource( 10 )
 shader_param/circ_radius = 0.48
 shader_param/color = Color( 1, 1, 1, 1 )
-shader_param/opacity = 0.0
+shader_param/opacity = 0.6
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
 script = ExtResource( 2 )
 ai = true
 
 [node name="Ufo" type="Sprite" parent="."]
+position = Vector2( 0, 381.372 )
+rotation = -0.402551
 scale = Vector2( 10, 10 )
 z_index = 1
 texture = ExtResource( 1 )
@@ -209,6 +253,7 @@ shape = SubResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/BashEnter = SubResource( 12 )
+anims/Death = SubResource( 13 )
 anims/EnterArena = SubResource( 2 )
 
 [node name="Timer" type="Timer" parent="."]
@@ -260,3 +305,6 @@ rect_scale = Vector2( 8.39188, 8.57087 )
 [node name="DeathRayTimer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
+
+[node name="SpawnerTimer" type="Timer" parent="."]
+wait_time = 2.0
