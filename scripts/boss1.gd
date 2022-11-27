@@ -29,15 +29,20 @@ var pool = 0
 var dead = false
 var look = true
 var enemies = []
+var entered = false
 
 signal death
 
 func enter_arena():
+	if entered:
+		return
+	entered = true
 	for i in range(5):
 		sprite.position.y-=145.2
 		enter_timer.start()
 		yield(enter_timer, "timeout")
 	laughing = true
+
 
 func start_spawner():
 	randomize()
@@ -155,6 +160,7 @@ func superattack():
 			i.deal_damage(999)
 	tween.interpolate_property(laser.get_node("ColorRect"), "color", Color(1,1,1,1), Color(1,1,1,0), 0.5)
 	tween.start()
+	look = true
 	
 func _notification(what):
 	if what==NOTIFICATION_EXIT_TREE:

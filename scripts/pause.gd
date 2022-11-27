@@ -5,9 +5,10 @@ onready var label = $Control/Label2
 onready var font = pause_label.get("custom_fonts/font")
 
 var current_selection = false
+var can_be_paused = true
 
 func _input(event):
-	if event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed("ui_cancel") and can_be_paused:
 		get_tree().paused = !get_tree().paused
 		visible = !visible
 

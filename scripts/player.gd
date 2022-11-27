@@ -36,6 +36,7 @@ export var ignore_twist := false
 
 signal roll_or_dash
 signal parried(bulletid)
+signal death
 
 func deal_damage(value):
 	if iframe==0:
@@ -79,7 +80,7 @@ func _input(event):
 func _physics_process(delta):
 	print(Engine.time_scale)
 	if dead:
-		Engine.time_scale = lerp(Engine.time_scale, 1, 0.0001)
+		Engine.time_scale = lerp(Engine.time_scale, 1, 0.0005)
 		move_and_collide(Vector2(0, 100))
 		return
 	if FUEL==101:
@@ -157,6 +158,7 @@ func _ready():
 	timer.connect("timeout", self, "add_fuel")
 	timer.start()
 	connect("roll_or_dash", self, "dash_or_roll")
+	connect("death", DeathScreen.get_node("Control"), "_on_player_death")
 	combo_counting()
 
 func add_fuel():
@@ -329,6 +331,8 @@ func die():
 	else:
 		dir = "Left"
 	gui.emit_signal("death")
+	emit_signal("death")
+	DeathScreen.visible = true
 	animation.play("Death"+dir)
 	Engine.time_scale = 0.1
 	yield(animation, "animation_finished")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://objects/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/level.gd" type="Script" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://graphics/shaders/laser.tres" type="Material" id=18]
 [ext_resource path="res://scripts/boss_laser.gd" type="Script" id=19]
 [ext_resource path="res://objects/destroyer.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scripts/transition_camera.gd" type="Script" id=21]
 
 [sub_resource type="ConvexPolygonShape2D" id=28]
 points = PoolVector2Array( 0, 7.15996, 16, 7.1875, 16, 10.875, 0, 10.9375 )
@@ -218,8 +219,10 @@ format = 1
 tile_data = PoolIntArray( -1507155, 1, 0, -1507154, 1, 0, -1507153, 1, 0, -1507152, 1, 0, -1507151, 1, 0, -1507150, 1, 0, -1507149, 1, 0, -1507148, 1, 0, -1507147, 1, 0, -1507146, 1, 0, -1507145, 1, 0, -1441620, 1, 0, -1441619, 1, 0, -1441618, 1, 0, -1441617, 1, 0, -1441616, 1, 0, -1441615, 1, 0, -1441614, 1, 0, -1441613, 1, 0, -1441612, 1, 0, -1441611, 1, 0, -1441610, 1, 0, -1441609, 1, 0, -1376085, 1, 0, -1376084, 1, 0, -1376083, 1, 0, -1376082, 1, 0, -1376081, 1, 0, -1376080, 1, 0, -1376079, 1, 0, -1376078, 1, 0, -1376077, 1, 0, -1376076, 1, 0, -1376075, 1, 0, -1376074, 1, 0, -1376073, 1, 0, -1310551, 1, 0, -1310550, 1, 0, -1310549, 1, 0, -1310548, 1, 0, -1310547, 1, 0, -1310546, 1, 0, -1310545, 1, 0, -1310544, 1, 0, -1310543, 1, 0, -1310542, 1, 0, -1310541, 1, 0, -1310540, 1, 0, -1310539, 1, 0, -1310538, 1, 0, -1310537, 1, 0, -1245016, 1, 0, -1245015, 1, 0, -1245014, 1, 0, -1245013, 1, 0, -1245012, 1, 0, -1245011, 1, 0, -1245010, 1, 0, -1245009, 1, 0, -1245008, 1, 0, -1245007, 1, 0, -1245006, 1, 0, -1245005, 1, 0, -1245004, 1, 0, -1245003, 1, 0, -1245002, 1, 0, -1245001, 1, 0, -262075, 0, 0, -262074, 0, 0, -262073, 0, 0, -262072, 0, 0, -262071, 0, 0, -262070, 0, 0 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 243, -86 )
+position = Vector2( 9078, -1289 )
 max_hitpoints = 10
+
+[node name="Camera2D" parent="Player" index="2" groups=["transition_camera"]]
 
 [node name="KinematicBody2D2" parent="." groups=["notify1"] instance=ExtResource( 5 )]
 position = Vector2( 884, -39 )
@@ -438,7 +441,7 @@ position = Vector2( 0, -1.5 )
 shape = SubResource( 1 )
 
 [node name="Notifier19" type="Area2D" parent="."]
-position = Vector2( 9231, -1278 )
+position = Vector2( 9316, -1274 )
 scale = Vector2( 1.58068, 1.7746 )
 script = ExtResource( 7 )
 group = "close_door"
@@ -449,13 +452,24 @@ position = Vector2( 0, -1.5 )
 shape = SubResource( 1 )
 
 [node name="Notifier20" type="Area2D" parent="."]
-position = Vector2( 9525, -1461 )
+position = Vector2( 9552, -1464 )
 scale = Vector2( 16.2607, 4.4946 )
 script = ExtResource( 7 )
 group = "boss"
 method = "enter_arena"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Notifier20"]
+position = Vector2( 0, -1.5 )
+shape = SubResource( 1 )
+
+[node name="Notifier23" type="Area2D" parent="."]
+position = Vector2( 9552, -1464 )
+scale = Vector2( 16.2607, 4.4946 )
+script = ExtResource( 7 )
+group = "transition_camera"
+method = "emit_transition"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Notifier23"]
 position = Vector2( 0, -1.5 )
 shape = SubResource( 1 )
 
@@ -478,6 +492,7 @@ scale = Vector2( 1.72, 1.88006 )
 times_to_destroy = 1
 
 [node name="StaticBody2D6" parent="." groups=["close_door"] instance=ExtResource( 8 )]
+modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 9229, -1413 )
 rotation = 0.000755906
 scale = Vector2( 1.72, 1.88006 )
@@ -748,6 +763,8 @@ process_material = SubResource( 36 )
 position = Vector2( 9889, -1398 )
 zoom = Vector2( 1.25, 1.25 )
 smoothing_enabled = true
+script = ExtResource( 21 )
+static_position = Vector2( 9889, -1398 )
 
 [node name="Damagable23" parent="." groups=["notify11"] instance=ExtResource( 6 )]
 position = Vector2( 3711, -228 )
@@ -826,12 +843,13 @@ possible_positions = PoolVector2Array( 9980, -1256, 9986, -1485 )
 
 [node name="Damagable31" parent="." instance=ExtResource( 20 )]
 position = Vector2( 10640, -1444 )
-max_hitpoints = 1
+max_hitpoints = 5
 positions = PoolVector2Array( 10133, -1492, 9979, -1206, 9817, -1491, 9250, -1554, 10640, -1444 )
 
 [connection signal="death" from="Boss" to="StaticBody2D5" method="_on_Damagable_killed"]
 [connection signal="death" from="Boss" to="Laser" method="_on_Boss_death"]
 [connection signal="death" from="Boss" to="Laser2" method="_on_Boss_death"]
+[connection signal="transition" from="Player/Camera2D" to="Camera2D" method="_on_transition"]
 [connection signal="killed" from="KinematicBody2D2" to="StaticBody2D" method="_on_Damagable_killed"]
 [connection signal="killed" from="Damagable" to="StaticBody2D" method="_on_Damagable_killed"]
 [connection signal="killed" from="Damagable2" to="StaticBody2D" method="_on_Damagable_killed"]
@@ -845,3 +863,5 @@ positions = PoolVector2Array( 10133, -1492, 9979, -1206, 9817, -1491, 9250, -155
 [connection signal="killed" from="Damagable14" to="StaticBody2D4" method="_on_Damagable_killed"]
 [connection signal="body_entered" from="Killzone" to="Killzone" method="_on_Killzone_body_entered"]
 [connection signal="destroy" from="Damagable31" to="Boss" method="_on_Destroyer_destroy"]
+
+[editable path="Player"]
