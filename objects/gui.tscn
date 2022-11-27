@@ -137,3 +137,5 @@ text = "Combo: x0"
 align = 1
 
 [node name="Tween" type="Tween" parent="Control/Combo"]
+
+[node name="Tween" type="Tween" parent="Control"]

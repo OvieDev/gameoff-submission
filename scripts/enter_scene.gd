@@ -20,4 +20,5 @@ func _ready():
 		yield(transition,"finished")
 		transition.pitch_scale -= 0.2
 	label.modulate = Color(1,1,1,0)
+	get_tree().change_scene("res://scenes/mainmenu.tscn")
 	

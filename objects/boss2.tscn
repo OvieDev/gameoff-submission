@@ -233,15 +233,13 @@ void fragment() {
 shader = SubResource( 10 )
 shader_param/circ_radius = 0.48
 shader_param/color = Color( 1, 1, 1, 1 )
-shader_param/opacity = 0.6
+shader_param/opacity = 0.0
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
 script = ExtResource( 2 )
 ai = true
 
 [node name="Ufo" type="Sprite" parent="."]
-position = Vector2( 0, 381.372 )
-rotation = -0.402551
 scale = Vector2( 10, 10 )
 z_index = 1
 texture = ExtResource( 1 )

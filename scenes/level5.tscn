@@ -125,6 +125,9 @@ Fuser 2.0
 position = Vector2( 11993.3, -2629.5 )
 max_hitpoints = 10
 
+[node name="Camera2D" parent="Player" index="2"]
+current = false
+
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2( 950, -664 )
 
@@ -598,3 +601,5 @@ positions = PoolVector2Array( 12747.3, -2784.01, 12057.2, -2784.01 )
 [connection signal="failed" from="Node2D5" to="Node2D4" method="timer_timeout"]
 [connection signal="finish_loop" from="Node2D5" to="Node2D4" method="finish_loop"]
 [connection signal="destroy" from="Damagable18" to="Boss" method="_on_Destroyer_destroy"]
+
+[editable path="Player"]

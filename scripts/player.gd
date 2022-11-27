@@ -30,6 +30,7 @@ var enabled_moves = [true, true, true, true]
 var dashed = false
 var type = ""
 var current_speed = speed
+var dead = false
 
 export var ignore_twist := false
 
@@ -76,6 +77,11 @@ func _input(event):
 				cards[2] = false
 
 func _physics_process(delta):
+	print(Engine.time_scale)
+	if dead:
+		Engine.time_scale = lerp(Engine.time_scale, 1, 0.0001)
+		move_and_collide(Vector2(0, 100))
+		return
 	if FUEL==101:
 			gui.emit_signal("toggle_supercharge")
 	current_speed = lerp(current_speed, speed, 0.01)
@@ -88,7 +94,7 @@ func _physics_process(delta):
 		if Input.is_action_pressed("ui_right"):
 			VELOCITY.x = current_speed+GameManager.combo
 			
-		if Input.is_action_pressed("ui_up") and after_jump == 0:
+		if Input.is_action_pressed("jump") and after_jump == 0:
 			jump()
 			
 		if Input.is_action_pressed("parry") and is_on_floor() and !duck and enabled_moves[0]:
@@ -205,7 +211,7 @@ func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 				enabled_moves[i] = true
 			gui.emit_signal("refill")
 			if current_hitpoints<0:
-				print("YOU LOSE!")
+				die()
 			else:
 				iframe = 8
 				handle_iframes()
@@ -276,6 +282,8 @@ func dash_or_roll():
 func _process(delta):
 	gui.progress.value = FUEL
 	gui.health.value = current_hitpoints
+	if dead:
+		return
 	var dir
 	if hitline.cast_to.x>0:
 		dir = "Right"
@@ -306,7 +314,27 @@ func after_attack(atk):
 			num+=1
 	if num==2:
 		type = atk
-		
+
+func die():
+	if dead:
+		return
+	var inst = explosion.instance()
+	inst.global_position = global_position
+	get_tree().get_root().get_node("Node2D").add_child(inst)
+	dead = true
+	animation.stop()
+	var dir
+	if hitline.cast_to.x>0:
+		dir = "Right"
+	else:
+		dir = "Left"
+	gui.emit_signal("death")
+	animation.play("Death"+dir)
+	Engine.time_scale = 0.1
+	yield(animation, "animation_finished")
+	sprite.position = Vector2(0, 20)
+	
+	
 func twist():
 	if !ignore_twist:
 		return

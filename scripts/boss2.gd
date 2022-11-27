@@ -200,7 +200,16 @@ func _on_Destroyer_destroy():
 	expl.scale = Vector2(25, 25)
 	Engine.time_scale = 0.2
 	get_tree().get_root().get_node("Node2D").add_child(expl) # Replace with function body.
+	for i in pool:
+		i.deal_damage(999)
+	pool.clear()
 	animation.play("Death")
+	sprite.z_index = -1
 	death = true
+	
+func _notification(what):
+	if what==NOTIFICATION_EXIT_TREE:
+		Engine.time_scale = 1
+	
 func _remove_enemy(which):
 	pool.erase(which)

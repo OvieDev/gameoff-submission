@@ -4,18 +4,22 @@ onready var progress = $Fuel
 onready var health = $Health
 onready var combo = $Combo
 onready var combo_tween = $Combo/Tween
+onready var tween = $Tween
 var charge = preload("res://graphics/images/supercharged_health_bar.tres")
 onready var abilities = [$Parry, $Duck, $Dash, $Roll, $Supercharge, $Shield, $BonusAttack]
 signal toggle_supercharge
 signal used_ability(id)
 signal refill
 signal combo_changed(value)
+signal death
 
 func _ready():
+	tween.interpolate_property(self, "modulate", Color(1,1,1,1), Color(1,1,1,0), 0.5)
 	connect("toggle_supercharge", self, "supercharge")
 	connect("used_ability", self, "ability")
 	connect("refill", self, "fill")
 	connect("combo_changed", self, "combo")
+	connect("death", tween, "start")
 	
 func supercharge():
 	if !progress.texture_over:
