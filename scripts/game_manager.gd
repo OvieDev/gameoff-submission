@@ -11,5 +11,6 @@ var unlocked = [true, false, false, false, false, false]
 func _process(delta):
 	print(Engine.target_fps)
 	Engine.target_fps = fps
-
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), -50 + (music)/2)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), -50 + (sfx)/2)
 

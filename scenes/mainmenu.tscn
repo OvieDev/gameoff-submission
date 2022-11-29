@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://graphics/ui/pixelated.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://graphics/ui/theme.tres" type="Theme" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://scripts/mainmenuclosebutton.gd" type="Script" id=4]
 [ext_resource path="res://graphics/images/ui_checkedbox.png" type="Texture" id=5]
 [ext_resource path="res://graphics/images/ui_uncheckedbox.png" type="Texture" id=6]
+[ext_resource path="res://sound/music/mainmenu.wav" type="AudioStream" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 74
@@ -458,8 +459,13 @@ shortcut_in_tooltip = false
 shortcut = SubResource( 5 )
 text = "X"
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+bus = "Music"
+
 [connection signal="pressed" from="Button" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_Settings_pressed"]
+[connection signal="pressed" from="Button3" to="." method="_on_Quit_pressed"]
 [connection signal="pressed" from="PopupPanel/Button" to="PopupPanel/Button7" method="accept_level"]
 [connection signal="pressed" from="PopupPanel/Button2" to="PopupPanel/Button7" method="accept_level"]
 [connection signal="pressed" from="PopupPanel/Button3" to="PopupPanel/Button7" method="accept_level"]

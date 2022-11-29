@@ -319,6 +319,11 @@ position = Vector2( 3995, 3 )
 scale = Vector2( 1.6, 1.64 )
 times_to_destroy = 27
 
+[node name="StaticBody2D6" parent="." instance=ExtResource( 10 )]
+position = Vector2( 4631, -116 )
+scale = Vector2( 1.6, 1.64 )
+times_to_destroy = 4
+
 [node name="StaticBody2D2" parent="." instance=ExtResource( 10 )]
 position = Vector2( 3479, -1920 )
 scale = Vector2( 2.93017, 1.86493 )
@@ -563,6 +568,10 @@ position = Vector2( 846, 219 )
 possible_positions = PoolVector2Array( 846, 219 )
 cooldown = 6
 
+[node name="Area2D5" parent="." instance=ExtResource( 11 )]
+position = Vector2( 3260, -336 )
+possible_positions = PoolVector2Array( 3260, -336 )
+
 [connection signal="failed" from="Node2D" to="Node2D7" method="timer_timeout"]
 [connection signal="finish_loop" from="Node2D" to="Node2D7" method="finish_loop"]
 [connection signal="failed" from="Node2D2" to="Node2D" method="timer_timeout"]
@@ -587,6 +596,10 @@ cooldown = 6
 [connection signal="killed" from="Damagable29" to="StaticBody2D2" method="_on_Damagable_killed"]
 [connection signal="killed" from="Damagable30" to="StaticBody2D2" method="_on_Damagable_killed"]
 [connection signal="killed" from="Damagable31" to="StaticBody2D2" method="_on_Damagable_killed"]
+[connection signal="killed" from="Damagable36" to="StaticBody2D6" method="_on_Damagable_killed"]
+[connection signal="killed" from="Damagable37" to="StaticBody2D6" method="_on_Damagable_killed"]
+[connection signal="killed" from="Damagable38" to="StaticBody2D6" method="_on_Damagable_killed"]
+[connection signal="killed" from="Damagable39" to="StaticBody2D6" method="_on_Damagable_killed"]
 [connection signal="failed" from="Node2D8" to="Node2D10" method="timer_timeout"]
 [connection signal="finish_loop" from="Node2D8" to="Node2D10" method="finish_loop"]
 [connection signal="failed" from="Node2D10" to="Node2D9" method="timer_timeout"]

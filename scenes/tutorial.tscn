@@ -234,7 +234,7 @@ level_name = "Tutorial"
 
 [node name="Sprite" type="Sprite" parent="."]
 modulate = Color( 0.909804, 0.909804, 0.909804, 1 )
-position = Vector2( -389, 316 )
+position = Vector2( -443, 324 )
 scale = Vector2( 705.625, -326.415 )
 texture = ExtResource( 10 )
 
@@ -251,6 +251,7 @@ tile_data = PoolIntArray( -2883583, 14, 0, -2883582, 14, 0, -2883581, 14, 0, -28
 [node name="Monitor8" parent="." groups=["notify2"] instance=ExtResource( 13 )]
 position = Vector2( 4178, -875 )
 scale = Vector2( 4.20008, 3.94065 )
+frame = 1
 text = "That enemy throws balls
 To dodge them, you can
 roll or duck. To duck
@@ -259,14 +260,13 @@ press S, to roll E"
 [node name="Monitor9" parent="." groups=["notify2"] instance=ExtResource( 13 )]
 position = Vector2( 4565, -835 )
 scale = Vector2( 4.20008, 3.94065 )
-frame = 1
 text = "Up there's a jetpack robot
 which also fires bullets and
 you can kill him by parrying
 them. Use RMB to parry!"
 
 [node name="Player" parent="." groups=["player"] instance=ExtResource( 2 )]
-position = Vector2( 279, -61 )
+position = Vector2( 3151, -1318 )
 collision/safe_margin = 1.25
 max_hitpoints = 1000
 ignore_twist = true
@@ -501,16 +501,19 @@ shadow_filter = 5
 
 [node name="Damagable3" parent="." groups=["notify4"] instance=ExtResource( 4 )]
 position = Vector2( 678, -1188 )
+max_hitpoints = 5
 ai = false
 player_path = NodePath("../Player")
 
 [node name="Damagable4" parent="." groups=["notify4"] instance=ExtResource( 4 )]
 position = Vector2( 861, -1185 )
+max_hitpoints = 5
 ai = false
 player_path = NodePath("../Player")
 
 [node name="Damagable5" parent="." groups=["notify4"] instance=ExtResource( 4 )]
 position = Vector2( 1092, -1472 )
+max_hitpoints = 5
 ai = false
 player_path = NodePath("../Player")
 
@@ -604,6 +607,16 @@ method = "glitch"
 position = Vector2( -2, -33 )
 shape = SubResource( 38 )
 
+[node name="Notifier11" type="Area2D" parent="."]
+position = Vector2( 2857, -1311 )
+script = ExtResource( 7 )
+group = "monitor_twist"
+method = "glitch"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Notifier11"]
+position = Vector2( -2, -33 )
+shape = SubResource( 38 )
+
 [node name="Area2D2" parent="." instance=ExtResource( 11 )]
 position = Vector2( 1627, -1464 )
 possible_positions = PoolVector2Array( 786, -1478, 1303, -1465, 1627, -1464 )
@@ -623,7 +636,7 @@ player_path = NodePath("../Player")
 position = Vector2( 283, -621 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 44 )
-frame = 1
+frame = 4
 playing = true
 
 [node name="Particles2D" type="Particles2D" parent="."]
@@ -656,7 +669,6 @@ shape = SubResource( 49 )
 [node name="Monitor" parent="." groups=["monitor_welcome"] instance=ExtResource( 13 )]
 position = Vector2( -132, -135 )
 scale = Vector2( 6.68007, 5.78065 )
-frame = 1
 ai = true
 text = "Hi! Welcome to Totally not 
 Evil Robots Inc. I'm an
@@ -667,7 +679,6 @@ just say, things got south
 [node name="Monitor2" parent="." groups=["monitor_welcome"] instance=ExtResource( 13 )]
 position = Vector2( 743, -256 )
 scale = Vector2( 6.68007, 5.78065 )
-frame = 1
 text = "Somehow, our robots want
 to destroy the world and
 since we don't want to be
@@ -677,6 +688,7 @@ killed, we'll stop them
 [node name="Monitor3" parent="." groups=["monitor_boosting"] instance=ExtResource( 13 )]
 position = Vector2( 1628, -69 )
 scale = Vector2( 6.68007, 5.78065 )
+frame = 1
 text = "So, let's get to work!
 Press UP to boost up
 Remember, if you run out
@@ -686,6 +698,7 @@ of energy, you can't boost
 [node name="Monitor4" parent="." groups=["monitor_battery"] instance=ExtResource( 13 )]
 position = Vector2( 1846, -326 )
 scale = Vector2( 6.68007, 5.78065 )
+frame = 1
 text = "For this jump you will
 need 4 bars of battery
 It will regenerate by
@@ -695,7 +708,6 @@ itself, by the way.
 [node name="Monitor5" parent="." groups=["monitor_enemy"] instance=ExtResource( 13 )]
 position = Vector2( 2297, -435 )
 scale = Vector2( 6.68007, 5.78065 )
-frame = 1
 text = "Here's a copy of your
 enemy but without AI. 
 Use ATTACK to attack 
@@ -706,6 +718,7 @@ him!
 [node name="Monitor6" parent="." groups=["monitor_battery"] instance=ExtResource( 13 )]
 position = Vector2( 3384, -425 )
 scale = Vector2( 6.68007, 5.78065 )
+frame = 1
 text = "Nice! You're really good
 at this! Anyway, go up!
 Then I'll tell you what 
@@ -715,10 +728,49 @@ to do
 [node name="Monitor7" parent="." groups=["monitor_battery"] instance=ExtResource( 13 )]
 position = Vector2( 3311, -878 )
 scale = Vector2( 4.20008, 3.94065 )
+frame = 1
+ai = true
 text = "So, to pass that gap, you
 need to dash. Dashing
-uses energy, and denies
-laws of gravity. Use Q to use it"
+uses energy, Press Q 
+to dash"
+
+[node name="Monitor10" parent="." groups=["monitor_battery"] instance=ExtResource( 13 )]
+position = Vector2( 2450, -1385 )
+scale = Vector2( 4.20008, 3.94065 )
+ai = true
+text = "Uhh, I got some bad news
+for you. This electricity
+box made a glitch in
+your code"
+
+[node name="Monitor11" parent="." groups=["monitor_battery"] instance=ExtResource( 13 )]
+position = Vector2( 2450, -1246 )
+scale = Vector2( 4.20008, 3.94065 )
+ai = true
+text = "You can't attack now
+if you will not dodge
+2 enemies attacks.
+Weird isn't it?"
+
+[node name="Monitor12" parent="." groups=["monitor_battery"] instance=ExtResource( 13 )]
+position = Vector2( 2453, -877 )
+scale = Vector2( 4.20008, 3.94065 )
+frame = 1
+ai = true
+text = "If you dodge 3rd time
+you'll lose your chance
+to attack. As they said,
+third time's a charm."
+
+[node name="Monitor13" parent="." groups=["monitor_battery"] instance=ExtResource( 13 )]
+position = Vector2( 1445, -1065 )
+scale = Vector2( 4.20008, 3.94065 )
+frame = 1
+ai = true
+text = "PRO TIP: Look for
+med-kits, which heal
+you!"
 
 [node name="Notifier6" type="Area2D" parent="."]
 position = Vector2( 601, -72 )
