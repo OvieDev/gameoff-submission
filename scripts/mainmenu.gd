@@ -7,8 +7,8 @@ onready var vals = [$SettingsPanel/HSlider, $SettingsPanel/HSlider2, $SettingsPa
 onready var play_button = $Button
 onready var music = $AudioStreamPlayer
 func _ready():
-	tween.interpolate_property(color_rect.get_material(), "shader_param/circle_size", 0, 1, 0.75, Tween.TRANS_SINE, Tween.EASE_IN, 0.5)
-	tween.interpolate_property(music, "volume_db", -80, 0, 0.25)
+	tween.interpolate_property(color_rect.get_material(), "shader_param/circle_size", 0, 1, 1.5, Tween.TRANS_SINE, Tween.EASE_IN, 0.5)
+	tween.interpolate_property(music, "volume_db", -80, 0, 0.001)
 	tween.start()
 	play_button.grab_focus()
 	music.playing = true

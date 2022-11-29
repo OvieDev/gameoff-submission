@@ -99,15 +99,15 @@ theme = ExtResource( 2 )
 alignment = 1
 
 [node name="Button" type="Button" parent="Control/VBoxContainer"]
-margin_left = 295.0
-margin_right = 449.0
+margin_left = 285.0
+margin_right = 439.0
 margin_bottom = 49.0
 theme = ExtResource( 2 )
 text = "Continue"
 
 [node name="Button2" type="Button" parent="Control/VBoxContainer"]
-margin_left = 549.0
-margin_right = 728.0
+margin_left = 560.0
+margin_right = 739.0
 margin_bottom = 49.0
 theme = ExtResource( 2 )
 text = "Main Menu"
@@ -115,3 +115,4 @@ text = "Main Menu"
 [node name="Tween" type="Tween" parent="Control"]
 
 [connection signal="pressed" from="Control/VBoxContainer/Button" to="." method="_on_Continue_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Button2" to="." method="_on_MainMenu_pressed"]

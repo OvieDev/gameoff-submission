@@ -22,3 +22,7 @@ func _on_Continue_pressed():
 
 func _process(delta):
 	label.text = "Level: "+GameManager.current_level+"\nCombo: x"+str(GameManager.combo)
+
+
+func _on_MainMenu_pressed():
+	get_parent().get_node("Node2D").restart("res://scenes/mainmenu.tscn")

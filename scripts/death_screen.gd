@@ -7,3 +7,12 @@ func _on_player_death():
 	tween.start()
 	yield(tween,"tween_all_completed")
 	button.grab_focus()
+
+
+func _on_Yes_pressed():
+	
+	get_parent().get_parent().get_node("Node2D").restart("")
+
+
+func _on_No_pressed():
+	get_parent().get_parent().get_node("Node2D").get_parent().restart("res://scenes/mainmenu.tscn")

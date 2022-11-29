@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://graphics/tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://objects/player.tscn" type="PackedScene" id=2]
@@ -18,6 +18,7 @@
 [ext_resource path="res://graphics/images/lightining.png" type="Texture" id=16]
 [ext_resource path="res://scripts/level.gd" type="Script" id=17]
 [ext_resource path="res://scripts/glitch.gd" type="Script" id=18]
+[ext_resource path="res://graphics/ui/theme.tres" type="Theme" id=19]
 
 [sub_resource type="Gradient" id=19]
 interpolation_mode = 2
@@ -227,6 +228,21 @@ shader_param/radius = 0.0
 shader_param/aberration = 0.842
 shader_param/width = 0.0751
 shader_param/feather = 0.264
+
+[sub_resource type="Shader" id=61]
+code = "shader_type canvas_item;
+
+uniform float circle_size : hint_range(0,1) = 0.5f;
+
+void fragment(){
+	if (distance(vec2(0.5), UV) < circle_size){
+		COLOR.a = 0.0;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=62]
+shader = SubResource( 61 )
+shader_param/circle_size = 0.0
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 17 )
@@ -747,6 +763,7 @@ your code"
 [node name="Monitor11" parent="." groups=["monitor_battery"] instance=ExtResource( 13 )]
 position = Vector2( 2450, -1246 )
 scale = Vector2( 4.20008, 3.94065 )
+frame = 1
 ai = true
 text = "You can't attack now
 if you will not dodge
@@ -766,7 +783,6 @@ third time's a charm."
 [node name="Monitor13" parent="." groups=["monitor_battery"] instance=ExtResource( 13 )]
 position = Vector2( 1445, -1065 )
 scale = Vector2( 4.20008, 3.94065 )
-frame = 1
 ai = true
 text = "PRO TIP: Look for
 med-kits, which heal
@@ -832,6 +848,30 @@ anchor_bottom = 1.0
 [node name="CanvasModulate" type="CanvasModulate" parent="Glitch"]
 
 [node name="Tween" type="Tween" parent="Glitch"]
+
+[node name="Enter" type="CanvasLayer" parent="."]
+pause_mode = 2
+layer = 6
+
+[node name="Label" type="Label" parent="Enter"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -169.0
+margin_top = 23.0
+margin_right = 171.0
+margin_bottom = 79.0
+theme = ExtResource( 19 )
+text = "Level Name"
+align = 1
+
+[node name="ColorRect" type="ColorRect" parent="Enter"]
+material = SubResource( 62 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0.0588235, 0.0588235, 0.0588235, 1 )
+
+[node name="Tween" type="Tween" parent="Enter"]
 
 [connection signal="killed" from="Damagable" to="StaticBody2D" method="_on_Damagable_killed"]
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]

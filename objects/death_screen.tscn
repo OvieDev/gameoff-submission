@@ -63,7 +63,7 @@ margin_left = -2.0
 margin_top = -1.0
 margin_right = -2.0
 margin_bottom = -1.0
-color = Color( 0.0705882, 0.0705882, 0.0705882, 1 )
+color = Color( 0.0745098, 0.0745098, 0.0745098, 1 )
 
 [node name="Label" type="Label" parent="Control"]
 anchor_left = 0.5
@@ -120,3 +120,6 @@ __meta__ = {
 }
 
 [node name="Tween" type="Tween" parent="Control"]
+
+[connection signal="pressed" from="Control/Button" to="Control" method="_on_Yes_pressed"]
+[connection signal="pressed" from="Control/Button2" to="Control" method="_on_No_pressed"]

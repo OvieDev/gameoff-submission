@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://graphics/tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://scripts/level.gd" type="Script" id=2]
@@ -80,6 +80,21 @@ shader = SubResource( 30 )
 shader_param/vignette_intensity = 0.6
 shader_param/vignette_opacity = 0.905
 shader_param/vignette_rgb = Color( 0, 0, 0, 1 )
+
+[sub_resource type="Shader" id=32]
+code = "shader_type canvas_item;
+
+uniform float circle_size : hint_range(0,1) = 0.5f;
+
+void fragment(){
+	if (distance(vec2(0.5), UV) < circle_size){
+		COLOR.a = 0.0;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=33]
+shader = SubResource( 32 )
+shader_param/circle_size = 0.0
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 2 )
@@ -571,6 +586,30 @@ cooldown = 6
 [node name="Area2D5" parent="." instance=ExtResource( 11 )]
 position = Vector2( 3260, -336 )
 possible_positions = PoolVector2Array( 3260, -336 )
+
+[node name="Enter" type="CanvasLayer" parent="."]
+pause_mode = 2
+layer = 6
+
+[node name="Label" type="Label" parent="Enter"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -169.0
+margin_top = 23.0
+margin_right = 171.0
+margin_bottom = 79.0
+theme = ExtResource( 12 )
+text = "Level Name"
+align = 1
+
+[node name="ColorRect" type="ColorRect" parent="Enter"]
+material = SubResource( 33 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0.0588235, 0.0588235, 0.0588235, 1 )
+
+[node name="Tween" type="Tween" parent="Enter"]
 
 [connection signal="failed" from="Node2D" to="Node2D7" method="timer_timeout"]
 [connection signal="finish_loop" from="Node2D" to="Node2D7" method="finish_loop"]

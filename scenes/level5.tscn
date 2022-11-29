@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://scripts/level.gd" type="Script" id=1]
 [ext_resource path="res://objects/player.tscn" type="PackedScene" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://objects/boss2.tscn" type="PackedScene" id=17]
 [ext_resource path="res://objects/invader_destroyer.tscn" type="PackedScene" id=18]
 [ext_resource path="res://scripts/transition_camera.gd" type="Script" id=19]
+[ext_resource path="res://graphics/ui/theme.tres" type="Theme" id=20]
 
 [sub_resource type="AtlasTexture" id=41]
 atlas = ExtResource( 13 )
@@ -110,6 +111,21 @@ adjustment_enabled = true
 adjustment_brightness = 1.01
 adjustment_contrast = 1.02
 adjustment_color_correction = SubResource( 20 )
+
+[sub_resource type="Shader" id=46]
+code = "shader_type canvas_item;
+
+uniform float circle_size : hint_range(0,1) = 0.5f;
+
+void fragment(){
+	if (distance(vec2(0.5), UV) < circle_size){
+		COLOR.a = 0.0;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=47]
+shader = SubResource( 46 )
+shader_param/circle_size = 0.0
 
 [node name="Node2D" type="Node2D"]
 scale = Vector2( 1.00139, 1.00323 )
@@ -635,6 +651,30 @@ shape = SubResource( 43 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 45 )
+
+[node name="Enter" type="CanvasLayer" parent="."]
+pause_mode = 2
+layer = 6
+
+[node name="Label" type="Label" parent="Enter"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -169.0
+margin_top = 23.0
+margin_right = 171.0
+margin_bottom = 79.0
+theme = ExtResource( 20 )
+text = "Level Name"
+align = 1
+
+[node name="ColorRect" type="ColorRect" parent="Enter"]
+material = SubResource( 47 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0.0588235, 0.0588235, 0.0588235, 1 )
+
+[node name="Tween" type="Tween" parent="Enter"]
 
 [connection signal="transition" from="Player/Camera2D" to="Camera2D" method="_on_transition"]
 [connection signal="killed" from="Damagable8" to="StaticBody2D3" method="_on_Damagable_killed"]

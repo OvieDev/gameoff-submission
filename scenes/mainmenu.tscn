@@ -14,7 +14,7 @@ outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 1 )
 
-[sub_resource type="Shader" id=2]
+[sub_resource type="Shader" id=9]
 code = "shader_type canvas_item;
 
 uniform float circle_size : hint_range(0,1) = 0.5f;
@@ -26,7 +26,7 @@ void fragment(){
 }"
 
 [sub_resource type="ShaderMaterial" id=3]
-shader = SubResource( 2 )
+shader = SubResource( 9 )
 shader_param/circle_size = 0.0
 
 [sub_resource type="InputEventAction" id=4]
@@ -461,6 +461,7 @@ text = "X"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
+volume_db = -80.0
 bus = "Music"
 
 [connection signal="pressed" from="Button" to="." method="_on_Play_pressed"]
