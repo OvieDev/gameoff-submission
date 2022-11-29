@@ -19,8 +19,11 @@ signal failed
 signal finish_loop
 
 func _ready():
+	print(next_node_obj)
 	connect("activate_next", self, "activate_next")
 	timer.connect("timeout", self, "timer_timeout")
+	if next_node_obj:
+		next_node_obj.connect("stop_previous", self.timer, "stop")
 	if active:
 		sprite.frame = 1
 		light.energy = 1
@@ -37,7 +40,6 @@ func _body_entered(body):
 		next_node_obj.emit_signal("activate_next")
 		timer.start()
 		light.energy = 1
-		next_node_obj.connect("stop_previous", self.timer, "stop")
 	elif body is Player and active and not next_node_obj and should_be_active:
 		for i in get_tree().get_nodes_in_group(group):
 			i.call(method)
@@ -56,6 +58,7 @@ func timer_timeout():
 		emit_signal("failed")
 		sprite.frame = 0 
 		light.energy = 0
+		active = false
 		
 		
 func activate_next():

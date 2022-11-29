@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scripts/level.gd" type="Script" id=1]
 [ext_resource path="res://graphics/tileset.tres" type="TileSet" id=2]
@@ -47,6 +47,42 @@ linear_accel_curve = SubResource( 5 )
 angle = 13.0
 angle_random = 1.0
 scale_curve = SubResource( 7 )
+
+[sub_resource type="Gradient" id=9]
+interpolation_mode = 2
+offsets = PoolRealArray( 0.157609, 1 )
+colors = PoolColorArray( 0.132813, 0.111023, 0.126344, 0.984314, 0.800781, 0.800781, 0.800781, 0.435294 )
+
+[sub_resource type="GradientTexture" id=10]
+gradient = SubResource( 9 )
+
+[sub_resource type="Environment" id=11]
+background_mode = 4
+background_energy = 0.89
+ambient_light_color = Color( 0.0823529, 0.0823529, 0.0823529, 1 )
+ambient_light_energy = 16.0
+ambient_light_sky_contribution = 0.0
+fog_depth_enabled = false
+tonemap_mode = 4
+tonemap_exposure = 1.28
+tonemap_white = 16.0
+auto_exposure_scale = 0.05
+auto_exposure_max_luma = 2.72
+dof_blur_far_distance = 8192.0
+dof_blur_far_transition = 9.94
+dof_blur_far_amount = 0.0
+dof_blur_near_distance = 0.87
+glow_enabled = true
+glow_levels/4 = true
+glow_levels/5 = false
+glow_intensity = 0.79
+glow_strength = 0.84
+glow_bloom = 0.41
+glow_blend_mode = 0
+adjustment_enabled = true
+adjustment_brightness = 1.01
+adjustment_contrast = 1.02
+adjustment_color_correction = SubResource( 10 )
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
@@ -413,6 +449,9 @@ active = false
 [node name="Timer" parent="Node2D7" index="2"]
 wait_time = 5.0
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 11 )
+
 [connection signal="failed" from="Node2D" to="Node2D2" method="timer_timeout"]
 [connection signal="finish_loop" from="Node2D" to="Node2D2" method="finish_loop"]
 [connection signal="finish_loop" from="Node2D" to="StaticBody2D2" method="_on_Damagable_killed"]
@@ -434,8 +473,8 @@ wait_time = 5.0
 [connection signal="failed" from="Node2D6" to="Node2D5" method="timer_timeout"]
 [connection signal="finish_loop" from="Node2D6" to="Node2D5" method="finish_loop"]
 [connection signal="failed" from="Node2D7" to="Node2D6" method="timer_timeout"]
-[connection signal="finish_loop" from="Node2D7" to="Node2D6" method="finish_loop"]
 [connection signal="finish_loop" from="Node2D7" to="StaticBody2D5" method="_on_Damagable_killed"]
+[connection signal="finish_loop" from="Node2D7" to="Node2D6" method="finish_loop"]
 
 [editable path="Node2D3"]
 [editable path="Node2D4"]

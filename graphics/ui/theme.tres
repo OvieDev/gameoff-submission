@@ -1,6 +1,8 @@
-[gd_resource type="Theme" load_steps=11 format=2]
+[gd_resource type="Theme" load_steps=16 format=2]
 
 [ext_resource path="res://graphics/ui/pixelated.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://graphics/images/light_ball.png" type="Texture" id=2]
+[ext_resource path="res://graphics/images/ui_uncheckedbox.png" type="Texture" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 40
@@ -66,6 +68,19 @@ border_color = Color( 1, 1, 1, 1 )
 expand_margin_left = 5.0
 expand_margin_right = 5.0
 
+[sub_resource type="LargeTexture" id=12]
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxLine" id=11]
+color = Color( 0.156863, 0.156863, 0.156863, 1 )
+thickness = 9
+
 [sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0.0823529, 0.0823529, 0.0823529, 0.913725 )
 border_width_left = 2
@@ -109,7 +124,13 @@ Button/styles/focus = SubResource( 9 )
 Button/styles/hover = SubResource( 2 )
 Button/styles/normal = SubResource( 3 )
 Button/styles/pressed = SubResource( 4 )
+CheckButton/icons/off = ExtResource( 3 )
+CheckButton/icons/on = SubResource( 12 )
 HBoxContainer/constants/separation = 121
+HSlider/icons/grabber = ExtResource( 2 )
+HSlider/icons/grabber_highlight = ExtResource( 2 )
+HSlider/styles/grabber_area = SubResource( 10 )
+HSlider/styles/slider = SubResource( 11 )
 Panel/styles/panel = SubResource( 7 )
 PopupDialog/styles/panel = SubResource( 6 )
 PopupPanel/styles/panel = SubResource( 5 )

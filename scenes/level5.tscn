@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://scripts/level.gd" type="Script" id=1]
 [ext_resource path="res://objects/player.tscn" type="PackedScene" id=2]
@@ -74,6 +74,42 @@ orbit_velocity_random = 0.0
 scale_curve = SubResource( 39 )
 
 [sub_resource type="RectangleShape2D" id=43]
+
+[sub_resource type="Gradient" id=44]
+interpolation_mode = 2
+offsets = PoolRealArray( 0.157609, 1 )
+colors = PoolColorArray( 0.132813, 0.111023, 0.126344, 0.984314, 0.800781, 0.800781, 0.800781, 0.435294 )
+
+[sub_resource type="GradientTexture" id=20]
+gradient = SubResource( 44 )
+
+[sub_resource type="Environment" id=45]
+background_mode = 4
+background_energy = 0.89
+ambient_light_color = Color( 0.0823529, 0.0823529, 0.0823529, 1 )
+ambient_light_energy = 16.0
+ambient_light_sky_contribution = 0.0
+fog_depth_enabled = false
+tonemap_mode = 4
+tonemap_exposure = 1.28
+tonemap_white = 16.0
+auto_exposure_scale = 0.05
+auto_exposure_max_luma = 2.72
+dof_blur_far_distance = 8192.0
+dof_blur_far_transition = 9.94
+dof_blur_far_amount = 0.0
+dof_blur_near_distance = 0.87
+glow_enabled = true
+glow_levels/4 = true
+glow_levels/5 = false
+glow_intensity = 0.79
+glow_strength = 0.84
+glow_bloom = 0.41
+glow_blend_mode = 0
+adjustment_enabled = true
+adjustment_brightness = 1.01
+adjustment_contrast = 1.02
+adjustment_color_correction = SubResource( 20 )
 
 [node name="Node2D" type="Node2D"]
 scale = Vector2( 1.00139, 1.00323 )
@@ -596,6 +632,9 @@ method = "emit_transition"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Notifier11"]
 shape = SubResource( 43 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 45 )
 
 [connection signal="transition" from="Player/Camera2D" to="Camera2D" method="_on_transition"]
 [connection signal="killed" from="Damagable8" to="StaticBody2D3" method="_on_Damagable_killed"]

@@ -76,9 +76,9 @@ func _process(delta):
 func _ready():
 	connect("after_bash", self, "after_bash")
 	connect("anim_finished", self, "AnimationPlayer_animation_finished")
-	enter_arena()
-	choose_attack()
-	activate_spawner()
+	#enter_arena()
+	#choose_attack()
+	#activate_spawner()
 	
 func activate_spawner():
 	spawner_timer.start()

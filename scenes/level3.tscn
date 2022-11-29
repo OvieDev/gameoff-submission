@@ -98,7 +98,7 @@ interpolation_mode = 2
 offsets = PoolRealArray( 0.157609, 1 )
 colors = PoolColorArray( 0.132813, 0.111023, 0.126344, 0.984314, 0.800781, 0.800781, 0.800781, 0.435294 )
 
-[sub_resource type="GradientTexture" id=20]
+[sub_resource type="GradientTexture" id=40]
 gradient = SubResource( 26 )
 
 [sub_resource type="Environment" id=27]
@@ -127,9 +127,9 @@ glow_blend_mode = 0
 adjustment_enabled = true
 adjustment_brightness = 1.01
 adjustment_contrast = 1.02
-adjustment_color_correction = SubResource( 20 )
+adjustment_color_correction = SubResource( 40 )
 
-[sub_resource type="Shader" id=30]
+[sub_resource type="Shader" id=41]
 code = "shader_type canvas_item;
 
 uniform float vignette_intensity = 0.4;
@@ -153,7 +153,7 @@ void fragment(){
 }"
 
 [sub_resource type="ShaderMaterial" id=31]
-shader = SubResource( 30 )
+shader = SubResource( 41 )
 shader_param/vignette_intensity = 0.6
 shader_param/vignette_opacity = 0.905
 shader_param/vignette_rgb = Color( 0, 0, 0, 1 )

@@ -8,3 +8,5 @@ func _ready():
 	Gui.visible = true
 	PauseMenu.can_be_paused = true
 	DeathScreen.visible = false
+	if !GameManager.post_process:
+		remove_child(get_node("WorldEnvironment"))

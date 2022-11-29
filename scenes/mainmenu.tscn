@@ -1,9 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://graphics/ui/pixelated.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://graphics/ui/theme.tres" type="Theme" id=2]
 [ext_resource path="res://scripts/mainmenu.gd" type="Script" id=3]
 [ext_resource path="res://scripts/mainmenuclosebutton.gd" type="Script" id=4]
+[ext_resource path="res://graphics/images/ui_checkedbox.png" type="Texture" id=5]
+[ext_resource path="res://graphics/images/ui_uncheckedbox.png" type="Texture" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 74
@@ -32,9 +34,18 @@ action = "card3"
 [sub_resource type="ShortCut" id=5]
 shortcut = SubResource( 4 )
 
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="DynamicFont" id=8]
+size = 24
+font_data = ExtResource( 1 )
+
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 2 )
 script = ExtResource( 3 )
 
 [node name="ColorRect2" type="ColorRect" parent="."]
@@ -268,7 +279,187 @@ shortcut_in_tooltip = false
 shortcut = SubResource( 5 )
 text = "X"
 
+[node name="SettingsPanel" type="Panel" parent="."]
+visible = false
+anchor_left = 0.234563
+anchor_top = 0.0536667
+anchor_right = 0.789313
+anchor_bottom = 0.811667
+margin_left = 7.808
+margin_top = -0.200005
+margin_right = -0.256042
+margin_bottom = 0.999969
+theme = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="SettingsPanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -60.5
+margin_top = 1.0
+margin_right = 59.5
+margin_bottom = 46.0
+text = "Settings"
+
+[node name="Label2" type="Label" parent="SettingsPanel"]
+anchor_left = 0.159821
+anchor_top = 0.234649
+anchor_right = 0.204463
+anchor_bottom = 0.234649
+margin_left = -60.5
+margin_top = 1.0
+margin_right = 59.5
+margin_bottom = 46.0
+text = "Max FPS"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="HSlider" type="HSlider" parent="SettingsPanel"]
+anchor_left = 0.592856
+anchor_top = 0.25
+anchor_right = 0.853856
+anchor_bottom = 0.32
+margin_right = -0.160004
+margin_bottom = 0.0799866
+theme = ExtResource( 2 )
+max_value = 3.0
+value = 3.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="SettingsPanel/HSlider"]
+anchor_left = 1.055
+anchor_top = -0.156
+anchor_right = 1.329
+anchor_bottom = 1.25
+margin_left = -0.0300446
+margin_top = -0.0079999
+margin_right = -0.0340576
+text = "60"
+
+[node name="HSlider2" type="HSlider" parent="SettingsPanel"]
+anchor_left = 0.596428
+anchor_top = 0.528509
+anchor_right = 0.857428
+anchor_bottom = 0.598509
+margin_right = -0.160004
+margin_bottom = 0.0799866
+theme = ExtResource( 2 )
+value = 75.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="SettingsPanel/HSlider2"]
+anchor_left = 1.055
+anchor_top = -0.156
+anchor_right = 1.329
+anchor_bottom = 1.25
+margin_left = -0.0300446
+margin_top = -0.0079999
+margin_right = -0.0340576
+text = "75"
+
+[node name="CheckBox" type="Label" parent="SettingsPanel"]
+margin_left = 28.9995
+margin_top = 163.0
+margin_right = 313.0
+margin_bottom = 212.0
+size_flags_stretch_ratio = 0.0
+text = "Post-Processing"
+
+[node name="CheckButton" type="CheckBox" parent="SettingsPanel"]
+margin_left = 315.0
+margin_top = 150.0
+margin_right = 335.0
+margin_bottom = 199.0
+rect_scale = Vector2( 2.27419, 2.03004 )
+custom_constants/hseparation = 10
+custom_icons/checked = ExtResource( 5 )
+custom_icons/unchecked = ExtResource( 6 )
+custom_styles/pressed = SubResource( 6 )
+custom_styles/focus = SubResource( 7 )
+flat = true
+
+[node name="Label3" type="Label" parent="SettingsPanel"]
+anchor_left = 0.0499991
+anchor_top = 0.493421
+anchor_right = 0.148213
+anchor_bottom = 0.493421
+margin_right = 40.0
+margin_bottom = 45.0
+text = "Music"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="HSlider3" type="HSlider" parent="SettingsPanel"]
+anchor_left = 0.592856
+anchor_top = 0.657894
+anchor_right = 0.853856
+anchor_bottom = 0.727894
+margin_right = -0.160004
+margin_bottom = 0.0799866
+theme = ExtResource( 2 )
+value = 75.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="SettingsPanel/HSlider3"]
+anchor_left = 1.055
+anchor_top = -0.156
+anchor_right = 1.329
+anchor_bottom = 1.25
+margin_left = -0.0300446
+margin_top = -0.0079999
+margin_right = -0.0340576
+text = "75"
+
+[node name="Label4" type="Label" parent="SettingsPanel"]
+anchor_left = 0.0464277
+anchor_top = 0.622807
+anchor_right = 0.144642
+anchor_bottom = 0.622807
+margin_right = 40.0
+margin_bottom = 45.0
+text = "SFX"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label5" type="Label" parent="SettingsPanel"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -279.0
+margin_top = -95.0002
+margin_right = 276.0
+margin_bottom = -2.00018
+custom_fonts/font = SubResource( 8 )
+text = "A, D - move sideways, W - Jump
+S- crouch, E - Roll, Q - Dash
+1,2, 3 - Cartridges, Esc - Pause"
+align = 1
+autowrap = true
+
+[node name="Button9" type="Button" parent="SettingsPanel"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -46.0
+margin_right = -5.0
+margin_bottom = 49.0
+shortcut_in_tooltip = false
+shortcut = SubResource( 5 )
+text = "X"
+
 [connection signal="pressed" from="Button" to="." method="_on_Play_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_Settings_pressed"]
 [connection signal="pressed" from="PopupPanel/Button" to="PopupPanel/Button7" method="accept_level"]
 [connection signal="pressed" from="PopupPanel/Button2" to="PopupPanel/Button7" method="accept_level"]
 [connection signal="pressed" from="PopupPanel/Button3" to="PopupPanel/Button7" method="accept_level"]
@@ -276,3 +467,4 @@ text = "X"
 [connection signal="pressed" from="PopupPanel/Button5" to="PopupPanel/Button7" method="accept_level"]
 [connection signal="pressed" from="PopupPanel/Button6" to="PopupPanel/Button7" method="accept_level"]
 [connection signal="pressed" from="PopupPanel/Button8" to="." method="_on_CloseLevels_pressed"]
+[connection signal="pressed" from="SettingsPanel/Button9" to="." method="_on_CloseLevels_pressed"]
