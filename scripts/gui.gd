@@ -14,12 +14,11 @@ signal combo_changed(value)
 signal death
 
 func _ready():
-	tween.interpolate_property(self, "modulate", Color(1,1,1,1), Color(1,1,1,0), 0.5)
 	connect("toggle_supercharge", self, "supercharge")
 	connect("used_ability", self, "ability")
 	connect("refill", self, "fill")
 	connect("combo_changed", self, "combo")
-	connect("death", tween, "start")
+	connect("death", self, "prep_tween")
 	
 func supercharge():
 	if !progress.texture_over:
@@ -40,3 +39,7 @@ func combo(value):
 	combo.text = "Combo: x"+str(value)
 	combo_tween.interpolate_property(combo, "rect_scale", Vector2(2,2), Vector2(1,1), 0.5,Tween.TRANS_SINE, Tween.EASE_OUT)
 	combo_tween.start()
+
+func prep_tween():
+	tween.interpolate_property(self, "modulate", Color(1,1,1,1), Color(1,1,1,0), 0.5)
+	tween.start()

@@ -31,20 +31,11 @@ func _on_CloseLevels_pressed():
 
 func _process(delta):
 	print(vals[0].value)
-	if vals[0].value==0:
-		GameManager.fps = 30
-	elif vals[0].value==1:
-		GameManager.fps = 60
-	elif vals[0].value==2:
-		GameManager.fps = 120
-	elif vals[0].value == 3:
-		GameManager.fps = 0
 	vals[0].get_node("Label").text = str(GameManager.fps) if GameManager.fps!=0 else "inf."
 	vals[1].get_node("Label").text = str(GameManager.music)
 	vals[3].get_node("Label").text = str(GameManager.sfx)
 	GameManager.music = vals[1].value
 	GameManager.sfx = vals[3].value
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), GameManager.sfx-100)
 
 
 func _on_Settings_pressed():
@@ -54,3 +45,14 @@ func _on_Settings_pressed():
 
 func _on_Quit_pressed():
 	get_tree().quit(0)
+
+
+func _on_FPS_value_changed(value):
+	if value==0:
+		GameManager.fps = 30
+	elif value==1:
+		GameManager.fps = 60
+	elif value==2:
+		GameManager.fps = 120
+	elif value == 3:
+		GameManager.fps = 0 # Replace with function body.

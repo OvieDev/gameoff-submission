@@ -12,6 +12,7 @@ func _ready():
 	Gui.get_node("Control").modulate = Color(1,1,1,1)
 	PauseMenu.can_be_paused = true
 	DeathScreen.visible = false
+	DeathScreen.get_node("Control").modulate = Color(1,1,1,0)
 	Engine.time_scale = 1
 	if !GameManager.post_process:
 		remove_child(get_node("WorldEnvironment"))
@@ -21,7 +22,7 @@ func _ready():
 	tween.start()
 
 func restart(scene):
-	tween.interpolate_property(enter_rect.get_material(), "shader_param/circle_size", 1, 0, 0.5)
+	tween.interpolate_property(enter_rect.get_material(), "shader_param/circle_size", 1, 0, 0.75)
 	tween.start()
 	yield(tween,"tween_all_completed")
 	if scene == "":

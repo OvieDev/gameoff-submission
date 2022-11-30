@@ -32,7 +32,7 @@ var type = ""
 var current_speed = speed
 var dead = false
 
-export var ignore_twist := false
+export var ignore_twist := 0
 
 signal roll_or_dash
 signal parried(bulletid)
@@ -73,11 +73,13 @@ func _input(event):
 			
 	if Input.is_action_pressed("card3"):
 			if cards[2] == true:
-				hits = -5
+				ignore_twist += 5
 				gui.emit_signal("used_ability", 6)
 				cards[2] = false
 
 func _physics_process(delta):
+	if !ai:
+		return
 	print(Engine.time_scale)
 	if dead:
 		Engine.time_scale = lerp(Engine.time_scale, 1, 0.0005)
@@ -228,7 +230,7 @@ func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 func attack():
 	var target = hitline.get_collider()
 	var attacks = enabled_moves.count(false)
-	if target is Damagable and (attacks==2 or ignore_twist):
+	if target is Damagable and (attacks==2 or ignore_twist>0):
 		add_combo(1)
 		var dmg = 1
 		dmg += round(GameManager.combo/5)
@@ -255,6 +257,9 @@ func attack():
 		for i in range(0, enabled_moves.size()):
 			enabled_moves[i] = true
 		gui.emit_signal("refill")
+		
+		if ignore_twist>0:
+			ignore_twist-=1
 
 func dash():
 	dashtimer.start()

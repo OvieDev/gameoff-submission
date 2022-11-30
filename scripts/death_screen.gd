@@ -11,8 +11,8 @@ func _on_player_death():
 
 func _on_Yes_pressed():
 	
-	get_parent().get_parent().get_node("Node2D").restart("")
+	get_parent().get_parent().get_node("Node2D").restart(get_tree().current_scene.filename)
 
 
 func _on_No_pressed():
-	get_parent().get_parent().get_node("Node2D").get_parent().restart("res://scenes/mainmenu.tscn")
+	get_parent().get_parent().get_node("Node2D").restart("res://scenes/mainmenu.tscn")

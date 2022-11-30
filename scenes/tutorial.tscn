@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://graphics/tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://objects/player.tscn" type="PackedScene" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://scripts/level.gd" type="Script" id=17]
 [ext_resource path="res://scripts/glitch.gd" type="Script" id=18]
 [ext_resource path="res://graphics/ui/theme.tres" type="Theme" id=19]
+[ext_resource path="res://objects/end_flag.tscn" type="PackedScene" id=20]
 
 [sub_resource type="Gradient" id=19]
 interpolation_mode = 2
@@ -285,7 +286,7 @@ them. Use RMB to parry!"
 position = Vector2( 3151, -1318 )
 collision/safe_margin = 1.25
 max_hitpoints = 1000
-ignore_twist = true
+ignore_twist = 999
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = -1
@@ -872,6 +873,9 @@ mouse_filter = 2
 color = Color( 0.0588235, 0.0588235, 0.0588235, 1 )
 
 [node name="Tween" type="Tween" parent="Enter"]
+
+[node name="Area2D3" parent="." instance=ExtResource( 20 )]
+position = Vector2( 161, -576 )
 
 [connection signal="killed" from="Damagable" to="StaticBody2D" method="_on_Damagable_killed"]
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]
