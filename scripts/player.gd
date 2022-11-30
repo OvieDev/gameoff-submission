@@ -306,7 +306,7 @@ func _process(delta):
 				animation.play("Parry"+dir)
 			elif roll_direction!=Vector2.ZERO:
 				animation.play("Roll")
-			elif VELOCITY.x==0:
+			elif VELOCITY.x==0 or !ai:
 				animation.play("Idle"+dir)
 			elif VELOCITY.x!=0:
 				animation.play("Walk"+dir)

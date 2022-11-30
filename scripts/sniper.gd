@@ -8,13 +8,13 @@ var sniping = false
 
 func _process(delta):
 	if get_node(player_path):
-		if attack_tick>30 or attack_tick==0:
+		if attack_tick>=0.5 or attack_tick<=0:
 			aimer.look_at(player.position)
 	else:
 		aimer.rotate(0)
 	
 
-func anim_and_attack():
+func anim_and_attack(delta):
 	var dir
 	if attack_tick==0:
 		if last_dir==false:
@@ -26,22 +26,21 @@ func anim_and_attack():
 		else:
 			animation.play("Walk"+dir)
 	
-	if cooldown_tick==0:
-		if attack_tick==0 and ai:
+	if cooldown_tick<=0:
+		if attack_tick<=0 and ai:
 			if target.is_colliding():
-				attack_tick = 60
-		elif attack_tick!=0:
-			
-			if attack_tick==1 and !sniping:
+				attack_tick = 1
+		elif attack_tick>0:
+			if attack_tick<=0.1 and !sniping:
 				sniping = true
 				snipe()
-			elif attack_tick!=1 and !sniping:
+			elif attack_tick>=0.1 and !sniping:
 				aim_direction.get_material().set_shader_param("visible", true)
 				aim_direction.get_material().set_shader_param("phase", true)
 				aim_direction.get_material().set_shader_param("alpha", 0)
-				attack_tick-=1
+				attack_tick-=delta
 	else:
-		cooldown_tick-=1
+		cooldown_tick-=delta
 		
 func snipe():
 	aim_direction.get_material().set_shader_param("phase", false)
@@ -54,5 +53,5 @@ func snipe():
 	aim_direction.get_material().set_shader_param("visible", false)
 	aim_direction.get_material().set_shader_param("alpha", 0)
 	attack_tick = 0
-	cooldown_tick = 400
+	cooldown_tick = 7
 	sniping = false

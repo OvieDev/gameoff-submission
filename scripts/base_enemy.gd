@@ -103,7 +103,7 @@ func _on_Enemy_damage_received(damage, vector, unparryable, id):
 	if !shield:
 		current_hitpoints-=damage
 		attack_tick = 0
-		cooldown_tick = 60
+		cooldown_tick = 2
 		if current_hitpoints<=0:
 			die()
 		else:
@@ -117,7 +117,7 @@ func _on_Enemy_damage_received(damage, vector, unparryable, id):
 
 func _process(delta):
 	if ai:
-		anim_and_attack()
+		anim_and_attack(delta)
 
 
 func _on_DashRegion_body_entered(body):
@@ -126,9 +126,9 @@ func _on_DashRegion_body_entered(body):
 		if (body.dash_direction!=Vector2.ZERO or body.roll_direction!=Vector2.ZERO) and attack_tick!=0 and !body.dashed: # Replace with function body.
 			body.emit_signal("roll_or_dash")
 
-func anim_and_attack():
+func anim_and_attack(delta):
 	var dir
-	if attack_tick==0:
+	if attack_tick<=0:
 		if last_dir==false:
 			dir = "Left"
 		else:
@@ -144,26 +144,31 @@ func anim_and_attack():
 			dir = "Right"
 		animation.play("Punch"+dir)
 	
-	if cooldown_tick==0:
-		if attack_tick==0:
-			if left_ray.get_collider() is Player and position.distance_to(player.position)<60:
-				attack_tick = 30
+	if cooldown_tick<=0:
+		if attack_tick<=0:
+			if attack_tick<-1:
+				cooldown_tick = 1.5
+				attack_tick = 0
+			elif left_ray.get_collider() is Player and position.distance_to(player.position)<60:
+				attack_tick = 0.8
 				attack_dir = true
 			elif right_ray.get_collider() is Player and position.distance_to(player.position)<60:
-				attack_tick = 30
+				attack_tick = 0.8
 				attack_dir = false
 		else:
 		
-			if attack_dir and attack_tick==1:
+			if attack_dir and attack_tick<=0.1:
 				if left_ray.get_collider() is Player:
+					print("emit")
 					left_ray.get_collider().emit_signal("damage_received", 1, Vector2(-1, 0), true, null)
-					cooldown_tick = 60
-			elif !attack_dir and attack_tick==1:
+					attack_tick = -1
+			elif !attack_dir and attack_tick<=0.1:
 				if right_ray.get_collider() is Player:
+					print("emit")
 					right_ray.get_collider().emit_signal("damage_received", 1, Vector2(1, 0), true, null)
-					cooldown_tick = 60
-			attack_tick-=1
+					attack_tick = -1
+			attack_tick-=delta
 	else:
-		cooldown_tick-=1
+		cooldown_tick-=delta
 		
 

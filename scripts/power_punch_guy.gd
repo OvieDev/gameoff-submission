@@ -74,7 +74,9 @@ func ai():
 			if able_to_boost_again==0:
 				boosting = true
 	
-func anim_and_attack():
+func anim_and_attack(delta):
+	print(attack_tick)
+	print(cooldown_tick)
 	var dir = ""
 	if last_dir:
 		dir = "Left"
@@ -83,7 +85,7 @@ func anim_and_attack():
 	if dashing:
 		animation.play("Fall"+dir)
 	elif !impact:
-		if attack_tick==0:
+		if attack_tick<=0:
 			animation.play("Walk"+dir)
 		else:
 			animation.play("Punch"+dir)
@@ -92,12 +94,16 @@ func anim_and_attack():
 		rotate(deg2rad(5))
 	
 		
-	if target_raycast.get_collider() is Player and dist<150 and attack_tick==0 and cooldown_tick==0:
-		attack_tick = 120
+	if target_raycast.get_collider() is Player and dist<150 and attack_tick<=0 and cooldown_tick<=0:
+		attack_tick = 1.5
+		
+	if cooldown_tick>0:
+		cooldown_tick-=delta
+		return
 		
 	if attack_tick>0:
-		attack_tick-=1
-		if attack_tick==1:
+		attack_tick-=delta
+		if attack_tick<=0:
 			randomize()
 			var bullet = load("res://objects/Projectile.tscn").instance()
 			bullet.id = get_instance_id()
@@ -108,10 +114,8 @@ func anim_and_attack():
 			bullet.sprite = load("res://graphics/images/light_ball.png")
 			bullet.damage = 3
 			get_tree().get_root().get_node("Node2D").add_child(bullet)
-			cooldown_tick = 180
+			cooldown_tick = 6
 	
-	if cooldown_tick>0:
-		cooldown_tick-=1
 		
 func end_jump():
 	print("Ended!")

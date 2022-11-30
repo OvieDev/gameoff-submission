@@ -6,7 +6,7 @@ var has_ball = true
 
 func get_direction():
 	.get_direction()
-	if !has_ball and attack_tick==0:
+	if !has_ball and attack_tick<=0:
 		collision_layer = 4
 		collision_mask = 1
 		direction_to_player.x = -direction_to_player.x
@@ -22,16 +22,18 @@ func _on_Damagable_damage_received(damage, vector, unparryable, id):
 		jumping = false
 		impact = true
 		velocity = vector
-		impacttimer.start() # Replace with function body.
+		impacttimer.start()
 
-func anim_and_attack():
+func anim_and_attack(delta):
+	print(has_ball)
+	print(cooldown_tick)
 	var dir
 	if last_dir==false:
 		dir = "Left"
 	else:
 		dir = "Right"
 	
-	if attack_tick!=0:
+	if attack_tick>0:
 		animation.play("Throw"+dir)
 		last_dir = last_dir
 	else:
@@ -44,22 +46,22 @@ func anim_and_attack():
 				animation.play("Walk"+dir)
 	
 	
-	if cooldown_tick==0:
-		if attack_tick==0:
+	if cooldown_tick<=0:
+		if attack_tick<=0:
 			if left_ray.get_collider() is Player and has_ball:
-				attack_tick = 60
-				cooldown_tick = 600
+				attack_tick = 1
+				cooldown_tick = 10
 				has_ball = false
 			elif right_ray.get_collider() is Player and has_ball:
-				attack_tick = 60
-				cooldown_tick = 600
+				attack_tick = 1
+				cooldown_tick = 10
 				has_ball = false
 		
 	else:
-		cooldown_tick-=1
-		if attack_tick!=0:
-			attack_tick-=1
-		if cooldown_tick<=30:
+		cooldown_tick-=delta
+		if attack_tick>0:
+			attack_tick-=delta
+		if cooldown_tick<=0.5:
 			projectile.visible = true
 			tween.interpolate_property(projectile, "modulate", Color(1,1,1,0), Color(1,1,1,1),
 			0.1, Tween.TRANS_CUBIC, Tween.EASE_OUT)
@@ -80,3 +82,9 @@ func _on_DashRegion_body_entered(body):
 		if body is Player:
 			if (body.dash_direction!=Vector2.ZERO or body.roll_direction!=Vector2.ZERO) and !body.dashed: # Replace with function body.
 				body.emit_signal("roll_or_dash")
+
+func _ready():
+	connect("damage_received", self, "cooldown")
+	
+func cooldown(dmg, vector, parryable, bullet):
+	cooldown_tick = 0.7

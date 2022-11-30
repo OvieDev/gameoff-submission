@@ -42,7 +42,7 @@ func heal_or_protect(damage, vector, parryable, bullet):
 	tween.interpolate_property(colorrect.get_material(), "shader_param/alpha", 0.4, 0, 0.1, Tween.TRANS_QUINT)
 	tween.start()
 	
-func anim_and_attack():
+func anim_and_attack(delta):
 	var dir
 	if last_dir==false:
 		dir = "Left"
@@ -58,25 +58,29 @@ func anim_and_attack():
 	else:
 		animation.play("Punch"+dir)
 	
-	if cooldown_tick==0:
-		if attack_tick==0:
-			if left_ray.get_collider() is Player and position.distance_to(player.position)<60:
-				attack_tick = 30
+	if cooldown_tick<=0:
+		if attack_tick<=0:
+			if attack_tick<-1:
+				cooldown_tick = 1.5
+				attack_tick = 0
+			elif left_ray.get_collider() is Player and position.distance_to(player.position)<60:
+				attack_tick = 0.8
 				attack_dir = true
 			elif right_ray.get_collider() is Player and position.distance_to(player.position)<60:
-				attack_tick = 30
+				attack_tick = 0.8
 				attack_dir = false
 		else:
 		
-			if attack_dir and attack_tick==1:
+			if attack_dir and attack_tick<=0.1:
 				if left_ray.get_collider() is Player:
+					print("emit")
 					left_ray.get_collider().emit_signal("damage_received", 1, Vector2(-1, 0), true, null)
-					cooldown_tick = 60
-			elif !attack_dir and attack_tick==1:
+					attack_tick = -1
+			elif !attack_dir and attack_tick<=0.1:
 				if right_ray.get_collider() is Player:
+					print("emit")
 					right_ray.get_collider().emit_signal("damage_received", 1, Vector2(1, 0), true, null)
-					cooldown_tick = 60
-			attack_tick-=1
+					attack_tick = -1
+			attack_tick-=delta
 	else:
-		cooldown_tick-=1
-		
+		cooldown_tick-=delta
