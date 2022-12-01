@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://graphics/tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://objects/player.tscn" type="PackedScene" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://scripts/glitch.gd" type="Script" id=18]
 [ext_resource path="res://graphics/ui/theme.tres" type="Theme" id=19]
 [ext_resource path="res://objects/end_flag.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scripts/dialog.gd" type="Script" id=21]
 
 [sub_resource type="Gradient" id=19]
 interpolation_mode = 2
@@ -245,6 +246,8 @@ void fragment(){
 shader = SubResource( 61 )
 shader_param/circle_size = 0.0
 
+[sub_resource type="RectangleShape2D" id=63]
+
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 17 )
 level_name = "Tutorial"
@@ -283,7 +286,7 @@ you can kill him by parrying
 them. Use RMB to parry!"
 
 [node name="Player" parent="." groups=["player"] instance=ExtResource( 2 )]
-position = Vector2( 3151, -1318 )
+position = Vector2( 194, -1233 )
 collision/safe_margin = 1.25
 max_hitpoints = 1000
 ignore_twist = 999
@@ -299,11 +302,40 @@ environment = SubResource( 21 )
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]
 layer = 0
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer2"]
 material = SubResource( 23 )
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="CanvasLayer3" type="CanvasLayer" parent="."]
+layer = 0
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer3"]
+anchor_left = 0.038
+anchor_top = 0.708
+anchor_right = 0.959
+anchor_bottom = 0.923
+margin_left = 0.0879974
+margin_top = 0.200012
+margin_right = -0.0160522
+margin_bottom = 0.199951
+color = Color( 0.0823529, 0.0823529, 0.0823529, 1 )
+
+[node name="Label" type="Label" parent="CanvasLayer3/ColorRect" groups=["dialog"]]
+margin_left = 16.0
+margin_top = 13.0
+margin_right = 929.0
+margin_bottom = 118.0
+theme = ExtResource( 19 )
+autowrap = true
+script = ExtResource( 21 )
+texts = [ "Oh, good that you're alive", "So, while you were fighting those things i made you something that will hopefully fix some issues", "The cartridges with my \"awesome\" code", "Each of them boosts you in some way, but if you use them they will burn to ash and you will lose them
+", "The first one gives you some additional battery life
+", "Second, creates a shield from lithium ion, that destroys every enemy", "And last, but certainly not least, fixes that bug from the electric box, but only for 5 attacks", "So, grab the flag and let's kick some of those robots' asses!" ]
+plr_path = NodePath("../../../Player")
 
 [node name="Damagable" parent="." groups=["notify1"] instance=ExtResource( 4 )]
 use_parent_material = true
@@ -653,7 +685,7 @@ player_path = NodePath("../Player")
 position = Vector2( 283, -621 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 44 )
-frame = 2
+frame = 4
 playing = true
 
 [node name="Particles2D" type="Particles2D" parent="."]
@@ -876,6 +908,27 @@ color = Color( 0.0588235, 0.0588235, 0.0588235, 1 )
 
 [node name="Area2D3" parent="." instance=ExtResource( 20 )]
 position = Vector2( 161, -576 )
+
+[node name="Notifier12" type="Area2D" parent="."]
+position = Vector2( -26, -690 )
+scale = Vector2( 1, 12.64 )
+script = ExtResource( 7 )
+group = "player"
+method = "tutorial_ai"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Notifier12"]
+shape = SubResource( 63 )
+
+[node name="Notifier13" type="Area2D" parent="."]
+position = Vector2( -26, -690 )
+scale = Vector2( 1, 12.64 )
+script = ExtResource( 7 )
+group = "dialog"
+method = "dialog"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Notifier13"]
+position = Vector2( -6, -0.079113 )
+shape = SubResource( 63 )
 
 [connection signal="killed" from="Damagable" to="StaticBody2D" method="_on_Damagable_killed"]
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]

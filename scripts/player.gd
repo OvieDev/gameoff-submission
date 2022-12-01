@@ -31,6 +31,7 @@ var dashed = false
 var type = ""
 var current_speed = speed
 var dead = false
+var tutorial_done = false
 
 export var ignore_twist := 0
 export var attacking := false
@@ -382,3 +383,9 @@ func add_combo(val):
 		GameManager.combo = 0
 	gui.emit_signal("combo_changed", GameManager.combo)
 	combotimer.start()
+
+func tutorial_ai():
+	if tutorial_done:
+		return
+	ai = false
+	tutorial_done = true
