@@ -5,6 +5,7 @@ onready var particles = $Particles2D
 onready var sprite = $Sprite
 
 export var level_unlocking := 0
+export var level := "res://scenes/mainmenu.tscn"
 
 func _on_body_entered(body):
 	if body is Player:
@@ -14,4 +15,4 @@ func _on_body_entered(body):
 		particles.emitting = true
 		timer.start()
 		yield(timer,"timeout")
-		get_parent().restart("res://scenes/mainmenu.tscn")
+		get_parent().restart(level)

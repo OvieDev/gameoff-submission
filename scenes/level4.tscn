@@ -199,6 +199,54 @@ heal_amount = 4
 possible_positions = PoolVector2Array( -2155, 1454 )
 cooldown = 6
 
+[node name="Area2D11" parent="." instance=ExtResource( 11 )]
+position = Vector2( 2662, 897 )
+heal_amount = 4
+possible_positions = PoolVector2Array( -2155, 1454 )
+cooldown = 6
+
+[node name="Area2D12" parent="." instance=ExtResource( 11 )]
+position = Vector2( 3530, 566 )
+heal_amount = 4
+possible_positions = PoolVector2Array( -2155, 1454 )
+cooldown = 6
+
+[node name="Area2D13" parent="." instance=ExtResource( 11 )]
+position = Vector2( 1658, 623 )
+heal_amount = 4
+possible_positions = PoolVector2Array( -2155, 1454 )
+cooldown = 6
+
+[node name="Area2D14" parent="." instance=ExtResource( 11 )]
+position = Vector2( 3262, 71 )
+heal_amount = 4
+possible_positions = PoolVector2Array( -2155, 1454 )
+cooldown = 6
+
+[node name="Area2D15" parent="." instance=ExtResource( 11 )]
+position = Vector2( 2348, -20 )
+heal_amount = 4
+possible_positions = PoolVector2Array( -2155, 1454 )
+cooldown = 6
+
+[node name="Area2D16" parent="." instance=ExtResource( 11 )]
+position = Vector2( 3813, 294 )
+heal_amount = 4
+possible_positions = PoolVector2Array( -2155, 1454 )
+cooldown = 6
+
+[node name="Area2D17" parent="." instance=ExtResource( 11 )]
+position = Vector2( 4438, 795 )
+heal_amount = 4
+possible_positions = PoolVector2Array( -2155, 1454 )
+cooldown = 6
+
+[node name="Area2D18" parent="." instance=ExtResource( 11 )]
+position = Vector2( 3725, 1117 )
+heal_amount = 4
+possible_positions = PoolVector2Array( -2155, 1454 )
+cooldown = 6
+
 [node name="Area2D9" parent="." instance=ExtResource( 11 )]
 position = Vector2( -1553, 1458 )
 heal_amount = 4
