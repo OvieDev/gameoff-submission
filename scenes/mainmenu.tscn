@@ -474,4 +474,5 @@ bus = "Music"
 [connection signal="pressed" from="PopupPanel/Button5" to="PopupPanel/Button7" method="accept_level"]
 [connection signal="pressed" from="PopupPanel/Button6" to="PopupPanel/Button7" method="accept_level"]
 [connection signal="pressed" from="PopupPanel/Button8" to="." method="_on_CloseLevels_pressed"]
+[connection signal="value_changed" from="SettingsPanel/HSlider" to="." method="_on_FPS_value_changed"]
 [connection signal="pressed" from="SettingsPanel/Button9" to="." method="_on_CloseLevels_pressed"]
