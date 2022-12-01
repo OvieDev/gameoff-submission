@@ -33,6 +33,7 @@ var current_speed = speed
 var dead = false
 
 export var ignore_twist := 0
+export var attacking := false
 
 signal roll_or_dash
 signal parried(bulletid)
@@ -232,6 +233,7 @@ func attack():
 	var attacks = enabled_moves.count(false)
 	if target is Damagable and (attacks==2 or ignore_twist>0):
 		add_combo(1)
+		attacking = true
 		var dmg = 1
 		dmg += round(GameManager.combo/5)
 		if type == "parry":
@@ -300,7 +302,9 @@ func _process(delta):
 		animation.play("Jump"+dir)
 	else:
 		if is_on_floor():
-			if duck:
+			if attacking:
+				animation.play("Punch"+dir)
+			elif duck:
 				animation.play("Duck"+dir)
 			elif parry_direction!=Vector2.ZERO:
 				animation.play("Parry"+dir)

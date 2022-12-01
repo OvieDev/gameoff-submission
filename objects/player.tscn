@@ -1,9 +1,10 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://graphics/images/Roby-SpriteSheet.png" type="Texture" id=1]
 [ext_resource path="res://scripts/player.gd" type="Script" id=2]
 [ext_resource path="res://graphics/shaders/invert_color.tres" type="Material" id=3]
 [ext_resource path="res://scripts/transition_camera.gd" type="Script" id=4]
+[ext_resource path="res://graphics/images/shockwave.png" type="Texture" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 23, 30.5 )
@@ -281,6 +282,108 @@ tracks/0/keys = {
 "values": [ 20, 21, 22, 21 ]
 }
 
+[sub_resource type="Animation" id=27]
+resource_name = "PunchLeft"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 31 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Particles2D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Particles2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:attacking")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.6 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=28]
+resource_name = "PunchRight"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 30 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Particles2D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Particles2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:attacking")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.6 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
 [sub_resource type="Animation" id=16]
 resource_name = "Roll"
 length = 0.4
@@ -363,6 +466,22 @@ extents = Vector2( 125.5, 3.5 )
 cull_mode = 1
 polygon = PoolVector2Array( -5, -8, 3, -8, 9, 20, 8, 27, 1, 20, -8, 27, -10, 20 )
 
+[sub_resource type="Gradient" id=29]
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=30]
+gradient = SubResource( 29 )
+
+[sub_resource type="ParticlesMaterial" id=31]
+flag_disable_z = true
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 105.88
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 2.0
+color_ramp = SubResource( 30 )
+
 [node name="KinematicBody2D" type="KinematicBody2D"]
 light_mask = 2
 material = ExtResource( 3 )
@@ -376,8 +495,8 @@ material = ExtResource( 3 )
 scale = Vector2( 1.96875, 2.09375 )
 texture = ExtResource( 1 )
 hframes = 5
-vframes = 6
-frame = 28
+vframes = 7
+frame = 31
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -2, -1.5 )
@@ -437,6 +556,8 @@ anims/JumpLeft = SubResource( 14 )
 anims/JumpRight = SubResource( 15 )
 anims/ParryLeft = SubResource( 21 )
 anims/ParryRight = SubResource( 22 )
+anims/PunchLeft = SubResource( 27 )
+anims/PunchRight = SubResource( 28 )
 anims/Roll = SubResource( 16 )
 anims/WalkLeft = SubResource( 17 )
 anims/WalkRight = SubResource( 18 )
@@ -455,5 +576,13 @@ occluder = SubResource( 24 )
 
 [node name="ComboTimer" type="Timer" parent="."]
 wait_time = 5.0
+
+[node name="Particles2D" type="Particles2D" parent="."]
+scale = Vector2( -1, 1 )
+amount = 1
+lifetime = 0.5
+one_shot = true
+process_material = SubResource( 31 )
+texture = ExtResource( 5 )
 
 [connection signal="damage_received" from="." to="." method="_on_KinematicBody2D_damage_received"]
