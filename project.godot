@@ -150,6 +150,11 @@ PauseMenu="*res://objects/pause_menu.tscn"
 GameManager="*res://scripts/game_manager.gd"
 DeathScreen="*res://objects/death_screen.tscn"
 
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/shrink=0.77
+
 [editor]
 
 version_control_autoload_on_startup=true
