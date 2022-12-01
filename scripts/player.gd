@@ -51,9 +51,13 @@ func _input(event):
 			dash_direction = hitline.cast_to*5
 			dash()
 			FUEL-=10
+			$AudioStreamPlayer.pitch_scale = 1
+			$AudioStreamPlayer.play()
 	if event.is_action_pressed("roll") and can_move and roll_direction==Vector2.ZERO and dash_direction==Vector2.ZERO and is_on_floor() and enabled_moves[3]:
 			roll_direction.x = hitline.cast_to.x*3.5
 			dash()
+			$AudioStreamPlayer.pitch_scale = 0.2
+			$AudioStreamPlayer.play()
 		
 	if Input.is_action_pressed("card1"):
 			if cards[0] == true:
@@ -197,6 +201,7 @@ func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 				gui.emit_signal("used_ability", 0)
 				after_attack("parry")
 				VELOCITY.x = vector.x*400
+				$Parry.play()
 			elif duck:
 				enabled_moves[1] = false
 				gui.emit_signal("used_ability", 1)
@@ -208,6 +213,7 @@ func _on_KinematicBody2D_damage_received(damage, vector, unparryable, bulletid):
 				after_attack("duck")
 			
 		else:
+			$Attack.play()
 			add_combo(-3)
 			current_hitpoints -= damage
 			hits=0
@@ -233,6 +239,7 @@ func attack():
 	var attacks = enabled_moves.count(false)
 	if target is Damagable and (attacks==2 or ignore_twist>0):
 		add_combo(1)
+		$Attack.play()
 		attacking = true
 		var dmg = 1
 		dmg += round(GameManager.combo/5)
@@ -329,6 +336,11 @@ func after_attack(atk):
 func die():
 	if dead:
 		return
+	$Explosion.play()
+	var m = AudioServer.get_bus_index("Music")
+	var s = AudioServer.get_bus_index("SFX")
+	AudioServer.set_bus_mute(m, true)
+	AudioServer.set_bus_mute(s, true)
 	var inst = explosion.instance()
 	inst.global_position = global_position
 	get_tree().get_root().get_node("Node2D").add_child(inst)

@@ -1,8 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scripts/base_enemy.gd" type="Script" id=1]
 [ext_resource path="res://graphics/images/Basic-SpriteSheet.png" type="Texture" id=2]
 [ext_resource path="res://graphics/shaders/invert_color.tres" type="Material" id=3]
+[ext_resource path="res://graphics/images/shockwave.png" type="Texture" id=4]
+[ext_resource path="res://sound/sfx/explosion.wav" type="AudioStream" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 17.5, 31.5 )
@@ -89,12 +91,34 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 0, 14, 15, 16, 17, 18, 19, 0 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Particles2D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Particles2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -1, 1 ) ]
+}
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=11]
 resource_name = "PunchRight"
-length = 0.5
 loop = true
-step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -102,10 +126,34 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.3, 0.35, 0.4 ),
+"times": PoolRealArray( 0, 0.1, 0.3, 0.6, 0.7, 0.8, 0.9 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 3, 20, 21, 22, 23, 24, 24 ]
+"values": [ 3, 21, 22, 23, 24, 23, 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Particles2D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Particles2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -142,6 +190,22 @@ tracks/0/keys = {
 "values": [ 3, 9, 10, 9, 3, 11 ]
 }
 
+[sub_resource type="Gradient" id=12]
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=13]
+gradient = SubResource( 12 )
+
+[sub_resource type="ParticlesMaterial" id=14]
+flag_disable_z = true
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 105.88
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 2.0
+color_ramp = SubResource( 13 )
+
 [node name="Damagable" type="KinematicBody2D"]
 collision_layer = 12
 collision_mask = 9
@@ -158,7 +222,7 @@ scale = Vector2( 1.96875, 2 )
 texture = ExtResource( 2 )
 hframes = 5
 vframes = 5
-frame = 21
+frame = 22
 
 [node name="Right" type="RayCast2D" parent="."]
 enabled = true
@@ -202,9 +266,22 @@ anims/FallRight = SubResource( 4 )
 anims/IdleLeft = SubResource( 5 )
 anims/IdleRight = SubResource( 6 )
 anims/PunchLeft = SubResource( 7 )
-anims/PunchRight = SubResource( 8 )
+anims/PunchRight = SubResource( 11 )
 anims/WalkLeft = SubResource( 9 )
 anims/WalkRight = SubResource( 10 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+emitting = false
+amount = 1
+lifetime = 0.5
+one_shot = true
+process_material = SubResource( 14 )
+texture = ExtResource( 4 )
+
+[node name="Explosion" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+max_distance = 100000.0
+bus = "Glitch"
 
 [connection signal="damage_received" from="." to="." method="_on_Enemy_damage_received"]
 [connection signal="body_entered" from="DashRegion" to="." method="_on_DashRegion_body_entered"]

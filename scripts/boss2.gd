@@ -33,6 +33,7 @@ var last_position = Vector2.ZERO
 var enemy = preload("res://objects/base_enemy.tscn")
 var pool = []
 var death = false
+var entered = false
 
 signal bash_ended
 signal after_bash
@@ -94,7 +95,14 @@ func activate_spawner():
 	activate_spawner()
 
 func enter_arena():
+	if entered:
+		return
+	entered = true
+	player.get_node("AudioStreamPlayer2D").stream_paused = true
+	get_node("Music").play()
 	animation.play("EnterArena")
+	choose_attack()
+	activate_spawner()
 	
 func choose_attack():
 	timer.start()
@@ -175,8 +183,8 @@ func bash():
 	animation.play("BashEnter")
 	
 func after_bash():
-	collision_layer = 1
-	collision_mask = 1
+	collision_layer = 16
+	collision_mask = 22
 	global_position = last_position-Vector2(0,500)
 	bashing = false
 	to_bash = 4

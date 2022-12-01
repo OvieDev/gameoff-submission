@@ -36,6 +36,8 @@ signal death
 func enter_arena():
 	if entered:
 		return
+	player.get_node("AudioStreamPlayer2D").stream_paused = true
+	get_node("Music").play()
 	entered = true
 	for i in range(5):
 		sprite.position.y-=145.2

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/glitch.mp3-78587f53fb0980c5739ad74f9aeae14a.mp3str"
+
+[deps]
+
+source_file="res://sound/sfx/glitch.mp3"
+dest_files=[ "res://.import/glitch.mp3-78587f53fb0980c5739ad74f9aeae14a.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

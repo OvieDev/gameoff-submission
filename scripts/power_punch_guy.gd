@@ -105,6 +105,7 @@ func anim_and_attack(delta):
 		attack_tick-=delta
 		if attack_tick<=0:
 			randomize()
+			$AudioStreamPlayer2D.play()
 			var bullet = load("res://objects/Projectile.tscn").instance()
 			bullet.id = get_instance_id()
 			bullet.parryable = true

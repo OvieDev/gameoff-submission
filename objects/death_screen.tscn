@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://graphics/ui/theme.tres" type="Theme" id=1]
 [ext_resource path="res://graphics/images/skull.png" type="Texture" id=2]
 [ext_resource path="res://scripts/death_screen.gd" type="Script" id=3]
+[ext_resource path="res://sound/sfx/glitch.mp3" type="AudioStream" id=4]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -120,6 +121,10 @@ __meta__ = {
 }
 
 [node name="Tween" type="Tween" parent="Control"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control"]
+stream = ExtResource( 4 )
+bus = "Glitch"
 
 [connection signal="pressed" from="Control/Button" to="Control" method="_on_Yes_pressed"]
 [connection signal="pressed" from="Control/Button2" to="Control" method="_on_No_pressed"]

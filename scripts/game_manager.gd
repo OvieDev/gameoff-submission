@@ -6,7 +6,7 @@ var fps = 60
 var music = 75
 var sfx = 75
 var unlocked = [true, false, false, false, false, false]
-
+var selected = ""
 
 func _ready():
 	var save = File.new()

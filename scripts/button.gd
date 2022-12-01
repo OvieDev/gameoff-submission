@@ -40,6 +40,7 @@ func _body_entered(body):
 		next_node_obj.emit_signal("activate_next")
 		timer.start()
 		light.energy = 1
+		$Activater.play()
 	elif body is Player and active and not next_node_obj and should_be_active:
 		for i in get_tree().get_nodes_in_group(group):
 			i.call(method)
@@ -48,6 +49,7 @@ func _body_entered(body):
 		should_be_active = false
 		sprite.frame = 0
 		light.energy = 0
+		$Activater.play()
 
 func timer_timeout():
 	print("Timeout!")
@@ -59,6 +61,7 @@ func timer_timeout():
 		sprite.frame = 0 
 		light.energy = 0
 		active = false
+	$Deactivater.play()
 		
 		
 func activate_next():

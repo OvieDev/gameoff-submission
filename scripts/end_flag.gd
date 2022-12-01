@@ -9,6 +9,8 @@ export var level := "res://scenes/mainmenu.tscn"
 
 func _on_body_entered(body):
 	if body is Player:
+		body.get_node("AudioStreamPlayer2D").playing = false
+		$AudioStreamPlayer2D.play()
 		GameManager.unlocked[level_unlocking] = true
 		sprite.frame = 1
 		body.ai = false

@@ -7,6 +7,10 @@ onready var enter_label = $Enter/Label
 onready var tween = $Enter/Tween
 
 func _ready():
+	var m = AudioServer.get_bus_index("Music")
+	var s = AudioServer.get_bus_index("SFX")
+	AudioServer.set_bus_mute(m, false)
+	AudioServer.set_bus_mute(s, false)
 	GameManager.current_level = level_name
 	Gui.visible = true
 	Gui.get_node("Control").modulate = Color(1,1,1,1)

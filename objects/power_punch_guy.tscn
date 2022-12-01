@@ -1,8 +1,9 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://graphics/images/PowerPunchGuy-SpriteSheet.png" type="Texture" id=1]
 [ext_resource path="res://scripts/power_punch_guy.gd" type="Script" id=2]
 [ext_resource path="res://graphics/shaders/invert_color.tres" type="Material" id=3]
+[ext_resource path="res://sound/sfx/power_punch_guy_attack.wav" type="AudioStream" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 17.5, 31.5 )
@@ -233,5 +234,8 @@ position = Vector2( 1, 15 )
 enabled = true
 cast_to = Vector2( -200, 0 )
 collision_mask = 3
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
 
 [connection signal="damage_received" from="." to="." method="_on_Enemy_damage_received"]

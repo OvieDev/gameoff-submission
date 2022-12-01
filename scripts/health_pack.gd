@@ -10,6 +10,7 @@ onready var particles = $Particles2D
 
 func _on_health_pack_pickup(body):
 	if body is Player:
+		$AudioStreamPlayer2D.play()
 		body.heal(heal_amount)
 		set_deferred("monitoring", false)
 		sprite.modulate = Color(1,1,1,0.2)

@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://graphics/ui/theme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/end_screen.gd" type="Script" id=2]
+[ext_resource path="res://sound/music/ooh.wav" type="AudioStream" id=3]
+
+[sub_resource type="Environment" id=1]
+background_mode = 4
+background_canvas_max_layer = 2
+glow_enabled = true
+glow_bloom = 0.18
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.105882, 0.105882, 0.105882, 1 )
+
+[node name="Label" type="Label" parent="ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -167.0
+margin_top = -67.0
+margin_right = -37.0
+margin_bottom = -22.0
+rect_scale = Vector2( 2.84, 3.04 )
+text = "THE END"
+align = 1
+
+[node name="Label2" type="Label" parent="ColorRect"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.360352
+anchor_top = 0.571667
+anchor_right = 0.665953
+anchor_bottom = 0.676667
+margin_right = 0.0639992
+text = "A game by OvieDev"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0705882, 0.0705882, 0.0705882, 1 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+autoplay = true
+bus = "Music"

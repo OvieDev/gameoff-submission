@@ -56,3 +56,10 @@ func _on_FPS_value_changed(value):
 		GameManager.fps = 120
 	elif value == 3:
 		GameManager.fps = 0 # Replace with function body.
+
+
+func _on_otherplay_pressed():
+	tween.interpolate_property(color_rect.get_material(), "shader_param/circle_size", 1, 0, 1.5)
+	tween.start()
+	yield(tween,"tween_all_completed")
+	get_tree().change_scene(GameManager.selected)

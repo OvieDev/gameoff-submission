@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scripts/shielded_guy.gd" type="Script" id=1]
 [ext_resource path="res://graphics/images/ShieldedGuy-SpriteSheet.png" type="Texture" id=2]
 [ext_resource path="res://graphics/shaders/invert_color.tres" type="Material" id=3]
+[ext_resource path="res://graphics/images/shockwave.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 27.5, 41 )
@@ -92,6 +93,30 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 0, 8, 9, 10, 11, 12, 11, 0 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Particles2D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Particles2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -1, 1 ) ]
+}
 
 [sub_resource type="Animation" id=8]
 resource_name = "PunchRight"
@@ -108,6 +133,30 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 4, 13, 14, 15, 16, 17, 16, 5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Particles2D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Particles2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -173,6 +222,22 @@ shader_param/alpha = 0.0
 shader_param/color = Color( 1, 1, 1, 1 )
 shader_param/size = 3.0
 
+[sub_resource type="Gradient" id=31]
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=30]
+gradient = SubResource( 31 )
+
+[sub_resource type="ParticlesMaterial" id=32]
+flag_disable_z = true
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 105.88
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 2.0
+color_ramp = SubResource( 30 )
+
 [node name="Damagable" type="KinematicBody2D"]
 collision_layer = 12
 collision_mask = 9
@@ -190,7 +255,7 @@ scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 hframes = 8
 vframes = 4
-frame = 19
+frame = 16
 
 [node name="Right" type="RayCast2D" parent="."]
 position = Vector2( -1, -21 )
@@ -255,6 +320,15 @@ margin_top = -127.0
 margin_right = -85.0
 margin_bottom = -87.0
 rect_scale = Vector2( 6.28, 6.4 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+position = Vector2( 2, -37 )
+emitting = false
+amount = 1
+lifetime = 0.5
+one_shot = true
+process_material = SubResource( 32 )
+texture = ExtResource( 4 )
 
 [connection signal="damage_received" from="." to="." method="_on_Enemy_damage_received"]
 [connection signal="body_entered" from="DashRegion" to="." method="_on_DashRegion_body_entered"]
