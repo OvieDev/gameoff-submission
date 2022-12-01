@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://scripts/level.gd" type="Script" id=1]
 [ext_resource path="res://objects/player.tscn" type="PackedScene" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://objects/invader_destroyer.tscn" type="PackedScene" id=18]
 [ext_resource path="res://scripts/transition_camera.gd" type="Script" id=19]
 [ext_resource path="res://graphics/ui/theme.tres" type="Theme" id=20]
+[ext_resource path="res://objects/end_flag.tscn" type="PackedScene" id=21]
 
 [sub_resource type="AtlasTexture" id=41]
 atlas = ExtResource( 13 )
@@ -675,6 +676,9 @@ mouse_filter = 2
 color = Color( 0.0588235, 0.0588235, 0.0588235, 1 )
 
 [node name="Tween" type="Tween" parent="Enter"]
+
+[node name="Area2D5" parent="." instance=ExtResource( 21 )]
+position = Vector2( 13227.6, -2497.93 )
 
 [connection signal="transition" from="Player/Camera2D" to="Camera2D" method="_on_transition"]
 [connection signal="killed" from="Damagable8" to="StaticBody2D3" method="_on_Damagable_killed"]

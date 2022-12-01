@@ -30,7 +30,7 @@ func _on_CloseLevels_pressed():
 	play_button.grab_focus()
 
 func _process(delta):
-	print(vals[0].value)
+	print(GameManager.fps)
 	vals[0].get_node("Label").text = str(GameManager.fps) if GameManager.fps!=0 else "inf."
 	vals[1].get_node("Label").text = str(GameManager.music)
 	vals[3].get_node("Label").text = str(GameManager.sfx)
