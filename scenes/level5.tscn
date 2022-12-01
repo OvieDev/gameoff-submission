@@ -679,6 +679,7 @@ color = Color( 0.0588235, 0.0588235, 0.0588235, 1 )
 
 [node name="Area2D5" parent="." instance=ExtResource( 21 )]
 position = Vector2( 13227.6, -2497.93 )
+level = "res://scenes/end_screen.tscn"
 
 [connection signal="transition" from="Player/Camera2D" to="Camera2D" method="_on_transition"]
 [connection signal="killed" from="Damagable8" to="StaticBody2D3" method="_on_Damagable_killed"]
