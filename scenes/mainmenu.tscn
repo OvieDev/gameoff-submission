@@ -119,7 +119,7 @@ margin_left = -134.0
 margin_top = 80.8
 margin_right = 227.0
 margin_bottom = 166.8
-rect_rotation = -2.98773
+rect_rotation = -4.13528
 rect_scale = Vector2( 1.88, 2.6 )
 rect_pivot_offset = Vector2( 180, 50 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -440,18 +440,26 @@ margin_right = -0.0340576
 text = "75"
 
 [node name="CheckBox" type="Label" parent="SettingsPanel"]
-margin_left = 28.9995
-margin_top = 163.0
-margin_right = 313.0
-margin_bottom = 212.0
+anchor_left = 0.052
+anchor_top = 0.357
+anchor_right = 0.559
+anchor_bottom = 0.465
+margin_left = -0.120501
+margin_top = 0.207932
+margin_right = -0.0400085
+margin_bottom = -0.0401001
 size_flags_stretch_ratio = 0.0
 text = "Post-Processing"
 
 [node name="CheckButton" type="CheckBox" parent="SettingsPanel"]
-margin_left = 315.0
-margin_top = 150.0
-margin_right = 335.0
-margin_bottom = 199.0
+anchor_left = 0.562
+anchor_top = 0.329
+anchor_right = 0.562
+anchor_bottom = 0.329
+margin_left = 0.279968
+margin_top = -0.0240784
+margin_right = 20.28
+margin_bottom = 48.9759
 rect_scale = Vector2( 2.27419, 2.03004 )
 custom_constants/hseparation = 10
 custom_icons/checked = ExtResource( 5 )
